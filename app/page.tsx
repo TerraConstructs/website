@@ -43,12 +43,12 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-8 text-center">About TerraConstructs</h2>
             <div className="flex flex-col gap-12 items-center">
-              <div className="max-w-3xl text-center">
-                <p className="text-lg mb-4">
-                  TerraConstructs is a library of classes and interfaces inspired by AWS CDK, but designed to leverage the power and flexibility of Terraform. Built using CDKTF, TerraConstructs enables developers to define cloud infrastructure using familiar object-oriented programming patterns, while taking advantage of Terraform/OpenTofu&apos;s broad provider ecosystem and efficient state management.
+              <div className="max-w-3xl">
+                <p className="text-lg mb-4 text-justify">
+                  TerraConstructs is a powerful library that combines the flexibility of Terraform with the intuitive design of AWS CDK. Built on CDKTF, it enables developers to define cloud infrastructure using object-oriented programming, while leveraging Terraform/OpenTofu&apos;s extensive provider ecosystem.
                 </p>
-                <p className="text-lg">
-                  With TerraConstructs, you can write infrastructure as code that is intuitive, modular, and maintainable. It combines the ease of high-level constructs with the powerful capabilities of Terraform providers, offering an exceptional developer experience for defining and managing cloud resources.
+                <p className="text-lg text-justify">
+                  As a free and open-source project under the GPL 3.0 license, TerraConstructs offers an exceptional developer experience for creating modular, maintainable infrastructure as code across multiple cloud platforms.
                 </p>
               </div>
               <div className="w-full">

@@ -18,38 +18,38 @@ interface CodeSamplesProps {
 const codeExamples = {
   typescript: `import * as path from "node:path";
 import { AwsStack } from 'terraconstructs/lib/aws';
-import { 
-  NodejsFunction, 
+import {
+  NodejsFunction,
   destinations,
 } from 'terraconstructs/lib/aws/compute';
 
 export class ChainedLambdas extends AwsStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-    const first = new NodejsFunction(this, "First", {
+    const mainFunction = new NodejsFunction(this, "Main", {
       path: path.join(
         __dirname,
         "my-function",
       ),
     });
-    const second = new NodejsFunction(this, "Success", {
+    const successCb = new NodejsFunction(this, "Success", {
       path: path.join(
         __dirname,
         "on-success",
       ),
     });
-    const error = new NodejsFunction(this, "Error", {
+    const errorCb = new NodejsFunction(this, "Error", {
       path: path.join(
         __dirname,
         "on-error",
       ),
     });
 
-    first.configureAsyncInvoke({
-      onSuccess: new destinations.FunctionDestination(second, {
+    mainFunction.configureAsyncInvoke({
+      onSuccess: new destinations.FunctionDestination(successCb, {
         responseOnly: true,
       }),
-      onFailure: new destinations.FunctionDestination(error, {
+      onFailure: new destinations.FunctionDestination(errorCb, {
         responseOnly: true,
       }),
       retryAttempts: 0,
@@ -57,6 +57,7 @@ export class ChainedLambdas extends AwsStack {
   }
 }`,
   go: `package main
+// work in progress
 
 import (
 	"path/filepath"
@@ -72,23 +73,23 @@ type ChainedLambdas struct {
 func NewChainedLambdas(scope constructs.Construct, id string) *ChainedLambdas {
 	stack := &ChainedLambdas{aws.NewAwsStack(scope, id)}
 
-	first := compute.NewNodejsFunction(stack, "First", &compute.NodejsFunctionConfig{
+	mainFunction := compute.NewNodejsFunction(stack, "Main", &compute.NodejsFunctionConfig{
 		Path: filepath.Join(".", "my-function"),
 	})
 
-	second := compute.NewNodejsFunction(stack, "Success", &compute.NodejsFunctionConfig{
+	onSuccessCb := compute.NewNodejsFunction(stack, "Success", &compute.NodejsFunctionConfig{
 		Path: filepath.Join(".", "on-success"),
 	})
 
-	error := compute.NewNodejsFunction(stack, "Error", &compute.NodejsFunctionConfig{
+	onErrorCb := compute.NewNodejsFunction(stack, "Error", &compute.NodejsFunctionConfig{
 		Path: filepath.Join(".", "on-error"),
 	})
 
-	first.ConfigureAsyncInvoke(&compute.AsyncInvokeConfig{
-		OnSuccess: compute.NewFunctionDestination(second, &compute.FunctionDestinationConfig{
+	mainFunction.ConfigureAsyncInvoke(&compute.AsyncInvokeConfig{
+		OnSuccess: compute.NewFunctionDestination(onSuccessCb, &compute.FunctionDestinationConfig{
 			ResponseOnly: true,
 		}),
-		OnFailure: compute.NewFunctionDestination(error, &compute.FunctionDestinationConfig{
+		OnFailure: compute.NewFunctionDestination(onErrorCb, &compute.FunctionDestinationConfig{
 			ResponseOnly: true,
 		}),
 		RetryAttempts: 0,
@@ -103,6 +104,7 @@ func main() {
 	app.Synth()
 }`,
   python: `import os
+# work in progress
 from constructs import Construct
 from terraconstructs.aws import AwsStack
 from terraconstructs.aws.compute import NodejsFunction, destinations
@@ -110,22 +112,22 @@ from terraconstructs.aws.compute import NodejsFunction, destinations
 class ChainedLambdas(AwsStack):
     def __init__(self, scope: Construct, id: str):
         super().__init__(scope, id)
-        
-        first = NodejsFunction(self, "First", 
+
+        mainFunction = NodejsFunction(self, "Main",
             path=os.path.join(os.path.dirname(__file__), "my-function")
         )
-        
-        second = NodejsFunction(self, "Success", 
+
+        successCb = NodejsFunction(self, "Success",
             path=os.path.join(os.path.dirname(__file__), "on-success")
         )
-        
-        error = NodejsFunction(self, "Error", 
+
+        errorCb = NodejsFunction(self, "Error",
             path=os.path.join(os.path.dirname(__file__), "on-error")
         )
 
-        first.configure_async_invoke(
-            on_success=destinations.FunctionDestination(second, response_only=True),
-            on_failure=destinations.FunctionDestination(error, response_only=True),
+        mainFunction.configure_async_invoke(
+            on_success=destinations.FunctionDestination(successCb, response_only=True),
+            on_failure=destinations.FunctionDestination(errorCb, response_only=True),
             retry_attempts=0
         )
 
