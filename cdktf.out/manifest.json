@@ -1,0 +1,16 @@
+{
+  "stacks": {
+    "landing": {
+      "annotations": [
+      ],
+      "constructPath": "landing",
+      "dependencies": [
+      ],
+      "name": "landing",
+      "stackMetadataPath": "stacks/landing/metadata.json",
+      "synthesizedStackPath": "stacks/landing/cdk.tf.json",
+      "workingDirectory": "stacks/landing"
+    }
+  },
+  "version": "0.20.10"
+}
