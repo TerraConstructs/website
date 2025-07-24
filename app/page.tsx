@@ -15,7 +15,7 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-blue-600 to-teal-400 text-white py-20">
+        <section className="bg-gradient-to-b from-blue-600 to-teal-400 text-white py-20" role="banner">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-5xl font-bold mb-6">TerraConstructs</h1>
             <p className="text-xl mb-8">Empowering Infrastructure as Code with Reusable Constructs</p>
@@ -30,7 +30,7 @@ export default function Home() {
         </section>
 
         {/* Alpha Status Note */}
-        <section className="bg-yellow-100 py-4">
+        <section className="bg-yellow-100 py-4" role="alert" aria-live="polite">
           <div className="container mx-auto px-4 text-center">
             <p className="text-yellow-800">
               <strong>Note:</strong> TerraConstructs is currently in alpha. We&apos;ve just announced and are actively developing new features and improving stability.

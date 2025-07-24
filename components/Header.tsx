@@ -12,9 +12,9 @@ export function Header() {
   }
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-teal-400 text-white">
+    <header className="bg-gradient-to-r from-blue-600 to-teal-400 text-white" role="banner">
       <div className="container mx-auto px-4 py-6">
-        <nav className="flex justify-between items-center">
+        <nav className="flex justify-between items-center" role="navigation" aria-label="Main navigation">
           <Link href="/" className="text-2xl font-bold">TerraConstructs</Link>
 
           {/* Hamburger menu for mobile */}
