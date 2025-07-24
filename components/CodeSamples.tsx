@@ -16,124 +16,80 @@ interface CodeSamplesProps {
 }
 
 const codeExamples = {
-  typescript: `import * as path from "node:path";
-import { AwsStack } from 'terraconstructs/lib/aws';
+  typescript: `import { Construct } from "constructs";
+import { AwsStack, AwsStackProps } from 'terraconstructs/lib/aws';
 import {
-  NodejsFunction,
-  destinations,
+  Code,
+  LambdaFunction,
+  Runtime,
+  LambdaRestApi,
 } from 'terraconstructs/lib/aws/compute';
 
-export class ChainedLambdas extends AwsStack {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-    const mainFunction = new NodejsFunction(this, "Main", {
-      path: path.join(
-        __dirname,
-        "my-function",
-      ),
-    });
-    const successCb = new NodejsFunction(this, "Success", {
-      path: path.join(
-        __dirname,
-        "on-success",
-      ),
-    });
-    const errorCb = new NodejsFunction(this, "Error", {
-      path: path.join(
-        __dirname,
-        "on-error",
-      ),
+export class CdkWorkshopStack extends AwsStack {
+  constructor(scope: Construct, id: string, props: AwsStackProps) {
+    super(scope, id, props);
+
+    const hello = new LambdaFunction(this, "HelloHandler", {
+      runtime: Runtime.NODEJS_22_X,
+      code: Code.fromAsset("lambda"),
+      handler: "hello.handler",
     });
 
-    mainFunction.configureAsyncInvoke({
-      onSuccess: new destinations.FunctionDestination(successCb, {
-        responseOnly: true,
-      }),
-      onFailure: new destinations.FunctionDestination(errorCb, {
-        responseOnly: true,
-      }),
-      retryAttempts: 0,
+    // defines an API Gateway REST API resource backed by our "hello" function.
+    new LambdaRestApi(this, "Endpoint", {
+      cloudWatchRole: false,
+      handler: hello,
+      registerOutputs: true,
     });
   }
 }`,
   go: `package main
 // work in progress
-
 import (
-	"path/filepath"
-
-	"github.com/terraconstructs/aws"
-	"github.com/terraconstructs/aws/compute"
+	"github.com/terraconstructs/base-go/aws"
+	"github.com/terraconstructs/base-go/aws/compute"
+	"github.com/aws/constructs-go/constructs/v10"
+	"github.com/aws/jsii-runtime-go"
 )
 
-type ChainedLambdas struct {
-	*aws.AwsStack
+type CdkWorkshopStackProps struct {
+	aws.AwsStackProps
 }
 
-func NewChainedLambdas(scope constructs.Construct, id string) *ChainedLambdas {
-	stack := &ChainedLambdas{aws.NewAwsStack(scope, id)}
-
-	mainFunction := compute.NewNodejsFunction(stack, "Main", &compute.NodejsFunctionConfig{
-		Path: filepath.Join(".", "my-function"),
+func NewCdkWorkshopStack(scope constructs.Construct, id string, props CdkWorkshopStackProps) aws.AwsStack {
+	stack := aws.NewAwsStack(scope, &id, props.AwsStackProps)
+	helloHandler := compute.NewLambdaFunction(stack, jsii.String("HelloHandler"), &compute.LambdaFunctionProps{
+		Code:    compute.Code_FromAsset(jsii.String("lambda"), nil),
+		Runtime: compute.Runtime_NODEJS_22_X(),
+		Handler: jsii.String("hello.handler"),
 	})
-
-	onSuccessCb := compute.NewNodejsFunction(stack, "Success", &compute.NodejsFunctionConfig{
-		Path: filepath.Join(".", "on-success"),
+	compute.NewLambdaRestApi(stack, jsii.String("Endpoint"), &compute.LambdaRestApiProps{
+		Handler: helloHandler,
 	})
-
-	onErrorCb := compute.NewNodejsFunction(stack, "Error", &compute.NodejsFunctionConfig{
-		Path: filepath.Join(".", "on-error"),
-	})
-
-	mainFunction.ConfigureAsyncInvoke(&compute.AsyncInvokeConfig{
-		OnSuccess: compute.NewFunctionDestination(onSuccessCb, &compute.FunctionDestinationConfig{
-			ResponseOnly: true,
-		}),
-		OnFailure: compute.NewFunctionDestination(onErrorCb, &compute.FunctionDestinationConfig{
-			ResponseOnly: true,
-		}),
-		RetryAttempts: 0,
-	})
-
 	return stack
-}
-
-func main() {
-	app := cdktf.NewApp(nil)
-	NewChainedLambdas(app, "chained-lambdas")
-	app.Synth()
 }`,
-  python: `import os
-# work in progress
+  python: `# work in progress
 from constructs import Construct
-from terraconstructs.aws import AwsStack
-from terraconstructs.aws.compute import NodejsFunction, destinations
+from terraconstructs import (
+    aws,
+)
 
-class ChainedLambdas(AwsStack):
-    def __init__(self, scope: Construct, id: str):
-        super().__init__(scope, id)
+class CdkWorkshopStack(aws.AwsStack):
 
-        mainFunction = NodejsFunction(self, "Main",
-            path=os.path.join(os.path.dirname(__file__), "my-function")
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        my_lambda = aws.compute.LambdaFunction(
+            self, 'HelloHandler',
+            runtime=aws.compute.Runtime.PYTHON_3_13,
+            code=aws.compute.Code.from_asset('lambda'),
+            handler='hello.handler',
         )
 
-        successCb = NodejsFunction(self, "Success",
-            path=os.path.join(os.path.dirname(__file__), "on-success")
-        )
-
-        errorCb = NodejsFunction(self, "Error",
-            path=os.path.join(os.path.dirname(__file__), "on-error")
-        )
-
-        mainFunction.configure_async_invoke(
-            on_success=destinations.FunctionDestination(successCb, response_only=True),
-            on_failure=destinations.FunctionDestination(errorCb, response_only=True),
-            retry_attempts=0
-        )
-
-app = App()
-ChainedLambdas(app, "chained-lambdas")
-app.synth()`
+        aws.compute.LambdaRestApi(
+            self, 'Endpoint',
+            handler=my_lambda,
+        )`
 }
 
 export function CodeSamples({ initialLanguage = 'typescript' }: CodeSamplesProps) {

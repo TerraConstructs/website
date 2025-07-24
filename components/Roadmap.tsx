@@ -4,7 +4,7 @@ const milestones = [
   {
     icon: Cloud,
     title: "Increase AWS Coverage",
-    description: "Expand our AWS resource support from the current 20% to cover more services and use cases."
+    description: "Expand our AWS resource support to cover more services and use cases through the power of LLM Workflows and community support."
   },
   {
     icon: Database,

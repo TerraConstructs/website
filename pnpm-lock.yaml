@@ -37,8 +37,11 @@ importers:
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.1(@swc/helpers@0.5.5))(@types/node@20.17.10)(typescript@5.7.2)))
     devDependencies:
       '@cdktf/provider-aws':
-        specifier: ^19.29.0
-        version: 19.48.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)
+        specifier: ^20.1.0
+        version: 20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-time':
+        specifier: 11.0.0
+        version: 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
       '@types/node':
         specifier: ^20
         version: 20.17.10
@@ -49,10 +52,10 @@ importers:
         specifier: ^18
         version: 18.3.5(@types/react@18.3.18)
       cdktf:
-        specifier: 0.20.10
-        version: 0.20.10(constructs@10.4.2)
+        specifier: 0.21.0
+        version: 0.21.0(constructs@10.4.2)
       constructs:
-        specifier: ^10.3.0
+        specifier: ^10.4.2
         version: 10.4.2
       eslint:
         specifier: ^8
@@ -67,8 +70,8 @@ importers:
         specifier: ^3.4.1
         version: 3.4.17(ts-node@10.9.2(@swc/core@1.10.1(@swc/helpers@0.5.5))(@types/node@20.17.10)(typescript@5.7.2))
       terraconstructs:
-        specifier: 0.0.8
-        version: 0.0.8(@cdktf/provider-aws@19.48.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-time@10.2.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2))(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)
+        specifier: 0.1.2
+        version: 0.1.2(@cdktf/provider-archive@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-aws@20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-cloudinit@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-docker@12.0.2(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-time@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-tls@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
       tsx:
         specifier: '*'
         version: 4.19.2
@@ -82,19 +85,47 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@cdktf/provider-aws@19.48.1':
-    resolution: {integrity: sha512-rXbYIGBBlflSekn/Eg3bjbV17hw+evTZezEWLiHtaGp74XiNNC1gBObaC10O99/8weZRRsPbJbA4SgbxxVBTWA==}
-    engines: {node: '>= 18.12.0'}
+  '@cdktf/provider-archive@11.0.0':
+    resolution: {integrity: sha512-nouLjv9n3mr44x+KTi8Jq4PT8KAKoziEG24jbN1EkZo5uTrAb+XL2XzJokZ/xIE7aXEX4Xo6BkmKaeEtF0h5ig==}
+    engines: {node: '>= 20.9.0'}
     peerDependencies:
-      cdktf: ^0.20.0
-      constructs: ^10.3.0
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
 
-  '@cdktf/provider-time@10.2.1':
-    resolution: {integrity: sha512-I4hRjCOS2Kv2TqGxpZojtkpjVMkj9mb9iZZ3mdlKrAC3GGTtqpiIgNLQ3rLh7QiOYPivbaiYiUCFFvLDExgWJA==}
-    engines: {node: '>= 18.12.0'}
+  '@cdktf/provider-aws@20.1.0':
+    resolution: {integrity: sha512-ONRJFu5qz/4nqis5f9OxRk8rOZQnuOiDoRtOu3z53fiFxzow0vvA2afnkfntoZGOsynDerqyWPX4/y8A6k6+8g==}
+    engines: {node: '>= 20.9.0'}
     peerDependencies:
-      cdktf: ^0.20.0
-      constructs: ^10.3.0
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
+
+  '@cdktf/provider-cloudinit@11.0.0':
+    resolution: {integrity: sha512-/EMu38UTPeMGPeNVPQgzzzR9pg6oBSCkHvjexlwdPe+0NbM5ZD7ijOODS5LKZ4lqS+hq7sgbOxfAPF5Q0N+oLg==}
+    engines: {node: '>= 20.9.0'}
+    peerDependencies:
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
+
+  '@cdktf/provider-docker@12.0.2':
+    resolution: {integrity: sha512-5f7QOPTYdFKmGOf/yVAyOUvOcQTetGGuzEIHn6Klykjr5TthS91T8/FMUF4pRTRVfBGXQCctTEpR8wI6L68rfQ==}
+    engines: {node: '>= 20.9.0'}
+    peerDependencies:
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
+
+  '@cdktf/provider-time@11.0.0':
+    resolution: {integrity: sha512-wOLFQvJKppXjRuQS9FkG2hTUcx69llzgD2CZ/R/xO9hnTkbTcdFp4w16V0g5pXv1q38vhT9ndAHusRAmrpe9wA==}
+    engines: {node: '>= 20.9.0'}
+    peerDependencies:
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
+
+  '@cdktf/provider-tls@11.0.0':
+    resolution: {integrity: sha512-iClyPr2f06GpjPzhWt+b4LZGSVzO99Q+RkEbYUYx1a1+t3JadImg/rN1J+3akgEEkut5rH26wNG+4nW1uhBIgg==}
+    engines: {node: '>= 20.9.0'}
+    peerDependencies:
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -687,10 +718,10 @@ packages:
   caniuse-lite@1.0.30001690:
     resolution: {integrity: sha512-5ExiE3qQN6oF8Clf8ifIDcMRCRE/dMGcETG/XGMD8/XiXm6HXQgQTh1yZYLXXpSOsEUlJm1Xr7kGULZTuGtP/w==}
 
-  cdktf@0.20.10:
-    resolution: {integrity: sha512-I8c838lNDHUeOIFCeZ6NsLHivAaYVoc+3a8k84hYP+BkQtoqCiOhcYjrm7lH42CwqfBBR+BoD7lB5AFeHekd5A==}
+  cdktf@0.21.0:
+    resolution: {integrity: sha512-bdTOOyrFSXw0p5d7/3dye7ZWYzrUatyMjWEAAwTGoqghjygRj6Q55y1QZnSB021NRDzYZ3BhFGsOkpmIjQMzNQ==}
     peerDependencies:
-      constructs: ^10.3.0
+      constructs: ^10.4.2
     bundledDependencies:
       - archiver
       - json-stable-stringify
@@ -1768,18 +1799,25 @@ packages:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
 
-  terraconstructs@0.0.8:
-    resolution: {integrity: sha512-Zf3cQ2NJdkomiHImNSlqaMIUMSltFkbZsIimRHw1nqthSlRCvXRwt36Fi6NbLDx4QqCHgxwwN3KtV4LpmZ3lAQ==}
-    engines: {node: '20'}
+  terraconstructs@0.1.2:
+    resolution: {integrity: sha512-dx5o11q3RbUlNnZIf06zKJFunf/6WxFhSBv38GJJHSmcyZC05KXd20nvuxywluPC+DvXNbl7HECiG/Cnyog0nQ==}
+    engines: {node: '>=20.9.0'}
     peerDependencies:
-      '@cdktf/provider-aws': ^19.34.0
-      '@cdktf/provider-time': ^10.2.1
-      cdktf: ^0.20.8
-      constructs: ^10.3.0
+      '@cdktf/provider-archive': ^11.0.0
+      '@cdktf/provider-aws': ^20.1.0
+      '@cdktf/provider-cloudinit': ^11.0.0
+      '@cdktf/provider-docker': ^12.0.2
+      '@cdktf/provider-time': ^11.0.0
+      '@cdktf/provider-tls': ^11.0.0
+      cdktf: ^0.21.0
+      constructs: ^10.4.2
     bundledDependencies:
+      - '@balena/dockerignore'
       - change-case
       - esbuild-wasm
+      - ignore
       - mime-types
+      - minimatch
 
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
@@ -1927,14 +1965,34 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@cdktf/provider-aws@19.48.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)':
+  '@cdktf/provider-archive@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
     dependencies:
-      cdktf: 0.20.10(constructs@10.4.2)
+      cdktf: 0.21.0(constructs@10.4.2)
       constructs: 10.4.2
 
-  '@cdktf/provider-time@10.2.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)':
+  '@cdktf/provider-aws@20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
     dependencies:
-      cdktf: 0.20.10(constructs@10.4.2)
+      cdktf: 0.21.0(constructs@10.4.2)
+      constructs: 10.4.2
+
+  '@cdktf/provider-cloudinit@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
+    dependencies:
+      cdktf: 0.21.0(constructs@10.4.2)
+      constructs: 10.4.2
+
+  '@cdktf/provider-docker@12.0.2(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
+    dependencies:
+      cdktf: 0.21.0(constructs@10.4.2)
+      constructs: 10.4.2
+
+  '@cdktf/provider-time@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
+    dependencies:
+      cdktf: 0.21.0(constructs@10.4.2)
+      constructs: 10.4.2
+
+  '@cdktf/provider-tls@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)':
+    dependencies:
+      cdktf: 0.21.0(constructs@10.4.2)
       constructs: 10.4.2
 
   '@cspotcode/source-map-support@0.8.1':
@@ -2465,7 +2523,7 @@ snapshots:
 
   caniuse-lite@1.0.30001690: {}
 
-  cdktf@0.20.10(constructs@10.4.2):
+  cdktf@0.21.0(constructs@10.4.2):
     dependencies:
       constructs: 10.4.2
 
@@ -2723,8 +2781,8 @@ snapshots:
       '@typescript-eslint/parser': 8.18.2(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.3(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -2743,7 +2801,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -2755,22 +2813,22 @@ snapshots:
       is-glob: 4.0.3
       stable-hash: 0.0.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.18.2(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -2781,7 +2839,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.18.2(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -3779,11 +3837,15 @@ snapshots:
 
   tapable@2.2.1: {}
 
-  terraconstructs@0.0.8(@cdktf/provider-aws@19.48.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-time@10.2.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2))(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2):
+  terraconstructs@0.1.2(@cdktf/provider-archive@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-aws@20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-cloudinit@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-docker@12.0.2(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-time@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-tls@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2):
     dependencies:
-      '@cdktf/provider-aws': 19.48.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)
-      '@cdktf/provider-time': 10.2.1(cdktf@0.20.10(constructs@10.4.2))(constructs@10.4.2)
-      cdktf: 0.20.10(constructs@10.4.2)
+      '@cdktf/provider-archive': 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-aws': 20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-cloudinit': 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-docker': 12.0.2(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-time': 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@cdktf/provider-tls': 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      cdktf: 0.21.0(constructs@10.4.2)
       constructs: 10.4.2
 
   text-table@0.2.0: {}

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+// import Link from 'next/link'
 
 export function Footer() {
   return (
@@ -10,19 +10,19 @@ export function Footer() {
             <p className="mt-2">
               TerraConstructs is free and open-source software licensed under the{' '}
               <a
-                href="https://www.gnu.org/licenses/gpl-3.0.en.html"
+                href="https://www.apache.org/licenses/LICENSE-2.0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-300 hover:text-blue-100 transition-colors"
               >
-                GNU General Public License v3.0
+                Apache License 2.0
               </a>
             </p>
           </div>
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             <Link href="/privacy" className="hover:text-blue-300 transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-blue-300 transition-colors">Terms of Service</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

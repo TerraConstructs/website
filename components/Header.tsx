@@ -28,9 +28,9 @@ export function Header() {
           <div className="hidden md:flex space-x-4">
             <Link href="#about" className="hover:text-blue-200 transition-colors">About</Link>
             <Link href="#roadmap" className="hover:text-blue-200 transition-colors">Roadmap</Link>
-            <Link href={EXTERNAL_LINKS.docs} className="flex items-center hover:text-blue-200 transition-colors">
+            <Link href={EXTERNAL_LINKS.awsWorkshop} className="flex items-center hover:text-blue-200 transition-colors">
               <Book className="w-4 h-4 mr-1" />
-              Docs
+              Workshop
             </Link>
             <Link href={EXTERNAL_LINKS.github} className="flex items-center hover:text-blue-200 transition-colors">
               <Github className="w-4 h-4 mr-1" />
@@ -49,9 +49,9 @@ export function Header() {
             <div className="flex flex-col space-y-2">
               <Link href="#about" className="hover:text-blue-200 transition-colors py-2" onClick={toggleMenu}>About</Link>
               <Link href="#roadmap" className="hover:text-blue-200 transition-colors py-2" onClick={toggleMenu}>Roadmap</Link>
-              <Link href={EXTERNAL_LINKS.docs} className="flex items-center hover:text-blue-200 transition-colors py-2" onClick={toggleMenu}>
+              <Link href={EXTERNAL_LINKS.awsWorkshop} className="flex items-center hover:text-blue-200 transition-colors py-2" onClick={toggleMenu}>
                 <Book className="w-4 h-4 mr-1" />
-                Docs
+                Workshop
               </Link>
               <Link href={EXTERNAL_LINKS.github} className="flex items-center hover:text-blue-200 transition-colors py-2" onClick={toggleMenu}>
                 <Github className="w-4 h-4 mr-1" />
