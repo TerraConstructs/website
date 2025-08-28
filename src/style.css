@@ -1,0 +1,192 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom CSS for neobrutalist design */
+:root { 
+  color-scheme: light dark; 
+}
+
+html, body { 
+  height: 100%; 
+}
+
+/* Neo-brutalist card styles */
+.neo-card { 
+  border: 3px solid #000; 
+  box-shadow: 8px 8px 0 0 #000; 
+  background: #fff; 
+}
+
+.dark .neo-card { 
+  border-color: #fff; 
+  background: #0a0a0a; 
+  box-shadow: 8px 8px 0 0 #fff; 
+}
+
+/* Button styles */
+.btn { 
+  border: 3px solid #000; 
+  box-shadow: 6px 6px 0 0 #000; 
+}
+
+.dark .btn { 
+  border-color: #fff; 
+  box-shadow: 6px 6px 0 0 #fff; 
+}
+
+.btn:hover { 
+  transform: translate(-1px, -1px); 
+}
+
+/* Badge styles */
+.badge { 
+  border: 3px solid #000; 
+  box-shadow: 4px 4px 0 0 #000; 
+}
+
+.dark .badge { 
+  border-color: #fff; 
+  box-shadow: 4px 4px 0 0 #fff; 
+}
+
+/* Grid utilities */
+.grid-8 { 
+  gap: 8px; 
+}
+
+/* Focus ring */
+.focus-ring:focus-visible { 
+  outline: 3px solid #6E59FF; 
+  outline-offset: 2px; 
+}
+
+/* Header stability - don't override position, let Tailwind handle it */
+header {
+  isolation: isolate; /* Creates new stacking context */
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { 
+    animation-duration: 0.001ms !important; 
+    animation-iteration-count: 1 !important; 
+    transition-duration: 0.001ms !important; 
+    scroll-behavior: auto !important; 
+  }
+}
+
+/* Code scrollbar */
+.code-scroll { 
+  scrollbar-width: thin; 
+  scrollbar-color: #6E59FF transparent; 
+}
+
+/* Code block containers */
+pre, code {
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+#snippet {
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+#snippet code {
+  display: block;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Output area should not wrap lines */
+#output {
+  white-space: pre;
+  overflow-x: auto;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+#output code {
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+/* Override hljs styles specifically for output area */
+#output .hljs {
+  white-space: pre !important;
+  word-wrap: normal !important;
+  overflow-wrap: normal !important;
+}
+
+/* Custom dropdown styles */
+.dropdown-show {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.dropdown-button[aria-expanded="true"] span:last-child {
+  transform: rotate(180deg);
+}
+
+/* Badge active state management */
+.badge-active {
+  animation: badge 2s ease-out infinite;
+}
+
+.badge-inactive {
+  animation: none;
+}
+
+/* Syntax highlighting styles */
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+  white-space: pre-wrap !important;
+  font-family: inherit;
+}
+
+.hljs-keyword {
+  color: #111;
+  font-weight: 800;
+}
+
+.dark .hljs-keyword {
+  color: #fff;
+}
+
+.hljs-type,
+.hljs-title.class_,
+.hljs-built_in {
+  color: #6E59FF;
+}
+
+.hljs-string,
+.hljs-number {
+  color: #6E59FF;
+}
+
+.hljs-comment {
+  color: #666;
+  font-style: italic;
+}
+
+.dark .hljs-comment {
+  color: #999;
+}
+
+/* Mobile menu show state */
+.mobile-menu-show {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Typewriter cursor blink animation */
+@keyframes blink {
+  0%, 50% {
+    border-right-color: transparent;
+  }
+  51%, 100% {
+    border-right-color: currentColor;
+  }
+}

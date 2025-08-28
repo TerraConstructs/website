@@ -98,7 +98,7 @@ func NewCdkWorkshopStack(scope constructs.Construct, id string, props CdkWorksho
 ```
 
 Python (JSII Ready)
-```
+```python
 # work in progress
 from constructs import Construct
 from terraconstructs import (

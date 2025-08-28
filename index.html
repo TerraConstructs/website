@@ -9,12 +9,20 @@
   <meta name="description" content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation." />
   <meta name="theme-color" content="#111111" />
 
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="logos/terraconstructs_logo_16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="logos/terraconstructs_logo_32x32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="logos/terraconstructs_logo_64x64.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="logos/terraconstructs_logo_128x128.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="logos/terraconstructs_logo_256x256.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="logos/terraconstructs_logo_512x512.png">
+
   <!-- Open Graph -->
 
   <meta property="og:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
   <meta property="og:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://terraconstructs.dev/og.png" />
+  <meta property="og:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png" />
   <meta property="og:url" content="https://terraconstructs.dev/" />
 
   <!-- Twitter -->
@@ -22,21 +30,9 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
   <meta name="twitter:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
-  <meta name="twitter:image" content="https://terraconstructs.dev/og.png" />
+  <meta name="twitter:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png" />
 
-  <!-- CSP-ready (replace __CSP_NONCE__ at deploy) -->
-
-<meta http-equiv="Content-Security-Policy" content="
- default-src 'self';
- script-src 'self' https://cdn.tailwindcss.com 'nonce-__CSP_NONCE__';
- style-src 'self' https://fonts.googleapis.com 'unsafe-inline' 'nonce-__CSP_NONCE__';
- img-src 'self' data:;
- font-src 'self' https://fonts.gstatic.com;
- connect-src 'self';
- frame-ancestors 'none';
- base-uri 'self';
- form-action 'self';
-" />
+  <!-- CSP-ready (server must replace __CSP_NONCE__ and set HTTP headers) -->
 
   <!-- Fonts -->
 
@@ -44,72 +40,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind v3.4 (CDN) -->
-
-  <script nonce="__CSP_NONCE__" src="https://cdn.tailwindcss.com/3.4.10"></script>
-
-  <script nonce="__CSP_NONCE__">
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            ink: '#111111',
-            paper: '#ffffff',
-            accent: '#6E59FF', /* single accent color */
-            neutral: '#EDEDED'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
-          },
-          boxShadow: {
-            neo: '8px 8px 0 0 #000',     /* neobrutalist hard shadow */
-            'neo-sm': '4px 4px 0 0 #000'
-          },
-          borderWidth: {
-            3: '3px'
-          },
-          animation: {
-            'badge-pulse': 'badge 2s ease-out infinite',
-            'card-pop': 'cardpop 250ms ease-out',
-            'typewriter': 'type 6s steps(40, end) 1',
-            'caret': 'blink 1s step-end infinite'
-          },
-          keyframes: {
-            badge: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-2px)' } },
-            cardpop: { from: { transform: 'translateY(4px)' }, to: { transform: 'translateY(0)' } },
-            type: { from: { width: '0' }, to: { width: '100%' } },
-            blink: { '0%,100%': { 'border-color': 'transparent' }, '50%': { 'border-color': '#111111' } }
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Inline critical CSS -->
-
-  <style nonce="__CSP_NONCE__">
-    :root { color-scheme: light dark; }
-    html, body { height: 100%; }
-    .neo-card { border: 3px solid #000; box-shadow: 8px 8px 0 0 #000; background: #fff; }
-    .neo-card.dark { border-color: #000; background: #0a0a0a; box-shadow: 8px 8px 0 0 #000; }
-    .btn { border: 3px solid #000; box-shadow: 6px 6px 0 0 #000; }
-    .btn:hover { transform: translate(-1px, -1px); }
-    .badge { border: 3px solid #000; box-shadow: 4px 4px 0 0 #000; }
-    .grid-8 { gap: 8px; }
-    .focus-ring:focus-visible { outline: 3px solid #6E59FF; outline-offset: 2px; }
-    @media (prefers-reduced-motion: reduce) {
-      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-    }
-    /* Simple token highlighting for demo (monochrome + accent) */
-    .ts .kw { color: #111; font-weight: 800; }
-    .dark .ts .kw { color: #fff; }
-    .ts .type { color: #6E59FF; }
-    .ts .str { color: #6E59FF; }
-    .ts .cm { color: #666; font-style: italic; }
-    .code-scroll { scrollbar-width: thin; scrollbar-color: #6E59FF transparent; }
-  </style>
+  <!-- Vite will inject the CSS automatically -->
 
   <!-- JSON-LD: SoftwareApplication + SoftwareSourceCode -->
 
@@ -144,39 +75,96 @@
 </head>
 
 <body class="h-full bg-paper text-ink dark:bg-black dark:text-white font-sans leading-7">
-  <a href="#main" class="sr-only focus:not-sr-only focus-ring fixed left-3 top-3 z-50 bg-white dark:bg-black text-ink dark:text-white px-3 py-2 border-3 border-black shadow-neo-sm">Skip to content</a>
+  <a href="#main" class="sr-only focus:not-sr-only focus-ring fixed left-3 top-3 z-[60] bg-white dark:bg-black text-ink dark:text-white px-3 py-2 border-3 border-black dark:border-white shadow-neo-sm">Skip to content</a>
 
   <!-- Header / Nav -->
 
-  <header class="sticky top-0 z-40 bg-white/90 dark:bg-black/80 backdrop-blur border-b-3 border-black">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/98 dark:bg-black/98 backdrop-blur border-b-3 border-black dark:border-white">
     <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <!-- Inline minimal logo (triangle T) -->
-        <svg aria-label="TerraConstructs" class="size-8" viewBox="0 0 64 64" role="img">
-          <rect x="2" y="2" width="60" height="60" fill="none" stroke="black" stroke-width="3"></rect>
-          <path d="M10 20h44v8H36v24h-8V28H10z" fill="#6E59FF" stroke="black" stroke-width="3"></path>
-        </svg>
-        <span class="font-extrabold text-lg tracking-tight">TerraConstructs</span>
-        <span class="ml-2 px-2 py-0.5 text-xs badge bg-white dark:bg-black animate-badge-pulse">Apache 2.0</span>
+      <div class="flex items-center gap-2 md:gap-3">
+        <button id="logoButton" class="flex items-center gap-2 md:gap-3 hover:opacity-75 transition-opacity duration-200 focus-ring" aria-label="Scroll to top">
+          <!-- logo -->
+          <svg width="40" height="40" aria-label="TerraConstructs" class="size-10 md:size-12" viewBox="0 0 256 256" role="img">
+            <clipPath id="clip">
+              <rect x="0" y="0" width="256" height="256"/>
+            </clipPath>
+            <g id="group" transform="scale(1,-1) translate(0,-256)" style="clip-path: url(#clip)">
+              <g transform="">
+                <polygon points="128 238, 32.73721 183, 32.73721 73, 128 18, 223.2628 73, 223.2628 183" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 8; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="128 128, 32.73721 73, 128 18, 223.2628 73" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="128 128, 128 238, 32.73721 183, 32.73721 73" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="128 128, 223.2628 73, 223.2628 183, 128 238" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+                <path d="M 128,238 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 223.262794,73 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 32.737206,73 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <polygon points="128 128, 128 172, 89.89488 194, 89.89488 150" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+                <polygon points="128 128, 166.1051 150, 166.1051 194, 128 172" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="128 172, 166.1051 194, 128 216, 89.89488 194" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="89.89488 62, 89.89488 106, 51.78976 128, 51.78976 84" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+                <polygon points="89.89488 62, 128 84, 128 128, 89.89488 106" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="89.89488 106, 128 128, 89.89488 150, 51.78976 128" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="166.1051 62, 166.1051 106, 128 128, 128 84" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+                <polygon points="166.1051 62, 204.2102 84, 204.2102 128, 166.1051 106" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="166.1051 106, 204.2102 128, 166.1051 150, 128 128" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+                <polygon points="128 216.0891, 89.8177 194.0446, 89.8177 149.9554, 128 127.9109, 166.1823 149.9554, 166.1823 194.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+                <path d="M 128,172 L 128,127.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 128,172 L 166.182296,194.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 128,172 L 89.817704,194.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <polygon points="89.89488 150.0891, 51.71259 128.0446, 51.71259 83.95544, 89.89488 61.91088, 128.0772 83.95544, 128.0772 128.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+                <path d="M 89.894882,106 L 89.894882,61.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 89.894882,106 L 128.077178,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 89.894882,106 L 51.712586,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <polygon points="166.1051 150.0891, 127.9228 128.0446, 127.9228 83.95544, 166.1051 61.91088, 204.2874 83.95544, 204.2874 128.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+                <path d="M 166.105118,106 L 166.105118,61.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 166.105118,106 L 204.287414,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+                <path d="M 166.105118,106 L 127.922822,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+              </g>
+            </g>
+          </svg>
+          <span class="font-extrabold text-lg md:text-2xl tracking-tight">TerraConstructs</span>
+        </button>
+        <span class="hidden md:inline-block ml-2 px-2 py-0.5 text-xs badge bg-white dark:bg-black animate-badge-pulse">Apache 2.0</span>
       </div>
-      <nav aria-label="Primary" class="flex items-center gap-2">
-        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#features">Features</a>
-        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#demo">Demo</a>
-        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#cta">Get Started</a>
+      <!-- Desktop Navigation -->
+      <nav aria-label="Primary" class="hidden md:flex items-center gap-2">
+        <a class="px-3 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition-[background-color] duration-200 focus-ring" href="#features">Features</a>
+        <a class="px-3 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition-[background-color] duration-200 focus-ring" href="#demo">Demo</a>
+        <a class="px-3 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition-[background-color] duration-200 focus-ring" href="#cta">Get Started</a>
         <button id="themeToggle" class="ml-2 px-3 py-2 btn bg-white dark:bg-black focus-ring" aria-pressed="false" aria-label="Toggle dark mode">
           <span class="hidden dark:inline">☀︎</span><span class="dark:hidden">☾</span>
         </button>
       </nav>
+      
+      <!-- Mobile Navigation -->
+      <div class="md:hidden flex items-center gap-2">
+        <button id="themeToggleMobile" class="w-10 h-10 flex items-center justify-center btn bg-white dark:bg-black focus-ring" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="hidden dark:inline text-base">☀︎</span><span class="dark:hidden text-base">☾</span>
+        </button>
+        <button id="mobileMenuButton" class="w-10 h-10 flex items-center justify-center btn bg-white dark:bg-black focus-ring" aria-expanded="false" aria-label="Open menu">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="md:hidden fixed inset-0 top-[73px] z-40 bg-white/95 dark:bg-black/95 backdrop-blur opacity-0 invisible transition-all duration-300">
+      <nav aria-label="Mobile navigation" class="flex flex-col p-6 gap-4">
+        <a class="btn bg-white dark:bg-black px-4 py-3 focus-ring text-lg" href="#features">Features</a>
+        <a class="btn bg-white dark:bg-black px-4 py-3 focus-ring text-lg" href="#demo">Demo</a>
+        <a class="btn bg-white dark:bg-black px-4 py-3 focus-ring text-lg" href="#cta">Get Started</a>
+      </nav>
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" class="pt-20">
     <!-- SECTION: Hero -->
-    <section class="min-h-[110vh] border-b-3 border-black bg-white dark:bg-black">
+    <section class="min-h-[110vh] border-b-3 border-black dark:border-white bg-white dark:bg-black">
       <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
-            CDKTF L2 Constructs<span class="block">that synthesize to Terraform.</span>
+            L2 Construct<span class="block">library for Terraform.</span>
           </h1>
           <p class="mt-6 text-lg md:text-xl max-w-2xl">
             TerraConstructs brings the joy of AWS CDK-style development to Terraform and OpenTofu - deterministic synthesis, late binding, and a full asset pipeline. No CloudFormation. No rigid HCL modules.
@@ -188,58 +176,73 @@
           <!-- Trust badges -->
           <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
-              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-              <span class="text-sm">OpenTofu / Terraform</span>
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span class="text-sm">Supports OpenTofu & Terraform</span>
             </div>
             <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
-              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M8 13l2 2 4-6"/></svg>
-              <span class="text-sm">Deterministic Synthesis</span>
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M8 13l2 2 4-6"/></svg>
+              <span class="text-sm">Deterministic HCL Generation</span>
             </div>
             <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
-              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-              <span class="text-sm">Asset Pipeline (S3/ECR)</span>
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+              <span class="text-sm">Advanced Asset Pipeline (S3/ECR)</span>
             </div>
             <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
-              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L6 20l2-7L2 9h7z"/></svg>
-              <span class="text-sm">Ported CDK Unit Tests</span>
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L6 20l2-7L2 9h7z"/></svg>
+              <span class="text-sm">≥3000 Unit & Integration Tests</span>
             </div>
           </div>
         </div>
         <!-- Side visual with animated border -->
         <div class="relative">
-          <div class="neo-card dark:neo-card dark:bg-black rounded-none p-8 animate-card-pop">
+          <div class="neo-card rounded-none p-8 animate-card-pop">
             <h2 class="font-extrabold text-2xl">Why TerraConstructs</h2>
             <ul class="mt-4 space-y-3 list-disc pl-5">
-              <li>Level 2 Constructs for AWS services with strong defaults and sane patterns.</li>
-              <li>Late binding, Aspects, and factories - flexibility modules can't match.</li>
+              <li>Level 2 Constructs for AWS services with strong defaults and sane service patterns.</li>
               <li>Full IAM model with <code class="font-mono">IGrantable</code>, <code class="font-mono">IPrincipal</code>, and grants across L2s.</li>
-              <li>Scans cleanly with tflint, OPA, and SAST - first-class Terraform output.</li>
+              <li>Late binding, Aspects, and factories - flexibility modules can't match.</li>
+              <li>Advanced Construct Trees for DSLs such as StepFunctions, ECS Task Definitions and many more.</li>
+              <li>First-class Terraform ecosystem support. Leverage terratest, tflint, infracost, OPA, ... .</li>
             </ul>
             <div class="mt-6 flex gap-3">
-              <a href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript" class="px-4 py-2 border-3 border-black hover:bg-neutral hover:text-black transition duration-200 focus-ring" target="_blank" rel="noopener">API Reference</a>
-              <a href="https://discord.gg/gEu3D8hJGz" class="px-4 py-2 border-3 border-black hover:bg-neutral hover:text-black transition duration-200 focus-ring" target="_blank" rel="noopener">Join Discord</a>
+              <a href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript" class="px-4 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition duration-200 focus-ring" target="_blank" rel="noopener">API Reference</a>
+              <a href="https://discord.gg/gEu3D8hJGz" class="px-4 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition duration-200 focus-ring" target="_blank" rel="noopener">Join Discord</a>
             </div>
           </div>
-          <div class="absolute -inset-2 border-3 border-black pointer-events-none animate-pulse" aria-hidden="true"></div>
+          <div class="absolute -inset-2 border-3 border-black dark:border-white pointer-events-none animate-pulse" aria-hidden="true"></div>
         </div>
       </div>
     </section>
 
     <!-- SECTION: Product Features -->
-    <section id="features" class="min-h-[110vh] border-b-3 border-black bg-neutral">
+    <section id="features" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-neutral dark:bg-neutral-dark">
     <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
         <h2 class="text-3xl md:text-5xl font-extrabold">Developer Experience without HCL contortions</h2>
-        <p class="mt-4 max-w-3xl">Compose AWS architectures using L2 building blocks. Generate Terraform you can reason about, review, test, and ship.</p>
+        <p class="mt-4 max-w-3xl">Compose AWS architectures using well architected L2 building blocks. Generate Terraform you can reason about, review, test, and ship.</p>
 
         <!-- Features grid -->
         <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Card 1 -->
-        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white" tabindex="0">
+        <article class="neo-card p-6 transition duration-200 hover:-translate-y-1">
             <header class="flex items-center gap-3">
-            <div class="size-8 bg-accent border-3 border-black"></div>
+            <div class="size-8 bg-accent border-3 border-black dark:border-white"></div>
+            <h3 class="text-xl font-extrabold">IAM that makes sense</h3>
+            </header>
+            <p class="mt-4">Ported <span class="font-mono">aws-iam</span> means grant Method support across the library. Finally control permissions in an intuitive and reliable way without losing full customization controls.</p>
+            <ul class="mt-3 text-sm list-disc pl-5">
+            <li>AWSCDK's grant methods for Terraform!</li>
+            <li>Predefined Grant Policies for common use cases</li>
+            <li>Unit-tested and Integration tested</li>
+            </ul>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="neo-card p-6 transition duration-200 hover:-translate-y-1" tabindex="0">
+            <header class="flex items-center gap-3">
+            <div class="size-8 bg-accent border-3 border-black dark:border-white"></div>
             <h3 class="text-xl font-extrabold">Late Binding + Aspects</h3>
             </header>
-            <p class="mt-4">Adapt the generated Terraform at synth-time. Attach compliance Aspects to the construct tree - no module rewrites.</p>
+            <p class="mt-4">Adapt the generated Terraform at synth-time. Attach compliance Aspects to the construct tree - Achieve compliance TF Modules can't even fathom.</p>
             <ul class="mt-3 text-sm list-disc pl-5">
             <li>Environment-aware defaults</li>
             <li>Stack-wide policy injection</li>
@@ -247,13 +250,13 @@
             </ul>
         </article>
 
-        <!-- Card 2 -->
-        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white">
+        <!-- Card 3 -->
+        <article class="neo-card p-6 transition duration-200 hover:-translate-y-1">
             <header class="flex items-center gap-3">
-            <div class="size-8 bg-accent border-3 border-black"></div>
+            <div class="size-8 bg-accent border-3 border-black dark:border-white"></div>
             <h3 class="text-xl font-extrabold">Asset Pipeline</h3>
             </header>
-            <p class="mt-4">The base <span class="font-mono">AwsStack</span> mirrors the AWS CDK asset flow using CDKTF Assets, S3, and ECR to stage code and containers predictably.</p>
+            <p class="mt-4">The base <span class="font-mono">AwsStack</span> mirrors the AWS CDK asset flow using CDKTF Assets, S3 and ECR for advanced code staging and container building.</p>
             <ul class="mt-3 text-sm list-disc pl-5">
             <li>Deterministic hashes</li>
             <li>Reproducible builds</li>
@@ -261,33 +264,22 @@
             </ul>
         </article>
 
-        <!-- Card 3 -->
-        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white">
-            <header class="flex items-center gap-3">
-            <div class="size-8 bg-accent border-3 border-black"></div>
-            <h3 class="text-xl font-extrabold">IAM that makes sense</h3>
-            </header>
-            <p class="mt-4">Full <span class="font-mono">aws-iam</span> surface with <span class="font-mono">IGrantable</span>, <span class="font-mono">IPrincipal</span>, and grants across L2 constructs - portable and testable.</p>
-            <ul class="mt-3 text-sm list-disc pl-5">
-            <li>Explicit principals</li>
-            <li>Granular grants</li>
-            <li>Unit-tested behavior</li>
-            </ul>
-        </article>
         </div>
 
         <!-- Live code snippet toggle -->
         <div class="mt-16">
         <div class="flex flex-wrap items-center gap-2">
             <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="ts">TypeScript</button>
-            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="go">Go (JSII Ready)</button>
-            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="py">Python (JSII Ready)</button>
-            <span class="ml-2 text-sm">Toggle languages - code updates instantly.</span>
+            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="go">Go*</button>
+            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="py">Python*</button>
+            <span class="ml-2 text-sm">Toggle languages for preview.</span>
         </div>
-        <div class="mt-4 neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
+        <div class="mt-4 neo-card p-0 overflow-hidden">
             <div id="snippet" class="p-4 md:p-6 bg-white dark:bg-black code-scroll overflow-auto max-h-[60vh] font-mono text-sm leading-6 ts" aria-live="polite"></div>
-            <div class="border-t-3 border-black p-3 flex items-center justify-between bg-neutral">
-            <span class="text-xs">Copy-friendly, no hidden characters.</span>
+            <div class="border-t-3 border-black dark:border-white p-3 flex items-center justify-between bg-neutral dark:bg-neutral-dark">
+            <span class="text-xs">Sample snippet from
+            <a href="https://aws-workshop.terraconstructs.dev" class="text-xs underline hover:no-underline focus-ring" target="_blank" rel="noopener">aws-workshop →</a>
+            </span>
             <button id="copySnippet" class="px-3 py-1 btn bg-accent text-white focus-ring">Copy</button>
             </div>
         </div>
@@ -296,95 +288,130 @@
     </section>
 
 <!-- SECTION: Interactive demo -->
-<section id="demo" class="min-h-[110vh] border-b-3 border-black bg-white dark:bg-black">
+<section id="demo" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-white dark:bg-black">
   <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
     <h2 class="text-3xl md:text-5xl font-extrabold">Interactive synth demo</h2>
-    <p class="mt-3 max-w-3xl">Type a CDKTF stack on the left. Click Run. We’ll parse common TerraConstructs and show the synthesized Terraform shape. Zero network calls. No telemetry.</p>
+    <p class="mt-3 max-w-3xl">Select a Sample CDKTF stack on the left. Click Run. The equivalent synthesized Terraform configuration will be displayed for perspective.</p>
+    
+    <div class="mt-4 flex items-center gap-1 text-sm">
+      <span>Want more examples?</span>
+      <a href="https://github.com/TerraConstructs/base/blob/main/integ/README.md" class="text-accent underline hover:no-underline focus-ring" target="_blank" rel="noopener">Browse our integration tests →</a>
+    </div>
 
-    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Demo Selection -->
+    <div class="mt-8 mb-4">
+      <label class="block text-sm font-semibold mb-2">Select Demo:</label>
+      <div class="relative">
+        <button 
+          id="demoDropdownButton" 
+          type="button"
+          class="px-4 py-2.5 bg-white dark:bg-black border-3 border-black dark:border-white text-sm font-medium relative inline-flex items-center justify-between gap-x-2 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#000000] dark:hover:shadow-[6px_6px_0_0_#ffffff] focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[6px_6px_0_0_#000000] dark:focus:shadow-[6px_6px_0_0_#ffffff] focus-ring transition-transform duration-200 min-w-[280px]"
+          aria-haspopup="true" 
+          aria-expanded="false"
+          aria-labelledby="demoDropdownLabel"
+        >
+          <span id="demoDropdownText" class="pointer-events-none">Workshop - Lambda + API Gateway</span>
+          <span class="pointer-events-none transform duration-300 text-lg">▼</span>
+        </button>
+
+        <ul 
+          id="demoDropdownMenu" 
+          class="opacity-0 invisible absolute top-[3.2rem] z-30 transition-all duration-200 ease-in-out left-0 min-w-[280px] bg-white dark:bg-black border-3 border-black dark:border-white shadow-[6px_6px_0_0_#000000] dark:shadow-[6px_6px_0_0_#ffffff] py-2"
+          role="listbox"
+          aria-labelledby="demoDropdownLabel"
+        >
+          <li class="relative">
+            <button 
+              type="button"
+              class="flex items-center w-full px-4 py-2 text-sm hover:text-white hover:bg-black dark:hover:text-black dark:hover:bg-white transition-colors duration-200"
+              data-value="workshop"
+              role="option"
+            >
+              Workshop - Lambda + API Gateway
+            </button>
+          </li>
+          <li class="relative">
+            <button 
+              type="button"
+              class="flex items-center w-full px-4 py-2 text-sm hover:text-white hover:bg-black dark:hover:text-black dark:hover:bg-white transition-colors duration-200"
+              data-value="function-url"
+              role="option"
+            >
+              Function URL - Lambda with Function URL
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Editor -->
-      <div class="neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
-        <div class="flex items-center justify-between border-b-3 border-black px-4 py-2">
+      <div class="neo-card p-0 overflow-hidden">
+        <div class="flex items-center justify-between border-b-3 border-black dark:border-white px-4 py-2">
           <div class="flex items-center gap-2">
-            <div class="size-4 bg-accent border-3 border-black"></div>
-            <span class="font-mono text-xs">/stacks/CdkWorkshopStack.ts</span>
+            <div class="size-4 bg-accent border-3 border-black dark:border-white"></div>
+            <span id="editorTitle" class="font-mono text-xs">main.ts</span>
           </div>
           <div class="flex items-center gap-2">
-            <button id="fmtBtn" class="px-3 py-1 btn bg-white dark:bg-black text-sm focus-ring">Format</button>
+            <span id="editorStats" class="text-[10px] text-neutral-600 dark:text-neutral-400">0 lines</span>
             <button id="runBtn" class="px-3 py-1 btn bg-accent text-white text-sm focus-ring">Run</button>
           </div>
         </div>
         <textarea id="editor"
           aria-label="TypeScript editor"
-          class="w-full h-[55vh] p-4 font-mono text-sm leading-6 bg-white dark:bg-black text-ink dark:text-white outline-none"
+          class="w-full h-[55vh] p-4 font-mono text-sm leading-6 bg-white dark:bg-black text-ink dark:text-white outline-none code-scroll"
           spellcheck="false"
-          >import { Construct } from "constructs";
-import { AwsStack, AwsStackProps } from 'terraconstructs/lib/aws';
-import { Code, LambdaFunction, Runtime, LambdaRestApi } from 'terraconstructs/lib/aws/compute';
-
-export class CdkWorkshopStack extends AwsStack {
-    constructor(scope: Construct, id: string, props: AwsStackProps) {
-        super(scope, id, props);
-
-        const hello = new LambdaFunction(this, "HelloHandler", {
-        runtime: Runtime.NODEJS_22_X,
-        code: Code.fromAsset("lambda"),
-        handler: "hello.handler",
-        });
-
-        new LambdaRestApi(this, "Endpoint", {
-        cloudWatchRole: false,
-        handler: hello,
-        registerOutputs: true,
-        });
-    }
-}</textarea> </div>
+          readonly
+          >Loading...</textarea> </div>
 
       <!-- Output -->
-      <div class="neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
-        <div class="border-b-3 border-black px-4 py-2 flex items-center justify-between">
-          <span class="font-mono text-xs">/out/terraform.plan.json</span>
+      <div class="neo-card p-0 overflow-hidden">
+        <div class="border-b-3 border-black dark:border-white px-4 py-2 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs">cdk.tf</span>
+            <span id="outputStats" class="text-[10px] text-neutral-600 dark:text-neutral-400">0 lines</span>
+          </div>
           <span id="runStatus" class="text-xs">Idle</span>
         </div>
-        <pre id="output" class="p-4 bg-neutral text-sm leading-6 overflow-auto h-[55vh] code-scroll" aria-live="polite">{/* click Run */}</pre>
+        <pre id="output" class="p-4 bg-neutral dark:bg-neutral-dark text-sm leading-6 overflow-auto h-[55vh] code-scroll" aria-live="polite">{/* click Run */}</pre>
       </div>
     </div>
 
     <!-- Micro-interaction helper row -->
     <div class="mt-4 flex flex-wrap gap-3 text-sm">
-      <span class="badge bg-white dark:bg-black px-3 py-1 animate-badge-pulse">Deterministic output</span>
-      <span class="badge bg-white dark:bg-black px-3 py-1">No CloudFormation</span>
-      <span class="badge bg-white dark:bg-black px-3 py-1">Scannable by tflint / OPA</span>
+      <span id="demoBadge1" class="badge bg-white dark:bg-black px-3 py-1 cursor-default">Deterministic output</span>
+      <span id="demoBadge2" class="badge bg-white dark:bg-black px-3 py-1 cursor-default">First Class Ecosystem support</span>
+      <span id="demoBadge3" class="badge bg-white dark:bg-black px-3 py-1 cursor-default">No CloudFormation</span>
     </div>
   </div>
 </section>
 
 <!-- SECTION: Pre-footer CTA -->
-<section id="cta" class="min-h-[110vh] border-b-3 border-black bg-gradient-to-b from-white via-neutral to-white dark:from-black dark:via-[#0f0f0f] dark:to-black">
+<section id="cta" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-gradient-to-b from-white via-neutral to-white dark:from-black dark:via-[#0f0f0f] dark:to-black">
   <div class="mx-auto max-w-7xl px-4 py-24">
-    <div class="neo-card dark:neo-card dark:bg-black p-10 relative overflow-hidden">
-      <h2 class="text-2xl md:text-4xl font-extrabold whitespace-nowrap overflow-hidden border-r-4 pr-2 animate-typewriter caret-black dark:caret-white" style="width: 0">
-        Replace brittle modules with adaptive Constructs.
+    <div class="neo-card p-10 relative overflow-hidden">
+      <h2 id="typewriterText" class="text-2xl md:text-4xl font-extrabold" data-text="Replace brittle modules with adaptive Constructs.">
+        <span id="typewriterContent"></span><span id="typewriterCursor" class="border-r-4 border-black dark:border-white animate-pulse"></span>
       </h2>
-      <p class="mt-4 max-w-3xl">Ship AWS architectures in minutes, not weeks. Keep Terraform state. Keep your platform tooling. Gain CDK ergonomics.</p>
+      <p class="mt-4 max-w-3xl">Ship AWS architectures in minutes, not weeks. Keep Terraform execution. Keep your platform tooling. Gain CDK ergonomics.</p>
       <div class="mt-6 flex flex-wrap gap-4">
-        <a href="https://learn.terraconstructs.dev/" class="btn bg-accent text-white px-6 py-3 focus-ring" target="_blank" rel="noopener">Open the Playground</a>
+        <a href="https://learn.terraconstructs.dev/" class="btn bg-accent text-white px-6 py-3 focus-ring" target="_blank" rel="noopener">Playground (alpha)</a>
         <a href="https://discord.gg/gEu3D8hJGz" class="btn bg-white dark:bg-black px-6 py-3 focus-ring" target="_blank" rel="noopener">Join the Community</a>
       </div>
-      <div class="absolute -inset-2 border-3 border-black pointer-events-none animate-pulse" aria-hidden="true"></div>
+      <div class="absolute -inset-2 border-3 border-black dark:border-white pointer-events-none animate-pulse" aria-hidden="true"></div>
     </div>
 
     <!-- Footer -->
     <footer class="mt-16 grid md:grid-cols-3 gap-8">
-      <div class="neo-card dark:neo-card dark:bg-black p-6">
+      <div class="neo-card p-6">
         <h3 class="font-extrabold">Compatibility</h3>
-        <p class="mt-2 text-sm">Works with Terraform and OpenTofu. Unit tests ported from AWS CDK validate behavior.</p>
+        <p class="mt-2 text-sm">Works with Terraform and OpenTofu. Validated through AWS CDK ported Unit tests.</p>
       </div>
-      <div class="neo-card dark:neo-card dark:bg-black p-6">
-        <h3 class="font-extrabold">Security</h3>
-        <p class="mt-2 text-sm">CSP-ready. No inline event handlers. No external JS libraries. Minimal surface.</p>
+      <div class="neo-card p-6">
+        <h3 class="font-extrabold">Cross Language Support</h3>
+        <p class="mt-2 text-sm">JSII Compliant, cross-publishing to Golang and Python supported.</p>
       </div>
-      <div class="neo-card dark:neo-card dark:bg-black p-6">
+      <div class="neo-card p-6">
         <h3 class="font-extrabold">License</h3>
         <p class="mt-2 text-sm">Apache License 2.0. Open to community contributions for GCP and Azure L2s.</p>
       </div>
@@ -397,7 +424,7 @@ export class CdkWorkshopStack extends AwsStack {
   <!-- SECTION: Tiny legal -->
 
   <section class="bg-white dark:bg-black">
-    <div class="mx-auto max-w-7xl px-4 py-8 text-xs flex flex-wrap items-center justify-between gap-3 border-t-3 border-black">
+    <div class="mx-auto max-w-7xl px-4 py-8 text-xs flex flex-wrap items-center justify-between gap-3 border-t-3 border-black dark:border-white">
       <p>© <span id="year"></span> TerraConstructs. Built for serious platform teams.</p>
       <div class="flex gap-3">
         <a class="underline focus-ring" href="https://github.com/terraconstructs/base" target="_blank" rel="noopener">GitHub</a>
@@ -406,186 +433,7 @@ export class CdkWorkshopStack extends AwsStack {
     </div>
   </section>
 
-  <!-- Scripts (no inline event attributes) -->
-
-  <script nonce="__CSP_NONCE__" type="module">
-    // Dark mode: localStorage + system preference
-    const root = document.documentElement;
-    const THEME_KEY = 'tc-theme';
-    const applyTheme = (t) => {
-      const isDark = t === 'dark' || (t == null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      root.classList.toggle('dark', isDark);
-      const btn = document.getElementById('themeToggle');
-      if (btn) btn.setAttribute('aria-pressed', String(isDark));
-    };
-    applyTheme(localStorage.getItem(THEME_KEY));
-    document.getElementById('themeToggle')?.addEventListener('click', () => {
-      const next = root.classList.contains('dark') ? 'light' : 'dark';
-      localStorage.setItem(THEME_KEY, next);
-      applyTheme(next);
-    });
-
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Snippets
-    const TS = `import { Construct } from "constructs";
-import { AwsStack, AwsStackProps } from 'terraconstructs/lib/aws';
-import {
-  Code,
-  LambdaFunction,
-  Runtime,
-  LambdaRestApi,
-} from 'terraconstructs/lib/aws/compute';
-
-export class CdkWorkshopStack extends AwsStack {
-  constructor(scope: Construct, id: string, props: AwsStackProps) {
-    super(scope, id, props);
-
-    const hello = new LambdaFunction(this, "HelloHandler", {
-      runtime: Runtime.NODEJS_22_X,
-      code: Code.fromAsset("lambda"),
-      handler: "hello.handler",
-    });
-
-    new LambdaRestApi(this, "Endpoint", {
-      cloudWatchRole: false,
-      handler: hello,
-      registerOutputs: true,
-    });
-  }
-}`;
-    const GO = `package main
-// work in progress
-import (
-  aws "github.com/terraconstructs/base-go/aws"
-  compute "github.com/terraconstructs/base-go/aws/compute"
-  constructs "github.com/aws/constructs-go/constructs/v10"
-  "github.com/aws/jsii-runtime-go"
-)
-
-type CdkWorkshopStackProps struct { aws.AwsStackProps }
-
-func NewCdkWorkshopStack(scope constructs.Construct, id string, props CdkWorkshopStackProps) aws.AwsStack {
-  stack := aws.NewAwsStack(scope, &id, props.AwsStackProps)
-  helloHandler := compute.NewLambdaFunction(stack, jsii.String("HelloHandler"), &compute.LambdaFunctionProps{
-    Code:    compute.Code_FromAsset(jsii.String("lambda"), nil),
-    Runtime: compute.Runtime_NODEJS_22_X(),
-    Handler: jsii.String("hello.handler"),
-  })
-  compute.NewLambdaRestApi(stack, jsii.String("Endpoint"), &compute.LambdaRestApiProps{ Handler: helloHandler })
-  return stack
-}`;
-    const PY = `# work in progress
-from constructs import Construct
-from terraconstructs import aws
-
-class CdkWorkshopStack(aws.AwsStack):
-    def __init__(self, scope: Construct, id: str, **kwargs):
-        super().__init__(scope, id, **kwargs)
-
-        my_lambda = aws.compute.LambdaFunction(
-            self, 'HelloHandler',
-            runtime=aws.compute.Runtime.PYTHON_3_13,
-            code=aws.compute.Code.from_asset('lambda'),
-            handler='hello.handler',
-        )
-
-        aws.compute.LambdaRestApi(
-            self, 'Endpoint',
-            handler=my_lambda,
-        )`;
-
-    const snippetEl = document.getElementById('snippet');
-    const buttons = Array.from(document.querySelectorAll('[data-snippet]'));
-    const copyBtn = document.getElementById('copySnippet');
-
-    function highlightTS(code) {
-      // very tiny highlighter - keeps monochrome + accent
-      return code
-        .replace(/(import|from|export|class|extends|new|const|return|super|true|false)/g, '<span class="kw">$1</span>')
-        .replace(/(AwsStack|AwsStackProps|Construct|LambdaFunction|LambdaRestApi|Runtime|Code)/g, '<span class="type">$1</span>')
-        .replace(/(".*?"|'.*?')/g, '<span class="str">$1</span>')
-        .replace(/\/\/.*/g, '<span class="cm">$&</span>');
-    }
-
-    function render(kind) {
-      const map = { ts: TS, go: GO, py: PY };
-      const raw = map[kind] ?? TS;
-      const html = kind === 'ts' ? highlightTS(raw) : `<pre class="whitespace-pre-wrap">${raw.replace(/</g,'&lt;')}</pre>`;
-
-  snippetEl.innerHTML = `<code class="block">${html}</code>`;
-  buttons.forEach(b => b.classList.toggle('bg-accent', b.dataset.snippet === kind));
-  buttons.forEach(b => b.classList.toggle('text-white', b.dataset.snippet === kind));
-  snippetEl.dataset.k = kind;
-}
-
-buttons.forEach(b => b.addEventListener('click', () => render(b.dataset.snippet)));
-copyBtn?.addEventListener('click', async () => {
-  const k = snippetEl.dataset.k || 'ts';
-  const text = { ts: TS, go: GO, py: PY }[k];
-  try { await navigator.clipboard.writeText(text); copyBtn.textContent = 'Copied'; setTimeout(() => copyBtn.textContent = 'Copy', 1200); } catch {}
-});
-render('ts');
-
-// Demo runner (static parse -> pseudo Terraform plan)
-const editor = document.getElementById('editor');
-const output = document.getElementById('output');
-const runBtn = document.getElementById('runBtn');
-const fmtBtn = document.getElementById('fmtBtn');
-const status = document.getElementById('runStatus');
-
-function synth(code) {
-  // naive tokens: detect LambdaFunction + LambdaRestApi
-  const hasLambda = /new\s+LambdaFunction|LambdaFunction\(/.test(code);
-  const hasApi = /LambdaRestApi/.test(code);
-  const resources = [];
-  if (hasLambda) {
-    resources.push({
-      type: "aws_lambda_function",
-      name: "HelloHandler",
-      attrs: {
-        runtime: "nodejs22.x",
-        handler: "hello.handler",
-        filename: "asset://lambda.zip"
-      }
-    });
-  }
-  if (hasApi) {
-    resources.push({
-      type: "aws_api_gateway_rest_api",
-      name: "Endpoint",
-      attrs: { minimum_compression_size: 0, endpoint_configuration: "EDGE" }
-    });
-  }
-  return {
-    terraform_version: "1.7+ (compatible with OpenTofu)",
-    provider: "hashicorp/aws",
-    resources,
-    notes: [
-      "Output is illustrative - TerraConstructs synthesizes full Terraform JSON ready for tflint/OPA.",
-      "IAM grants are applied via constructs implementing IGrant/IGrantable/IPrincipal."
-    ]
-  };
-}
-
-runBtn?.addEventListener('click', () => {
-  status.textContent = 'Synthesizing…';
-  window.requestAnimationFrame(() => {
-    const plan = synth(editor.value);
-    output.textContent = JSON.stringify(plan, null, 2);
-    status.textContent = 'Done';
-  });
-});
-
-fmtBtn?.addEventListener('click', () => {
-  // minimal format: trim trailing spaces
-  editor.value = editor.value.split('\n').map(l => l.replace(/\s+$/,'')).join('\n');
-});
-
-// Typewriter start width (no layout thrash)
-const typeEl = document.querySelector('#cta h2');
-if (typeEl) requestAnimationFrame(() => { typeEl.style.width = '100%'; });
-  </script>
+  <!-- Vite entry point -->
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
