@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TerraConstructs — Neobrutalist IaC Library for CDKTF L2 Constructs</title>
+  <meta name="description" content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation." />
+  <meta name="theme-color" content="#111111" />
+
+  <!-- Open Graph -->
+
+  <meta property="og:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
+  <meta property="og:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://terraconstructs.dev/og.png" />
+  <meta property="og:url" content="https://terraconstructs.dev/" />
+
+  <!-- Twitter -->
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
+  <meta name="twitter:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
+  <meta name="twitter:image" content="https://terraconstructs.dev/og.png" />
+
+  <!-- CSP-ready (replace __CSP_NONCE__ at deploy) -->
+
+<meta http-equiv="Content-Security-Policy" content="
+ default-src 'self';
+ script-src 'self' https://cdn.tailwindcss.com 'nonce-__CSP_NONCE__';
+ style-src 'self' https://fonts.googleapis.com 'unsafe-inline' 'nonce-__CSP_NONCE__';
+ img-src 'self' data:;
+ font-src 'self' https://fonts.gstatic.com;
+ connect-src 'self';
+ frame-ancestors 'none';
+ base-uri 'self';
+ form-action 'self';
+" />
+
+  <!-- Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind v3.4 (CDN) -->
+
+  <script nonce="__CSP_NONCE__" src="https://cdn.tailwindcss.com/3.4.10"></script>
+
+  <script nonce="__CSP_NONCE__">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ink: '#111111',
+            paper: '#ffffff',
+            accent: '#6E59FF', /* single accent color */
+            neutral: '#EDEDED'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
+          },
+          boxShadow: {
+            neo: '8px 8px 0 0 #000',     /* neobrutalist hard shadow */
+            'neo-sm': '4px 4px 0 0 #000'
+          },
+          borderWidth: {
+            3: '3px'
+          },
+          animation: {
+            'badge-pulse': 'badge 2s ease-out infinite',
+            'card-pop': 'cardpop 250ms ease-out',
+            'typewriter': 'type 6s steps(40, end) 1',
+            'caret': 'blink 1s step-end infinite'
+          },
+          keyframes: {
+            badge: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-2px)' } },
+            cardpop: { from: { transform: 'translateY(4px)' }, to: { transform: 'translateY(0)' } },
+            type: { from: { width: '0' }, to: { width: '100%' } },
+            blink: { '0%,100%': { 'border-color': 'transparent' }, '50%': { 'border-color': '#111111' } }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Inline critical CSS -->
+
+  <style nonce="__CSP_NONCE__">
+    :root { color-scheme: light dark; }
+    html, body { height: 100%; }
+    .neo-card { border: 3px solid #000; box-shadow: 8px 8px 0 0 #000; background: #fff; }
+    .neo-card.dark { border-color: #000; background: #0a0a0a; box-shadow: 8px 8px 0 0 #000; }
+    .btn { border: 3px solid #000; box-shadow: 6px 6px 0 0 #000; }
+    .btn:hover { transform: translate(-1px, -1px); }
+    .badge { border: 3px solid #000; box-shadow: 4px 4px 0 0 #000; }
+    .grid-8 { gap: 8px; }
+    .focus-ring:focus-visible { outline: 3px solid #6E59FF; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* Simple token highlighting for demo (monochrome + accent) */
+    .ts .kw { color: #111; font-weight: 800; }
+    .dark .ts .kw { color: #fff; }
+    .ts .type { color: #6E59FF; }
+    .ts .str { color: #6E59FF; }
+    .ts .cm { color: #666; font-style: italic; }
+    .code-scroll { scrollbar-width: thin; scrollbar-color: #6E59FF transparent; }
+  </style>
+
+  <!-- JSON-LD: SoftwareApplication + SoftwareSourceCode -->
+
+  <script nonce="__CSP_NONCE__" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TerraConstructs",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "url": "https://terraconstructs.dev/",
+    "softwareVersion": "0.1.2",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "sameAs": [
+      "https://github.com/terraconstructs/base",
+      "https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+    ],
+    "@graph": [{
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "TerraConstructs",
+      "programmingLanguage": ["TypeScript", "Go", "Python"],
+      "codeRepository": "https://github.com/terraconstructs/base",
+      "runtimePlatform": "CDKTF",
+      "version": "0.1.2",
+      "keywords": ["IaC", "CDKTF", "Terraform", "OpenTofu", "AWS", "L2 Constructs"]
+    }]
+  }
+  </script>
+
+</head>
+
+<body class="h-full bg-paper text-ink dark:bg-black dark:text-white font-sans leading-7">
+  <a href="#main" class="sr-only focus:not-sr-only focus-ring fixed left-3 top-3 z-50 bg-white dark:bg-black text-ink dark:text-white px-3 py-2 border-3 border-black shadow-neo-sm">Skip to content</a>
+
+  <!-- Header / Nav -->
+
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-black/80 backdrop-blur border-b-3 border-black">
+    <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Inline minimal logo (triangle T) -->
+        <svg aria-label="TerraConstructs" class="size-8" viewBox="0 0 64 64" role="img">
+          <rect x="2" y="2" width="60" height="60" fill="none" stroke="black" stroke-width="3"></rect>
+          <path d="M10 20h44v8H36v24h-8V28H10z" fill="#6E59FF" stroke="black" stroke-width="3"></path>
+        </svg>
+        <span class="font-extrabold text-lg tracking-tight">TerraConstructs</span>
+        <span class="ml-2 px-2 py-0.5 text-xs badge bg-white dark:bg-black animate-badge-pulse">Apache 2.0</span>
+      </div>
+      <nav aria-label="Primary" class="flex items-center gap-2">
+        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#features">Features</a>
+        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#demo">Demo</a>
+        <a class="px-3 py-2 border-3 border-black hover:bg-neutral hover:text-black transition-[background-color] duration-200 focus-ring" href="#cta">Get Started</a>
+        <button id="themeToggle" class="ml-2 px-3 py-2 btn bg-white dark:bg-black focus-ring" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="hidden dark:inline">☀︎</span><span class="dark:hidden">☾</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- SECTION: Hero -->
+    <section class="min-h-[110vh] border-b-3 border-black bg-white dark:bg-black">
+      <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+            CDKTF L2 Constructs<span class="block">that synthesize to Terraform.</span>
+          </h1>
+          <p class="mt-6 text-lg md:text-xl max-w-2xl">
+            TerraConstructs brings the joy of AWS CDK-style development to Terraform and OpenTofu - deterministic synthesis, late binding, and a full asset pipeline. No CloudFormation. No rigid HCL modules.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="https://aws-workshop.terraconstructs.dev/" class="btn bg-accent text-white px-6 py-3 focus-ring" rel="noopener" target="_blank">Try the Workshop</a>
+            <a href="https://github.com/terraconstructs/base" class="btn bg-white dark:bg-black px-6 py-3 focus-ring" rel="noopener" target="_blank">Contribute on GitHub</a>
+          </div>
+          <!-- Trust badges -->
+          <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span class="text-sm">OpenTofu / Terraform</span>
+            </div>
+            <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M8 13l2 2 4-6"/></svg>
+              <span class="text-sm">Deterministic Synthesis</span>
+            </div>
+            <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+              <span class="text-sm">Asset Pipeline (S3/ECR)</span>
+            </div>
+            <div class="badge bg-white dark:bg-black p-3 flex items-center gap-2 animate-card-pop">
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L6 20l2-7L2 9h7z"/></svg>
+              <span class="text-sm">Ported CDK Unit Tests</span>
+            </div>
+          </div>
+        </div>
+        <!-- Side visual with animated border -->
+        <div class="relative">
+          <div class="neo-card dark:neo-card dark:bg-black rounded-none p-8 animate-card-pop">
+            <h2 class="font-extrabold text-2xl">Why TerraConstructs</h2>
+            <ul class="mt-4 space-y-3 list-disc pl-5">
+              <li>Level 2 Constructs for AWS services with strong defaults and sane patterns.</li>
+              <li>Late binding, Aspects, and factories - flexibility modules can't match.</li>
+              <li>Full IAM model with <code class="font-mono">IGrantable</code>, <code class="font-mono">IPrincipal</code>, and grants across L2s.</li>
+              <li>Scans cleanly with tflint, OPA, and SAST - first-class Terraform output.</li>
+            </ul>
+            <div class="mt-6 flex gap-3">
+              <a href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript" class="px-4 py-2 border-3 border-black hover:bg-neutral hover:text-black transition duration-200 focus-ring" target="_blank" rel="noopener">API Reference</a>
+              <a href="https://discord.gg/gEu3D8hJGz" class="px-4 py-2 border-3 border-black hover:bg-neutral hover:text-black transition duration-200 focus-ring" target="_blank" rel="noopener">Join Discord</a>
+            </div>
+          </div>
+          <div class="absolute -inset-2 border-3 border-black pointer-events-none animate-pulse" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Product Features -->
+    <section id="features" class="min-h-[110vh] border-b-3 border-black bg-neutral">
+    <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
+        <h2 class="text-3xl md:text-5xl font-extrabold">Developer Experience without HCL contortions</h2>
+        <p class="mt-4 max-w-3xl">Compose AWS architectures using L2 building blocks. Generate Terraform you can reason about, review, test, and ship.</p>
+
+        <!-- Features grid -->
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white" tabindex="0">
+            <header class="flex items-center gap-3">
+            <div class="size-8 bg-accent border-3 border-black"></div>
+            <h3 class="text-xl font-extrabold">Late Binding + Aspects</h3>
+            </header>
+            <p class="mt-4">Adapt the generated Terraform at synth-time. Attach compliance Aspects to the construct tree - no module rewrites.</p>
+            <ul class="mt-3 text-sm list-disc pl-5">
+            <li>Environment-aware defaults</li>
+            <li>Stack-wide policy injection</li>
+            <li>Factory patterns for singletons</li>
+            </ul>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white">
+            <header class="flex items-center gap-3">
+            <div class="size-8 bg-accent border-3 border-black"></div>
+            <h3 class="text-xl font-extrabold">Asset Pipeline</h3>
+            </header>
+            <p class="mt-4">The base <span class="font-mono">AwsStack</span> mirrors the AWS CDK asset flow using CDKTF Assets, S3, and ECR to stage code and containers predictably.</p>
+            <ul class="mt-3 text-sm list-disc pl-5">
+            <li>Deterministic hashes</li>
+            <li>Reproducible builds</li>
+            <li>Cacheable deploys</li>
+            </ul>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="neo-card dark:neo-card dark:bg-black p-6 transition duration-200 hover:-translate-y-1 bg-white">
+            <header class="flex items-center gap-3">
+            <div class="size-8 bg-accent border-3 border-black"></div>
+            <h3 class="text-xl font-extrabold">IAM that makes sense</h3>
+            </header>
+            <p class="mt-4">Full <span class="font-mono">aws-iam</span> surface with <span class="font-mono">IGrantable</span>, <span class="font-mono">IPrincipal</span>, and grants across L2 constructs - portable and testable.</p>
+            <ul class="mt-3 text-sm list-disc pl-5">
+            <li>Explicit principals</li>
+            <li>Granular grants</li>
+            <li>Unit-tested behavior</li>
+            </ul>
+        </article>
+        </div>
+
+        <!-- Live code snippet toggle -->
+        <div class="mt-16">
+        <div class="flex flex-wrap items-center gap-2">
+            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="ts">TypeScript</button>
+            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="go">Go (JSII Ready)</button>
+            <button class="px-3 py-2 btn bg-white dark:bg-black focus-ring" data-snippet="py">Python (JSII Ready)</button>
+            <span class="ml-2 text-sm">Toggle languages - code updates instantly.</span>
+        </div>
+        <div class="mt-4 neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
+            <div id="snippet" class="p-4 md:p-6 bg-white dark:bg-black code-scroll overflow-auto max-h-[60vh] font-mono text-sm leading-6 ts" aria-live="polite"></div>
+            <div class="border-t-3 border-black p-3 flex items-center justify-between bg-neutral">
+            <span class="text-xs">Copy-friendly, no hidden characters.</span>
+            <button id="copySnippet" class="px-3 py-1 btn bg-accent text-white focus-ring">Copy</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+
+<!-- SECTION: Interactive demo -->
+<section id="demo" class="min-h-[110vh] border-b-3 border-black bg-white dark:bg-black">
+  <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
+    <h2 class="text-3xl md:text-5xl font-extrabold">Interactive synth demo</h2>
+    <p class="mt-3 max-w-3xl">Type a CDKTF stack on the left. Click Run. We’ll parse common TerraConstructs and show the synthesized Terraform shape. Zero network calls. No telemetry.</p>
+
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Editor -->
+      <div class="neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
+        <div class="flex items-center justify-between border-b-3 border-black px-4 py-2">
+          <div class="flex items-center gap-2">
+            <div class="size-4 bg-accent border-3 border-black"></div>
+            <span class="font-mono text-xs">/stacks/CdkWorkshopStack.ts</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="fmtBtn" class="px-3 py-1 btn bg-white dark:bg-black text-sm focus-ring">Format</button>
+            <button id="runBtn" class="px-3 py-1 btn bg-accent text-white text-sm focus-ring">Run</button>
+          </div>
+        </div>
+        <textarea id="editor"
+          aria-label="TypeScript editor"
+          class="w-full h-[55vh] p-4 font-mono text-sm leading-6 bg-white dark:bg-black text-ink dark:text-white outline-none"
+          spellcheck="false"
+          >import { Construct } from "constructs";
+import { AwsStack, AwsStackProps } from 'terraconstructs/lib/aws';
+import { Code, LambdaFunction, Runtime, LambdaRestApi } from 'terraconstructs/lib/aws/compute';
+
+export class CdkWorkshopStack extends AwsStack {
+    constructor(scope: Construct, id: string, props: AwsStackProps) {
+        super(scope, id, props);
+
+        const hello = new LambdaFunction(this, "HelloHandler", {
+        runtime: Runtime.NODEJS_22_X,
+        code: Code.fromAsset("lambda"),
+        handler: "hello.handler",
+        });
+
+        new LambdaRestApi(this, "Endpoint", {
+        cloudWatchRole: false,
+        handler: hello,
+        registerOutputs: true,
+        });
+    }
+}</textarea> </div>
+
+      <!-- Output -->
+      <div class="neo-card dark:neo-card dark:bg-black p-0 overflow-hidden">
+        <div class="border-b-3 border-black px-4 py-2 flex items-center justify-between">
+          <span class="font-mono text-xs">/out/terraform.plan.json</span>
+          <span id="runStatus" class="text-xs">Idle</span>
+        </div>
+        <pre id="output" class="p-4 bg-neutral text-sm leading-6 overflow-auto h-[55vh] code-scroll" aria-live="polite">{/* click Run */}</pre>
+      </div>
+    </div>
+
+    <!-- Micro-interaction helper row -->
+    <div class="mt-4 flex flex-wrap gap-3 text-sm">
+      <span class="badge bg-white dark:bg-black px-3 py-1 animate-badge-pulse">Deterministic output</span>
+      <span class="badge bg-white dark:bg-black px-3 py-1">No CloudFormation</span>
+      <span class="badge bg-white dark:bg-black px-3 py-1">Scannable by tflint / OPA</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: Pre-footer CTA -->
+<section id="cta" class="min-h-[110vh] border-b-3 border-black bg-gradient-to-b from-white via-neutral to-white dark:from-black dark:via-[#0f0f0f] dark:to-black">
+  <div class="mx-auto max-w-7xl px-4 py-24">
+    <div class="neo-card dark:neo-card dark:bg-black p-10 relative overflow-hidden">
+      <h2 class="text-2xl md:text-4xl font-extrabold whitespace-nowrap overflow-hidden border-r-4 pr-2 animate-typewriter caret-black dark:caret-white" style="width: 0">
+        Replace brittle modules with adaptive Constructs.
+      </h2>
+      <p class="mt-4 max-w-3xl">Ship AWS architectures in minutes, not weeks. Keep Terraform state. Keep your platform tooling. Gain CDK ergonomics.</p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a href="https://learn.terraconstructs.dev/" class="btn bg-accent text-white px-6 py-3 focus-ring" target="_blank" rel="noopener">Open the Playground</a>
+        <a href="https://discord.gg/gEu3D8hJGz" class="btn bg-white dark:bg-black px-6 py-3 focus-ring" target="_blank" rel="noopener">Join the Community</a>
+      </div>
+      <div class="absolute -inset-2 border-3 border-black pointer-events-none animate-pulse" aria-hidden="true"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 grid md:grid-cols-3 gap-8">
+      <div class="neo-card dark:neo-card dark:bg-black p-6">
+        <h3 class="font-extrabold">Compatibility</h3>
+        <p class="mt-2 text-sm">Works with Terraform and OpenTofu. Unit tests ported from AWS CDK validate behavior.</p>
+      </div>
+      <div class="neo-card dark:neo-card dark:bg-black p-6">
+        <h3 class="font-extrabold">Security</h3>
+        <p class="mt-2 text-sm">CSP-ready. No inline event handlers. No external JS libraries. Minimal surface.</p>
+      </div>
+      <div class="neo-card dark:neo-card dark:bg-black p-6">
+        <h3 class="font-extrabold">License</h3>
+        <p class="mt-2 text-sm">Apache License 2.0. Open to community contributions for GCP and Azure L2s.</p>
+      </div>
+    </footer>
+  </div>
+</section>
+
+  </main>
+
+  <!-- SECTION: Tiny legal -->
+
+  <section class="bg-white dark:bg-black">
+    <div class="mx-auto max-w-7xl px-4 py-8 text-xs flex flex-wrap items-center justify-between gap-3 border-t-3 border-black">
+      <p>© <span id="year"></span> TerraConstructs. Built for serious platform teams.</p>
+      <div class="flex gap-3">
+        <a class="underline focus-ring" href="https://github.com/terraconstructs/base" target="_blank" rel="noopener">GitHub</a>
+        <a class="underline focus-ring" href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript" target="_blank" rel="noopener">Construct Hub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts (no inline event attributes) -->
+
+  <script nonce="__CSP_NONCE__" type="module">
+    // Dark mode: localStorage + system preference
+    const root = document.documentElement;
+    const THEME_KEY = 'tc-theme';
+    const applyTheme = (t) => {
+      const isDark = t === 'dark' || (t == null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      root.classList.toggle('dark', isDark);
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.setAttribute('aria-pressed', String(isDark));
+    };
+    applyTheme(localStorage.getItem(THEME_KEY));
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+      const next = root.classList.contains('dark') ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Snippets
+    const TS = `import { Construct } from "constructs";
+import { AwsStack, AwsStackProps } from 'terraconstructs/lib/aws';
+import {
+  Code,
+  LambdaFunction,
+  Runtime,
+  LambdaRestApi,
+} from 'terraconstructs/lib/aws/compute';
+
+export class CdkWorkshopStack extends AwsStack {
+  constructor(scope: Construct, id: string, props: AwsStackProps) {
+    super(scope, id, props);
+
+    const hello = new LambdaFunction(this, "HelloHandler", {
+      runtime: Runtime.NODEJS_22_X,
+      code: Code.fromAsset("lambda"),
+      handler: "hello.handler",
+    });
+
+    new LambdaRestApi(this, "Endpoint", {
+      cloudWatchRole: false,
+      handler: hello,
+      registerOutputs: true,
+    });
+  }
+}`;
+    const GO = `package main
+// work in progress
+import (
+  aws "github.com/terraconstructs/base-go/aws"
+  compute "github.com/terraconstructs/base-go/aws/compute"
+  constructs "github.com/aws/constructs-go/constructs/v10"
+  "github.com/aws/jsii-runtime-go"
+)
+
+type CdkWorkshopStackProps struct { aws.AwsStackProps }
+
+func NewCdkWorkshopStack(scope constructs.Construct, id string, props CdkWorkshopStackProps) aws.AwsStack {
+  stack := aws.NewAwsStack(scope, &id, props.AwsStackProps)
+  helloHandler := compute.NewLambdaFunction(stack, jsii.String("HelloHandler"), &compute.LambdaFunctionProps{
+    Code:    compute.Code_FromAsset(jsii.String("lambda"), nil),
+    Runtime: compute.Runtime_NODEJS_22_X(),
+    Handler: jsii.String("hello.handler"),
+  })
+  compute.NewLambdaRestApi(stack, jsii.String("Endpoint"), &compute.LambdaRestApiProps{ Handler: helloHandler })
+  return stack
+}`;
+    const PY = `# work in progress
+from constructs import Construct
+from terraconstructs import aws
+
+class CdkWorkshopStack(aws.AwsStack):
+    def __init__(self, scope: Construct, id: str, **kwargs):
+        super().__init__(scope, id, **kwargs)
+
+        my_lambda = aws.compute.LambdaFunction(
+            self, 'HelloHandler',
+            runtime=aws.compute.Runtime.PYTHON_3_13,
+            code=aws.compute.Code.from_asset('lambda'),
+            handler='hello.handler',
+        )
+
+        aws.compute.LambdaRestApi(
+            self, 'Endpoint',
+            handler=my_lambda,
+        )`;
+
+    const snippetEl = document.getElementById('snippet');
+    const buttons = Array.from(document.querySelectorAll('[data-snippet]'));
+    const copyBtn = document.getElementById('copySnippet');
+
+    function highlightTS(code) {
+      // very tiny highlighter - keeps monochrome + accent
+      return code
+        .replace(/(import|from|export|class|extends|new|const|return|super|true|false)/g, '<span class="kw">$1</span>')
+        .replace(/(AwsStack|AwsStackProps|Construct|LambdaFunction|LambdaRestApi|Runtime|Code)/g, '<span class="type">$1</span>')
+        .replace(/(".*?"|'.*?')/g, '<span class="str">$1</span>')
+        .replace(/\/\/.*/g, '<span class="cm">$&</span>');
+    }
+
+    function render(kind) {
+      const map = { ts: TS, go: GO, py: PY };
+      const raw = map[kind] ?? TS;
+      const html = kind === 'ts' ? highlightTS(raw) : `<pre class="whitespace-pre-wrap">${raw.replace(/</g,'&lt;')}</pre>`;
+
+  snippetEl.innerHTML = `<code class="block">${html}</code>`;
+  buttons.forEach(b => b.classList.toggle('bg-accent', b.dataset.snippet === kind));
+  buttons.forEach(b => b.classList.toggle('text-white', b.dataset.snippet === kind));
+  snippetEl.dataset.k = kind;
+}
+
+buttons.forEach(b => b.addEventListener('click', () => render(b.dataset.snippet)));
+copyBtn?.addEventListener('click', async () => {
+  const k = snippetEl.dataset.k || 'ts';
+  const text = { ts: TS, go: GO, py: PY }[k];
+  try { await navigator.clipboard.writeText(text); copyBtn.textContent = 'Copied'; setTimeout(() => copyBtn.textContent = 'Copy', 1200); } catch {}
+});
+render('ts');
+
+// Demo runner (static parse -> pseudo Terraform plan)
+const editor = document.getElementById('editor');
+const output = document.getElementById('output');
+const runBtn = document.getElementById('runBtn');
+const fmtBtn = document.getElementById('fmtBtn');
+const status = document.getElementById('runStatus');
+
+function synth(code) {
+  // naive tokens: detect LambdaFunction + LambdaRestApi
+  const hasLambda = /new\s+LambdaFunction|LambdaFunction\(/.test(code);
+  const hasApi = /LambdaRestApi/.test(code);
+  const resources = [];
+  if (hasLambda) {
+    resources.push({
+      type: "aws_lambda_function",
+      name: "HelloHandler",
+      attrs: {
+        runtime: "nodejs22.x",
+        handler: "hello.handler",
+        filename: "asset://lambda.zip"
+      }
+    });
+  }
+  if (hasApi) {
+    resources.push({
+      type: "aws_api_gateway_rest_api",
+      name: "Endpoint",
+      attrs: { minimum_compression_size: 0, endpoint_configuration: "EDGE" }
+    });
+  }
+  return {
+    terraform_version: "1.7+ (compatible with OpenTofu)",
+    provider: "hashicorp/aws",
+    resources,
+    notes: [
+      "Output is illustrative - TerraConstructs synthesizes full Terraform JSON ready for tflint/OPA.",
+      "IAM grants are applied via constructs implementing IGrant/IGrantable/IPrincipal."
+    ]
+  };
+}
+
+runBtn?.addEventListener('click', () => {
+  status.textContent = 'Synthesizing…';
+  window.requestAnimationFrame(() => {
+    const plan = synth(editor.value);
+    output.textContent = JSON.stringify(plan, null, 2);
+    status.textContent = 'Done';
+  });
+});
+
+fmtBtn?.addEventListener('click', () => {
+  // minimal format: trim trailing spaces
+  editor.value = editor.value.split('\n').map(l => l.replace(/\s+$/,'')).join('\n');
+});
+
+// Typewriter start width (no layout thrash)
+const typeEl = document.querySelector('#cta h2');
+if (typeEl) requestAnimationFrame(() => { typeEl.style.width = '100%'; });
+  </script>
+</body>
+</html>
