@@ -181,6 +181,12 @@ pre, code {
   visibility: visible !important;
 }
 
+/* Mobile hamburger menu emoji - simple and reliable */
+#mobileMenuButton span {
+  display: block;
+  line-height: 1;
+}
+
 /* Typewriter cursor blink animation */
 @keyframes blink {
   0%, 50% {

@@ -19,13 +19,13 @@ export class CdkWorkshopStack extends AwsStack {
       runtime: Runtime.NODEJS_22_X,
       handler: "index.handler",
       code: Code.fromInline(`exports.handler = async (event) => {
-            return {
-            statusCode: 200,
+        return {
+          statusCode: 200,
             body: JSON.stringify({
                 host: process.env.NAME || "unnamed",
                 ip: event.requestContext.http.sourceIp,
             }),
-            };
+          };
         };`),
       environment: {
         NAME: this.environmentName,

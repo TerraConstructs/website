@@ -5,8 +5,12 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TerraConstructs — Neobrutalist IaC Library for CDKTF L2 Constructs</title>
+  <title>TerraConstructs — IaC Library for CDKTF L2 Constructs</title>
   <meta name="description" content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation." />
+  <meta name="keywords" content="CDKTF, Terraform, OpenTofu, AWS CDK, L2 Constructs, Infrastructure as Code, IaC, DevOps, SRE, Platform Engineering, AWS Lambda, API Gateway, Terraform modules alternative, CDK for Terraform, AWS infrastructure, cloud infrastructure, declarative infrastructure, terraform cdk, cdktf constructs" />
+  <meta name="author" content="TerraConstructs" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://terraconstructs.dev/" />
   <meta name="theme-color" content="#111111" />
 
   <!-- Favicons -->
@@ -22,8 +26,19 @@
   <meta property="og:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
   <meta property="og:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TerraConstructs" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform" />
   <meta property="og:url" content="https://terraconstructs.dev/" />
+  <meta property="article:author" content="TerraConstructs" />
+  <meta property="article:section" content="Technology" />
+  <meta property="article:tag" content="Infrastructure as Code" />
+  <meta property="article:tag" content="AWS" />
+  <meta property="article:tag" content="Terraform" />
+  <meta property="article:tag" content="DevOps" />
 
   <!-- Twitter -->
 
@@ -31,44 +46,262 @@
   <meta name="twitter:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu" />
   <meta name="twitter:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible." />
   <meta name="twitter:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png" />
+  <meta name="twitter:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform" />
 
   <!-- CSP-ready (server must replace __CSP_NONCE__ and set HTTP headers) -->
 
-  <!-- Fonts -->
-
+  <!-- Fonts - Optimized for performance -->
+  
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+  <link rel="dns-prefetch" href="//github.com" />
+  <link rel="dns-prefetch" href="//constructs.dev" />
+  <link rel="dns-prefetch" href="//discord.gg" />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  
+  <!-- Font optimization: Let browser handle font discovery naturally -->
+  <!-- Removed specific font file preloads due to version/URL instability -->
+  
+  <!-- Non-blocking font load with fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" /></noscript>
 
+  <!-- Critical CSS - Inline for immediate render -->
+  <style nonce="__CSP_NONCE__">
+    /* Critical above-the-fold styles */
+    :root { color-scheme: light dark; }
+    html, body { height: 100%; margin: 0; box-sizing: border-box; }
+    *, *:before, *:after { box-sizing: inherit; }
+    
+    /* Critical typography with fallbacks */
+    body { 
+      font-family: system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      line-height: 1.75;
+      background: #fff;
+      color: #111;
+    }
+    
+    /* Critical layout */
+    .h-full { height: 100%; }
+    .min-h-\[110vh\] { min-height: 110vh; }
+    .max-w-7xl { max-width: 80rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+    .pt-20 { padding-top: 5rem; }
+    
+    /* Critical header */
+    .fixed { position: fixed; }
+    .top-0, .left-0, .right-0 { top: 0; left: 0; right: 0; }
+    .z-50 { z-index: 50; }
+    .border-b-3 { border-bottom: 3px solid #000; }
+    .bg-white\/98 { background: rgba(255,255,255,0.98); }
+    
+    /* Critical mobile navigation */
+    .hidden { display: none; }
+    .w-10 { width: 2.5rem; }
+    .h-10 { height: 2.5rem; }
+    .size-4 { width: 1rem; height: 1rem; }
+    .justify-center { justify-content: center; }
+    .gap-2 { gap: 0.5rem; }
+    
+    /* Mobile menu emoji styling */
+    #mobileMenuButton span { 
+      display: block;
+      line-height: 1;
+    }
+    
+    /* Critical hero layout */
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: 1fr; }
+    .gap-12 { gap: 3rem; }
+    .items-center { align-items: center; }
+    .flex { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .gap-4 { gap: 1rem; }
+    
+    /* Critical typography sizes */
+    .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .font-extrabold { font-weight: 800; }
+    .leading-tight { line-height: 1.25; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .max-w-2xl { max-width: 42rem; }
+    
+    /* Critical button styles */
+    .btn { 
+      border: 3px solid #000; 
+      box-shadow: 6px 6px 0 0 #000; 
+      padding: 0.75rem 1.5rem;
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .bg-accent { background: #6E59FF; }
+    .text-white { color: #fff; }
+    
+    /* Dark mode critical styles */
+    .dark { color-scheme: dark; }
+    .dark body { background: #000; color: #fff; }
+    .dark .border-b-3 { border-bottom-color: #fff; }
+    .dark .bg-white\/98 { background: rgba(0,0,0,0.98); }
+    .dark .btn { border-color: #fff; box-shadow: 6px 6px 0 0 #fff; }
+    
+    /* Hide non-critical content until CSS loads */
+    .defer-render { opacity: 0; }
+    
+    @media (min-width: 768px) {
+      .text-4xl { font-size: 3.75rem; line-height: 1; }
+      .text-lg { font-size: 1.25rem; line-height: 1.75rem; }
+      .py-16 { padding-top: 6rem; padding-bottom: 6rem; }
+    }
+    
+    @media (min-width: 768px) {
+      .md\:hidden { display: none; }
+      .md\:flex { display: flex; }
+      .md\:inline-block { display: inline-block; }
+      .md\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    }
+    
+    @media (min-width: 1024px) {
+      .grid-cols-1 { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+  
   <!-- Vite will inject the CSS automatically -->
+  
+  <!-- Preload main CSS as non-blocking -->
+  <link rel="preload" href="/src/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="/src/style.css" /></noscript>
 
   <!-- JSON-LD: SoftwareApplication + SoftwareSourceCode -->
 
   <script nonce="__CSP_NONCE__" type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "TerraConstructs",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "url": "https://terraconstructs.dev/",
-    "softwareVersion": "0.1.2",
-    "license": "https://www.apache.org/licenses/LICENSE-2.0",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "sameAs": [
-      "https://github.com/terraconstructs/base",
-      "https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
-    ],
-    "@graph": [{
-      "@context": "https://schema.org",
-      "@type": "SoftwareSourceCode",
-      "name": "TerraConstructs",
-      "programmingLanguage": ["TypeScript", "Go", "Python"],
-      "codeRepository": "https://github.com/terraconstructs/base",
-      "runtimePlatform": "CDKTF",
-      "version": "0.1.2",
-      "keywords": ["IaC", "CDKTF", "Terraform", "OpenTofu", "AWS", "L2 Constructs"]
-    }]
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://terraconstructs.dev/#organization",
+        "name": "TerraConstructs",
+        "url": "https://terraconstructs.dev/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png",
+          "width": 512,
+          "height": 512
+        },
+        "sameAs": [
+          "https://github.com/terraconstructs/base",
+          "https://discord.gg/gEu3D8hJGz"
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://terraconstructs.dev/#webpage",
+        "url": "https://terraconstructs.dev/",
+        "name": "TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu",
+        "description": "TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation.",
+        "inLanguage": "en-US",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://terraconstructs.dev/#website",
+          "name": "TerraConstructs",
+          "url": "https://terraconstructs.dev/"
+        },
+        "about": {
+          "@id": "https://terraconstructs.dev/#software"
+        },
+        "audience": {
+          "@type": "Audience",
+          "audienceType": ["DevOps Engineers", "SRE Teams", "Platform Engineers", "AWS CDK Developers", "Terraform Users"]
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://terraconstructs.dev/#software",
+        "name": "TerraConstructs",
+        "description": "CDKTF Level 2 Constructs library providing AWS CDK-style developer experience for Terraform and OpenTofu with deterministic synthesis and advanced asset pipeline",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Infrastructure as Code",
+        "operatingSystem": "Any",
+        "url": "https://terraconstructs.dev/",
+        "downloadUrl": "https://www.npmjs.com/package/terraconstructs",
+        "softwareVersion": "0.1.2",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "programmingLanguage": ["TypeScript", "JavaScript"],
+        "runtimePlatform": ["CDKTF", "Terraform", "OpenTofu"],
+        "targetProduct": ["AWS"],
+        "featureList": [
+          "CDKTF L2 Constructs for AWS services",
+          "Deterministic Terraform config generation",
+          "Asset pipeline with S3/ECR support",
+          "IAM grants and permissions model",
+          "Late binding and Aspects support",
+          "Cross-language JSII support"
+        ],
+        "offers": { 
+          "@type": "Offer", 
+          "price": "0", 
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "author": {
+          "@id": "https://terraconstructs.dev/#organization"
+        },
+        "publisher": {
+          "@id": "https://terraconstructs.dev/#organization"
+        },
+        "sameAs": [
+          "https://github.com/terraconstructs/base",
+          "https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript",
+          "https://www.npmjs.com/package/terraconstructs"
+        ]
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://terraconstructs.dev/#sourcecode",
+        "name": "TerraConstructs",
+        "description": "Open source CDKTF L2 Constructs library for AWS infrastructure",
+        "programmingLanguage": ["TypeScript", "Go", "Python"],
+        "codeRepository": "https://github.com/terraconstructs/base",
+        "runtimePlatform": "CDKTF",
+        "version": "0.1.2",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "keywords": ["IaC", "CDKTF", "Terraform", "OpenTofu", "AWS", "L2 Constructs", "DevOps", "SRE", "Platform Engineering"],
+        "author": {
+          "@id": "https://github.com/terraconstructs"
+        },
+        "targetProduct": "AWS Cloud Infrastructure"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://terraconstructs.dev/"
+          },
+          {
+            "@type": "ListItem", 
+            "position": 2,
+            "name": "Features",
+            "item": "https://terraconstructs.dev/#features"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Interactive Demo",
+            "item": "https://terraconstructs.dev/#demo"
+          }
+        ]
+      }
+    ]
   }
   </script>
 
@@ -79,7 +312,7 @@
 
   <!-- Header / Nav -->
 
-  <header class="fixed top-0 left-0 right-0 z-50 bg-white/98 dark:bg-black/98 backdrop-blur border-b-3 border-black dark:border-white">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-black/60 backdrop-blur border-b-3 border-black dark:border-white">
     <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2 md:gap-3">
         <button id="logoButton" class="flex items-center gap-2 md:gap-3 hover:opacity-75 transition-opacity duration-200 focus-ring" aria-label="Scroll to top">
@@ -137,13 +370,11 @@
       
       <!-- Mobile Navigation -->
       <div class="md:hidden flex items-center gap-2">
+        <button id="mobileMenuButton" class="w-10 h-10 flex items-center justify-center btn bg-white dark:bg-black focus-ring" aria-expanded="false" aria-label="Open menu">
+          <span class="text-base">☰</span>
+        </button>
         <button id="themeToggleMobile" class="w-10 h-10 flex items-center justify-center btn bg-white dark:bg-black focus-ring" aria-pressed="false" aria-label="Toggle dark mode">
           <span class="hidden dark:inline text-base">☀︎</span><span class="dark:hidden text-base">☾</span>
-        </button>
-        <button id="mobileMenuButton" class="w-10 h-10 flex items-center justify-center btn bg-white dark:bg-black focus-ring" aria-expanded="false" aria-label="Open menu">
-          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12h18M3 6h18M3 18h18"/>
-          </svg>
         </button>
       </div>
     </div>
@@ -164,7 +395,7 @@
       <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
-            L2 Construct<span class="block">library for Terraform.</span>
+            AWS CDK L2 Constructs<span class="block">for Terraform & OpenTofu</span>
           </h1>
           <p class="mt-6 text-lg md:text-xl max-w-2xl">
             TerraConstructs brings the joy of AWS CDK-style development to Terraform and OpenTofu - deterministic synthesis, late binding, and a full asset pipeline. No CloudFormation. No rigid HCL modules.
@@ -200,9 +431,9 @@
             <ul class="mt-4 space-y-3 list-disc pl-5">
               <li>Level 2 Constructs for AWS services with strong defaults and sane service patterns.</li>
               <li>Full IAM model with <code class="font-mono">IGrantable</code>, <code class="font-mono">IPrincipal</code>, and grants across L2s.</li>
-              <li>Late binding, Aspects, and factories - flexibility modules can't match.</li>
-              <li>Advanced Construct Trees for DSLs such as StepFunctions, ECS Task Definitions and many more.</li>
-              <li>First-class Terraform ecosystem support. Leverage terratest, tflint, infracost, OPA, ... .</li>
+              <li>First-class Terraform ecosystem support. Leverage <code class="font-mono">terratest</code>, <code class="font-mono">tflint</code>, <code class="font-mono">infracost</code>, OPA, ... .</li>
+              <li>Built on CDKTF leveraging late binding, factory patterns and Aspects - flexibility modules can't match.</li>
+              <li>Advanced Construct Trees for DSLs such as StepFunctions, ECS Task Definitions and many more - lacking in the <code class="font-mono">terraform-provider-aws</code> resource model</li>
             </ul>
             <div class="mt-6 flex gap-3">
               <a href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript" class="px-4 py-2 border-3 border-black dark:border-white hover:bg-neutral dark:hover:bg-neutral-dark hover:text-black dark:hover:text-white transition duration-200 focus-ring" target="_blank" rel="noopener">API Reference</a>
@@ -217,18 +448,18 @@
     <!-- SECTION: Product Features -->
     <section id="features" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-neutral dark:bg-neutral-dark">
     <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
-        <h2 class="text-3xl md:text-5xl font-extrabold">Developer Experience without HCL contortions</h2>
+        <h2 class="text-3xl md:text-5xl font-extrabold">Escape HCL Module Hell with CDKTF L2 Constructs</h2>
         <p class="mt-4 max-w-3xl">Compose AWS architectures using well architected L2 building blocks. Generate Terraform you can reason about, review, test, and ship.</p>
 
         <!-- Features grid -->
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 defer-render">
         <!-- Card 1 -->
         <article class="neo-card p-6 transition duration-200 hover:-translate-y-1">
             <header class="flex items-center gap-3">
             <div class="size-8 bg-accent border-3 border-black dark:border-white"></div>
             <h3 class="text-xl font-extrabold">IAM that makes sense</h3>
             </header>
-            <p class="mt-4">Ported <span class="font-mono">aws-iam</span> means grant Method support across the library. Finally control permissions in an intuitive and reliable way without losing full customization controls.</p>
+            <p class="mt-4">AWS CDK's <span class="font-mono">aws-iam</span> on Terraform, means <span class="font-mono">grant</span> Method support across the library. Finally control permissions in an intuitive and reliable way without losing full customization controls.</p>
             <ul class="mt-3 text-sm list-disc pl-5">
             <li>AWSCDK's grant methods for Terraform!</li>
             <li>Predefined Grant Policies for common use cases</li>
@@ -287,11 +518,11 @@
     </div>
     </section>
 
-<!-- SECTION: Interactive demo -->
-<section id="demo" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-white dark:bg-black">
+<!-- SECTION: Synth demo -->
+<section id="demo" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-white dark:bg-black defer-render">
   <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24">
-    <h2 class="text-3xl md:text-5xl font-extrabold">Interactive synth demo</h2>
-    <p class="mt-3 max-w-3xl">Select a Sample CDKTF stack on the left. Click Run. The equivalent synthesized Terraform configuration will be displayed for perspective.</p>
+    <h2 class="text-3xl md:text-5xl font-extrabold">Synth demo</h2>
+    <p class="mt-3 max-w-3xl">Select a Sample CDKTF stack on the left. Click Synth. The equivalent synthesized Terraform configuration will be displayed for perspective.</p>
     
     <div class="mt-4 flex items-center gap-1 text-sm">
       <span>Want more examples?</span>
@@ -354,7 +585,7 @@
           </div>
           <div class="flex items-center gap-2">
             <span id="editorStats" class="text-[10px] text-neutral-600 dark:text-neutral-400">0 lines</span>
-            <button id="runBtn" class="px-3 py-1 btn bg-accent text-white text-sm focus-ring">Run</button>
+            <button id="runBtn" class="px-3 py-1 btn bg-accent text-white text-sm focus-ring">Synth</button>
           </div>
         </div>
         <textarea id="editor"
@@ -387,7 +618,7 @@
 </section>
 
 <!-- SECTION: Pre-footer CTA -->
-<section id="cta" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-gradient-to-b from-white via-neutral to-white dark:from-black dark:via-[#0f0f0f] dark:to-black">
+<section id="cta" class="min-h-[110vh] border-b-3 border-black dark:border-white bg-gradient-to-b from-white via-neutral to-white dark:from-black dark:via-[#0f0f0f] dark:to-black defer-render">
   <div class="mx-auto max-w-7xl px-4 py-24">
     <div class="neo-card p-10 relative overflow-hidden">
       <h2 id="typewriterText" class="text-2xl md:text-4xl font-extrabold" data-text="Replace brittle modules with adaptive Constructs.">
@@ -433,7 +664,28 @@
     </div>
   </section>
 
-  <!-- Vite entry point -->
-  <script type="module" src="/src/main.js"></script>
+  <!-- Critical theme initialization - inline for immediate dark mode -->
+  <script nonce="__CSP_NONCE__">
+    (function() {
+      const theme = localStorage.getItem('tc-theme');
+      const isDark = theme === 'dark' || (theme == null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+    })();
+  </script>
+  
+  <!-- Main JavaScript - deferred to not block rendering -->
+  <script type="module" src="/src/main.js" defer></script>
+  
+  <!-- Load non-critical features after page load -->
+  <script nonce="__CSP_NONCE__">
+    window.addEventListener('load', function() {
+      // Show deferred content after main CSS loads
+      const deferredElements = document.querySelectorAll('.defer-render');
+      deferredElements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transition = 'opacity 300ms ease-in';
+      });
+    });
+  </script>
 </body>
 </html>
