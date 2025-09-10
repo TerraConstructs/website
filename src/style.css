@@ -98,26 +98,7 @@ pre, code {
   word-wrap: break-word;
 }
 
-/* Output area should not wrap lines */
-#output {
-  white-space: pre;
-  overflow-x: auto;
-  word-wrap: normal;
-  overflow-wrap: normal;
-}
-
-#output code {
-  white-space: pre;
-  word-wrap: normal;
-  overflow-wrap: normal;
-}
-
-/* Override hljs styles specifically for output area */
-#output .hljs {
-  white-space: pre !important;
-  word-wrap: normal !important;
-  overflow-wrap: normal !important;
-}
+/* Output area respects per-line whitespace; container uses normal spacing */
 
 /* Custom dropdown styles */
 .dropdown-show {
@@ -194,5 +175,435 @@ pre, code {
   }
   51%, 100% {
     border-right-color: currentColor;
+  }
+}
+
+/* Guided Tour Styles */
+.guided-tour-active {
+  /* Optional: Add any global styles when tour is active */
+}
+
+/* Tour Segments - Unified containers for line ranges */
+.tour-segment {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  margin: 0;
+  transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out, outline-color 0.2s ease-out;
+}
+
+.tour-segment.tour-active {
+  outline: 2px solid #6E59FF;
+  outline-offset: -2px;
+  background: rgba(110, 89, 255, 0.08);
+  border-radius: 2px;
+  /* Subtle ambient glow without resizing the segment */
+  box-shadow: 0 0 0 0 rgba(110, 89, 255, 0.0), inset 0 0 0 0 rgba(110, 89, 255, 0.0);
+  will-change: box-shadow, background-color;
+  animation: tour-highlight-pulse 2s ease-in-out infinite;
+}
+
+.dark .tour-segment.tour-active {
+  outline: 2px solid #8A7CFF;
+  outline-offset: -2px;
+  background: rgba(110, 89, 255, 0.12);
+}
+
+
+/* Tour Tooltip */
+.tour-tooltip {
+  position: absolute;
+  background: #fff;
+  border: 3px solid #000;
+  box-shadow: 8px 8px 0 0 #000;
+  border-radius: 0;
+  padding: 0;
+  max-width: 340px;
+  min-width: 260px;
+  z-index: 1000;
+  opacity: 0;
+  transform: none;
+  transition: opacity 0.12s ease-out;
+  cursor: pointer;            /* Feel like a link */
+  user-select: none;          /* Prevent text selection */
+  -webkit-user-select: none;  /* Safari */
+  -ms-user-select: none;      /* IE/Edge */
+}
+
+.dark .tour-tooltip {
+  background: #0a0a0a;
+  border-color: #fff;
+  box-shadow: 8px 8px 0 0 #fff;
+}
+
+.tour-tooltip-visible { opacity: 1; transform: scale(1); }
+
+/* Header removed in minimal tooltip */
+
+.dark .tour-tooltip-header {
+  background: #1a1a1a;
+  border-bottom-color: #fff;
+}
+
+.tour-tooltip-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  margin: 0;
+  color: #111;
+}
+
+.dark .tour-tooltip-title {
+  color: #fff;
+}
+
+.tour-tooltip-progress {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: #6E59FF;
+  color: #fff;
+  border: 2px solid #000;
+  font-weight: 600;
+}
+
+.dark .tour-tooltip-progress {
+  border-color: #fff;
+}
+
+.tour-tooltip-content { padding: 0.5rem 0.7rem; }
+
+.tour-tooltip-content p { margin: 0; line-height: 1.4; color: #333; font-size: 0.9rem; }
+
+.dark .tour-tooltip-content p {
+  color: #e0e0e0;
+}
+
+.tour-tooltip-actions { padding: 0.4rem 0.5rem; border-top: 3px solid #000; background: #f9f9f9; display: flex; gap: 0.3rem; justify-content: flex-end; }
+
+.dark .tour-tooltip-actions {
+  background: #1a1a1a;
+  border-top-color: #fff;
+}
+
+/* Glyph buttons */
+.tour-glyph { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; border: 2px solid #000; background: #fff; color: #111; box-shadow: 4px 4px 0 0 #000; }
+.tour-glyph:hover { transform: translateY(-1px); }
+.tour-glyph:active { transform: translateY(0); box-shadow: 2px 2px 0 0 #000; }
+.tour-glyph-accent { background: #6E59FF; color: #fff; }
+.dark .tour-glyph { background: #000; color: #fff; border-color: #fff; box-shadow: 4px 4px 0 0 #fff; }
+
+
+.tour-prev-btn {
+  order: 1;
+  background: #fff !important;
+}
+
+.tour-next-btn {
+  order: 2;
+}
+
+.dark .tour-prev-btn {
+  background: #000 !important;
+}
+
+.tour-skip-btn {
+  order: 3;
+  background: #ededed !important;
+  color: #666 !important;
+}
+
+.dark .tour-skip-btn {
+  background: #2a2a2a !important;
+  color: #999 !important;
+}
+
+/* Tour Completion */
+.tour-completion {
+  position: fixed;
+  background: #fff;
+  border: 3px solid #000;
+  box-shadow: 12px 12px 0 0 #000;
+  border-radius: 0;
+  padding: 2rem;
+  text-align: center;
+  z-index: 1001;
+  animation: tour-completion-bounce 0.5s ease-out;
+}
+
+.dark .tour-completion {
+  background: #0a0a0a;
+  border-color: #fff;
+  box-shadow: 12px 12px 0 0 #fff;
+}
+
+.tour-completion-content h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.dark .tour-completion-content h3 {
+  color: #fff;
+}
+
+.tour-completion-content p {
+  margin: 0;
+  color: #333;
+  max-width: 300px;
+}
+
+.dark .tour-completion-content p {
+  color: #e0e0e0;
+}
+
+/* Tour Animations */
+@keyframes tour-highlight-pulse {
+  0%, 100% {
+    /* No transform to avoid vertical stretching */
+    box-shadow: 0 0 0 0 rgba(110, 89, 255, 0.0), inset 0 0 0 0 rgba(110, 89, 255, 0.0);
+  }
+  50% {
+    /* Soft outer ring + gentle inner glow */
+    box-shadow: 0 0 0 2px rgba(110, 89, 255, 0.16), inset 0 0 14px rgba(110, 89, 255, 0.22);
+  }
+}
+
+@keyframes tour-highlight-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(110, 89, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(110, 89, 255, 0.8);
+  }
+}
+
+@keyframes tour-completion-bounce {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments for tour - Remove fixed overrides as positioning is now handled by JavaScript */
+@media (max-width: 640px) {
+  .tour-tooltip {
+    min-width: 280px;
+  }
+  
+  .tour-tooltip-visible {
+    transform: none !important;
+  }
+  
+  .tour-tooltip-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Override column layout for tour glyph buttons */
+  .tour-tooltip-actions.tour-glyphs {
+    flex-direction: row !important;
+    gap: 0.3rem;
+    justify-content: flex-end;
+  }
+  
+  .tour-tooltip-actions .btn {
+    order: unset !important;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Ensure glyph buttons don't get full width treatment */
+  .tour-tooltip-actions.tour-glyphs .tour-glyph {
+    width: 28px;
+    flex: none;
+  }
+  
+  .tour-completion {
+    max-width: 90vw;
+    left: 5vw !important;
+    right: 5vw !important;
+    transform: translateY(-50%) !important;
+  }
+}
+
+/* Tour overlay for focus management */
+.tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  pointer-events: none;
+}
+
+.dark .tour-overlay {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Code Renderer - Height-Constrained Scrollable Containers */
+.code-renderer {
+  /* Core container properties */
+  width: 100%;
+  max-height: 55vh;
+  overflow: auto;
+  position: relative; /* Allow tooltips to anchor inside editor/output */
+  box-sizing: border-box;
+  
+  /* Typography */
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  
+  /* Styling */
+  background: inherit;
+  color: inherit;
+  outline: none;
+  cursor: text;
+  user-select: text;
+  
+  /* Performance */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Top controls for the tour (prev/next/stop) */
+.tour-controls {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+/* Make buttons small, consistent */
+.tour-controls .btn { padding: 0.35rem 0.6rem; font-size: 0.8rem; line-height: 1; }
+.tour-controls .btn.bg-accent { color: #fff; }
+
+.tour-controls .tour-status {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.code-renderer:focus {
+  outline: none;
+}
+
+/* Code line structure */
+.code-line {
+  min-height: 1.35em;
+  line-height: 1.35;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+.code-line .empty-line {
+  display: inline-block;
+  height: 1.35em;
+}
+
+/* Input area allows wrapping */
+#editor.code-renderer {
+  white-space: pre-wrap;
+}
+
+#editor .code-line {
+  white-space: pre-wrap;
+}
+
+/* Scrollbar styling */
+.code-renderer::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.code-renderer::-webkit-scrollbar-track {
+  background: rgba(110, 89, 255, 0.1);
+  border-radius: 7px;
+}
+
+.code-renderer::-webkit-scrollbar-thumb {
+  background: #6E59FF;
+  border-radius: 7px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.code-renderer::-webkit-scrollbar-thumb:hover {
+  background: #5A4BCC;
+}
+
+/* Firefox scrollbar */
+.code-renderer {
+  scrollbar-width: thin;
+  scrollbar-color: #6E59FF rgba(110, 89, 255, 0.1);
+}
+
+/* Tour Highlighting */
+.code-line.tour-line-highlight {
+  background: rgba(110, 89, 255, 0.15);
+  border-left: 3px solid #6E59FF;
+  border-right: 3px solid #6E59FF;
+  animation: tour-highlight-pulse 2s ease-in-out infinite;
+  margin: 0;
+  padding-left: calc(1rem - 3px);
+  padding-right: calc(1rem - 3px);
+}
+
+.dark .code-line.tour-line-highlight {
+  background: rgba(110, 89, 255, 0.25);
+  border-color: #8A7CFF;
+}
+
+.code-line.tour-pattern-highlight {
+  background: rgba(110, 89, 255, 0.2);
+  border-left: 2px solid #6E59FF;
+  border-right: 2px solid #6E59FF;
+  animation: tour-highlight-glow 1.5s ease-in-out infinite;
+  padding-left: calc(1rem - 2px);
+  padding-right: calc(1rem - 2px);
+}
+
+.dark .code-line.tour-pattern-highlight {
+  background: rgba(110, 89, 255, 0.3);
+  border-color: #8A7CFF;
+}
+
+.code-line {
+  transition: background-color 0.2s ease, border-color 0.2s ease, padding 0.2s ease;
+}
+
+/* Reduce motion for tour animations */
+@media (prefers-reduced-motion: reduce) {
+  .tour-segment.tour-active,
+  .tour-line-highlight,
+  .tour-pattern-highlight,
+  .code-line.tour-line-highlight,
+  .code-line.tour-pattern-highlight {
+    animation: none !important;
+  }
+  
+  .tour-tooltip {
+    transition: opacity 0.1s ease-out !important;
+    transform: none !important;
+  }
+  
+  .tour-tooltip-visible {
+    transform: none !important;
+  }
+  
+  .tour-completion {
+    animation: none !important;
+  }
+
+  .code-line {
+    transition: none !important;
   }
 }

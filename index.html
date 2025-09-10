@@ -532,11 +532,12 @@
     <!-- Demo Selection -->
     <div class="mt-8 mb-4">
       <label class="block text-sm font-semibold mb-2">Select Demo:</label>
-      <div class="relative">
+      <div class="flex items-center gap-3">
+        <div class="relative">
         <button 
           id="demoDropdownButton" 
           type="button"
-          class="px-4 py-2.5 bg-white dark:bg-black border-3 border-black dark:border-white text-sm font-medium relative inline-flex items-center justify-between gap-x-2 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#000000] dark:hover:shadow-[6px_6px_0_0_#ffffff] focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[6px_6px_0_0_#000000] dark:focus:shadow-[6px_6px_0_0_#ffffff] focus-ring transition-transform duration-200 min-w-[280px]"
+          class="px-4 py-2.5 bg-white dark:bg-black border-3 border-black dark:border-white text-sm font-medium relative inline-flex items-center justify-between gap-x-2 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#000000] dark:hover:shadow-[6px_6px_0_0_#ffffff] focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[6px_6px_0_0_#000000] dark:focus:shadow-[6px_6px_0_0_#ffffff] focus-ring transition-transform duration-200 min-w-[320px]"
           aria-haspopup="true" 
           aria-expanded="false"
           aria-labelledby="demoDropdownLabel"
@@ -547,7 +548,7 @@
 
         <ul 
           id="demoDropdownMenu" 
-          class="opacity-0 invisible absolute top-[3.2rem] z-30 transition-all duration-200 ease-in-out left-0 min-w-[280px] bg-white dark:bg-black border-3 border-black dark:border-white shadow-[6px_6px_0_0_#000000] dark:shadow-[6px_6px_0_0_#ffffff] py-2"
+          class="opacity-0 invisible absolute top-[3.2rem] z-30 transition-all duration-200 ease-in-out left-0 min-w-[320px] bg-white dark:bg-black border-3 border-black dark:border-white shadow-[6px_6px_0_0_#000000] dark:shadow-[6px_6px_0_0_#ffffff] py-2"
           role="listbox"
           aria-labelledby="demoDropdownLabel"
         >
@@ -572,6 +573,8 @@
             </button>
           </li>
         </ul>
+        </div>
+        <div id="tourButtonContainer"></div>
       </div>
     </div>
 
@@ -588,23 +591,27 @@
             <button id="runBtn" class="px-3 py-1 btn bg-accent text-white text-sm focus-ring">Synth</button>
           </div>
         </div>
-        <textarea id="editor"
+        <div id="editor"
           aria-label="TypeScript editor"
-          class="w-full h-[55vh] p-4 font-mono text-sm leading-6 bg-white dark:bg-black text-ink dark:text-white outline-none code-scroll"
-          spellcheck="false"
-          readonly
-          >Loading...</textarea> </div>
+          class="code-renderer w-full p-4 font-mono text-sm leading-6 bg-white dark:bg-black text-ink dark:text-white outline-none"
+          role="textbox"
+          aria-readonly="true"
+          tabindex="0"
+          >Loading...</div> </div>
 
       <!-- Output -->
       <div class="neo-card p-0 overflow-hidden">
-        <div class="border-b-3 border-black dark:border-white px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center justify-between border-b-3 border-black dark:border-white px-4 py-2">
           <div class="flex items-center gap-2">
+            <div class="size-4 bg-neutral border-3 border-black dark:border-white"></div>
             <span class="font-mono text-xs">cdk.tf</span>
-            <span id="outputStats" class="text-[10px] text-neutral-600 dark:text-neutral-400">0 lines</span>
           </div>
-          <span id="runStatus" class="text-xs">Idle</span>
+          <div class="flex items-center gap-2">
+            <span id="outputStats" class="text-[10px] text-neutral-600 dark:text-neutral-400">0 lines</span>
+            <span id="runStatus" class="text-xs">Idle</span>
+          </div>
         </div>
-        <pre id="output" class="p-4 bg-neutral dark:bg-neutral-dark text-sm leading-6 overflow-auto h-[55vh] code-scroll" aria-live="polite">{/* click Run */}</pre>
+        <div id="output" class="code-renderer p-4 bg-neutral dark:bg-neutral-dark text-sm leading-6" aria-live="polite">{/* click Run */}</div>
       </div>
     </div>
 

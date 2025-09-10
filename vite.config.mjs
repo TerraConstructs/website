@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import precomputeDemoCode from './plugins/precompute-demo-code.js'
 
 export default defineConfig({
   // Development server configuration
@@ -45,7 +46,7 @@ export default defineConfig({
 
   // CSS preprocessing
   css: {
-    postcss: './postcss.config.js',
+    postcss: './postcss.config.cjs',
     devSourcemap: true
   },
 
@@ -78,6 +79,7 @@ export default defineConfig({
           return html
         }
       }
-    }
+    },
+    precomputeDemoCode()
   ]
 })

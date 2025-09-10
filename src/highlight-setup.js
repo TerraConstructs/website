@@ -4,7 +4,9 @@ import typescript from 'highlight.js/lib/languages/typescript'
 import go from 'highlight.js/lib/languages/go'
 import python from 'highlight.js/lib/languages/python'
 import { definer as terraform } from '@taga3s/highlightjs-terraform'
-import { getDemoData } from './demo-data.js'
+import { demos as precomputed } from 'virtual:demo-precomputed'
+import { GuidedTour } from './guided-tour.js'
+import { CodeRenderer } from './html-code-renderer.js'
 
 // Register languages
 hljs.registerLanguage('typescript', typescript)
@@ -135,51 +137,10 @@ async function copyCode() {
   }
 }
 
-// Apply syntax highlighting to the demo textarea
+// Legacy function - no longer needed with HTML renderer
 function highlightDemoEditor() {
-  const editor = document.getElementById('editor')
-  if (!editor) return
-  
-  // Create a div overlay for syntax highlighting
-  const highlightContainer = document.createElement('div')
-  highlightContainer.className = 'absolute inset-0 p-4 font-mono text-sm leading-6 pointer-events-none overflow-hidden'
-  highlightContainer.id = 'editor-highlight'
-  
-  // Create wrapper if it doesn't exist
-  let wrapper = editor.parentElement.querySelector('.editor-wrapper')
-  if (!wrapper) {
-    wrapper = document.createElement('div')
-    wrapper.className = 'editor-wrapper relative'
-    editor.parentElement.insertBefore(wrapper, editor)
-    wrapper.appendChild(editor)
-  }
-  
-  // Add highlight container
-  if (!document.getElementById('editor-highlight')) {
-    wrapper.appendChild(highlightContainer)
-  }
-  
-  // Function to update highlighting
-  const updateHighlighting = () => {
-    const code = editor.value
-    const highlighted = hljs.highlight(code, { language: 'typescript' }).value
-    highlightContainer.innerHTML = `<code class="hljs">${highlighted}</code>`
-  }
-  
-  // Make textarea transparent so highlighting shows through
-  editor.style.background = 'transparent'
-  editor.style.color = 'transparent'
-  editor.style.caretColor = 'currentColor'
-  
-  // Update highlighting on input
-  editor.addEventListener('input', updateHighlighting)
-  editor.addEventListener('scroll', () => {
-    highlightContainer.scrollTop = editor.scrollTop
-    highlightContainer.scrollLeft = editor.scrollLeft
-  })
-  
-  // Initial highlighting
-  updateHighlighting()
+  // This function is now handled by the CodeRenderer class
+  console.log('highlightDemoEditor is deprecated - using HTML renderer instead')
 }
 
 // Initialize syntax highlighting
@@ -206,68 +167,66 @@ export function initHighlighting() {
 
 // Demo functionality for interactive demo section
 let currentDemoData = null
+let currentDemoKey = null
+let currentTour = null
 
-// Utility function to count lines in text
+// Code renderer instances
+const inputRenderer = new CodeRenderer()
+const outputRenderer = new CodeRenderer()
+
+// Legacy utility functions - now handled by CodeRenderer
 function countLines(text) {
   if (!text || typeof text !== 'string') return 0
   return text.split('\n').length
 }
 
-// Update stats displays
+// Legacy function - now handled by CodeRenderer.updateStats()
 function updateStats() {
-  const editor = document.getElementById('editor')
-  const output = document.getElementById('output')
-  const editorStats = document.getElementById('editorStats')
-  const outputStats = document.getElementById('outputStats')
-  
-  if (editor && editorStats) {
-    const editorLines = countLines(editor.value)
-    const editorChars = editor.value.length
-    editorStats.textContent = `${editorLines} lines, ${editorChars} chars`
-  }
-  
-  if (output && outputStats) {
-    const outputText = output.textContent || output.innerText || ''
-    const outputLines = countLines(outputText)
-    const outputChars = outputText.length
-    outputStats.textContent = `${outputLines} lines, ${outputChars} chars`
-  }
+  console.log('updateStats is deprecated - using CodeRenderer.updateStats() instead')
 }
 
 function loadDemo(demoKey) {
   try {
-    currentDemoData = getDemoData(demoKey)
+    // Stop any existing tour
+    if (currentTour) {
+      currentTour.stop()
+      currentTour = null
+    }
+
+    currentDemoData = precomputed[demoKey] || precomputed['workshop']
+    currentDemoKey = demoKey
     
     const editor = document.getElementById('editor')
     const editorTitle = document.getElementById('editorTitle')
     const output = document.getElementById('output')
     const runStatus = document.getElementById('runStatus')
+    const editorStats = document.getElementById('editorStats')
     
     if (editor && currentDemoData) {
-      editor.value = currentDemoData.typescript
+      // Render precomputed HTML
+      inputRenderer.renderPrecomputed(currentDemoData.typescript, editor)
+      
       if (editorTitle) {
         editorTitle.textContent = currentDemoData.fileName
       }
-      // Update syntax highlighting for the editor
+      
+      // Update stats after content is loaded
       setTimeout(() => {
-        const highlightContainer = document.getElementById('editor-highlight')
-        if (highlightContainer) {
-          const highlighted = hljs.highlight(currentDemoData.typescript, { language: 'typescript' }).value
-          highlightContainer.innerHTML = `<code class="hljs">${highlighted}</code>`
+        if (editorStats) {
+          inputRenderer.updateStats(editor, editorStats)
         }
-        // Update stats after content is loaded
-        updateStats()
-      }, 0)
+        startGuidedTourIfAppropriate(demoKey)
+      }, 100)
     } else {
       console.error('Failed to load demo data for:', demoKey)
       if (editor) {
-        editor.value = '// Failed to load demo'
+        editor.innerHTML = '<div class="code-line"><span class="line-content">// Failed to load demo</span></div>'
       }
     }
     
     // Clear output and reset status
     if (output) {
-      output.textContent = '/* Click Run to see the synthesized Terraform */'
+      output.innerHTML = '<div class="code-line"><span class="line-content">/* Click Run to see the synthesized Terraform */</span></div>'
     }
     if (runStatus) {
       runStatus.textContent = 'Ready'
@@ -276,30 +235,97 @@ function loadDemo(demoKey) {
     console.error('Error loading demo:', error)
     const editor = document.getElementById('editor')
     if (editor) {
-      editor.value = '// Error loading demo: ' + error.message
+      editor.innerHTML = `<div class="code-line"><span class="line-content">// Error loading demo: ${error.message}</span></div>`
     }
   }
 }
 
-function runDemo() {
+export function runDemo() {
   if (!currentDemoData) return
   
   const output = document.getElementById('output')
   const runStatus = document.getElementById('runStatus')
+  const outputStats = document.getElementById('outputStats')
   
   if (runStatus) runStatus.textContent = 'Synthesizing...'
   
   // Use requestAnimationFrame to show the "Synthesizing..." status
   window.requestAnimationFrame(() => {
     if (output) {
-      // Apply Terraform syntax highlighting to the output
-      const highlighted = hljs.highlight(currentDemoData.terraform, { language: 'hcl' }).value
-      output.innerHTML = `<code class="hljs">${highlighted}</code>`
+      outputRenderer.renderPrecomputed(currentDemoData.terraform, output)
     }
     if (runStatus) runStatus.textContent = 'Complete'
+    
     // Update stats after output is generated
-    updateStats()
+    if (outputStats) {
+      outputRenderer.updateStats(output, outputStats)
+    }
+    
+    // Transition tour to output phase if tour is active
+    if (currentTour && currentTour.isActive && currentTour.currentPhase === 'input') {
+      setTimeout(() => {
+        currentTour.transitionToOutput()
+      }, 300)
+    }
   })
+}
+
+// Guided tour management
+function startGuidedTourIfAppropriate(demoKey) {
+  // Only auto-start tour for first-time visitors or when explicitly requested
+  if (GuidedTour.shouldAutoStart()) {
+    // Add a small tour start button
+    addTourStartButton(demoKey)
+  }
+}
+
+function addTourStartButton(demoKey) {
+  // Check if tour start button already exists
+  let tourBtn = document.getElementById('tourStartBtn')
+  
+  if (!tourBtn) {
+    // Create tour start button
+    tourBtn = document.createElement('button')
+    tourBtn.id = 'tourStartBtn'
+    tourBtn.className = 'btn bg-accent text-white text-sm focus-ring ml-2'
+    tourBtn.textContent = 'Guide me'
+    tourBtn.title = 'Get a guided explanation of this code'
+    
+    // Add to the tour button container next to dropdown
+    const tourContainer = document.getElementById('tourButtonContainer')
+    if (tourContainer) {
+      tourContainer.appendChild(tourBtn)
+    }
+  }
+  
+  // Update button click handler for current demo
+  tourBtn.onclick = () => startGuidedTour(demoKey)
+}
+
+function startGuidedTour(demoKey) {
+  // Stop any existing tour
+  if (currentTour) {
+    currentTour.stop()
+  }
+  
+  // Create and start new tour
+  currentTour = new GuidedTour(demoKey)
+  currentTour.start()
+  
+  // Hide the tour start button during tour
+  const tourBtn = document.getElementById('tourStartBtn')
+  if (tourBtn) {
+    tourBtn.style.display = 'none'
+  }
+  
+  // Show tour button again when tour completes
+  const originalStop = currentTour.stop.bind(currentTour)
+  currentTour.stop = function() {
+    originalStop()
+    if (tourBtn) {
+      tourBtn.style.display = ''
+    }
+  }
 }
 
 // Custom dropdown functionality

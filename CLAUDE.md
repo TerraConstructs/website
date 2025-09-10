@@ -26,19 +26,26 @@ cd demos/function-url && npm install && npx cdktf synth # Generate function-url 
 **Frontend Stack**: Vite + Tailwind CSS + highlight.js + vanilla JavaScript modules
 - `index.html` - Main page with embedded content
 - `src/main.js` - Entry point, theme toggle, mobile menu, typewriter animation
-- `src/highlight-setup.js` - Code syntax highlighting, demo switching, copy functionality
-- `src/demo-data.js` - Imports raw TypeScript/Terraform from demos/ using Vite `?raw` imports
+- `src/highlight-setup.js` - Code syntax highlighting used in precompute vite plugin as well as demo switching, copy functionality
+- `src/demo-data.js` - raw TypeScript/Terraform from demos/ using Vite `?raw` imports
+- `src/tour-configs.js` - Guided tour step definitions, combined with `demo-data.js` in Vite plugin for precomputation.
+- `plugins/precompute-demo-code.js` - Vite plugin to precompute highlighted code and tour steps at build time
+- `src/guided-tour.js` - Interactive guided tour functionality leveraging precomputed code elements and guided tour segments.
 - `src/style.css` - Tailwind directives and custom CSS
 
 **Demo Architecture**: Real CDKTF projects in `demos/` that synthesize to actual Terraform
 - Each demo has its own `package.json`, `cdktf.json`, `src/stack.ts`
-- Raw files are imported via Vite for live code display
-- Generated Terraform from `cdk.tf` files powers the "Run" functionality
+- Raw files are imported via Vite for live code display and precomputed to HTML elements through a vite plugin
+- Generated Terraform from `cdk.tf` files simulate the output section.
 
-**Styling**: Neobrutalist design with thick borders, sharp shadows, custom Tailwind theme
+**Current Styling**: Neobrutalist design with thick borders, sharp shadows, custom Tailwind theme
 - Colors: ink (#111111), paper (#ffffff), accent (#6E59FF), neutral (#EDEDED)
 - Typography: Inter (sans), JetBrains Mono (code)
 - Dark mode via class toggle with localStorage persistence
+
+**Target Styling**: Bolt mockup for a cleaner, more modern look
+- Softer colors, more whitespace, reduced copy
+- Uses lucide UI components
 
 ## Key Implementation Details
 

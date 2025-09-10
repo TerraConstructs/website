@@ -2,6 +2,7 @@
   "name": "terraconstructs-landing-page",
   "version": "1.0.0",
   "description": "TerraConstructs landing page with neobrutalist design",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "dev": "vite",
