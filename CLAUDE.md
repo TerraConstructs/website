@@ -10,24 +10,29 @@ This is a neobrutalist landing page for TerraConstructs, a CDKTF L2 Constructs l
 
 ```bash
 # Development
-pnpm install                 # Install dependencies
+pnpm install                # Install dependencies
 pnpm run dev                # Start Vite dev server on localhost:8080 (auto-opens)
 pnpm run build              # Build production bundle to dist/
 pnpm run preview            # Preview production build locally
 pnpm run clean              # Clean dist/ directory
 
+# Code Quality - Prettier
+pnpm run format             # Format all files with Prettier
+pnpm run format:check       # Check formatting without modifying files
+pnpm run format:staged      # Format specific files (used with git hooks)
+
 # Demo Projects (in demos/ subdirectories)
-cd demos/workshop && npm install && npx cdktf synth    # Generate workshop demo Terraform
+cd demos/workshop && npm install && npx cdktf synth     # Generate workshop demo Terraform
 cd demos/function-url && npm install && npx cdktf synth # Generate function-url demo Terraform
 ```
 
 ## Architecture
 
-**Frontend Stack**: Vite + Tailwind CSS + highlight.js + vanilla JavaScript modules
+**Frontend Stack**: Vite + Tailwind CSS + vanilla JavaScript modules (syntax highlighting precomputed at build time)
 - `index.html` - Main page with embedded content
 - `src/main.js` - Entry point, theme toggle, mobile menu, typewriter animation
-- `src/highlight-setup.js` - Code syntax highlighting used in precompute vite plugin as well as demo switching, copy functionality
-- `src/demo-data.js` - raw TypeScript/Terraform from demos/ using Vite `?raw` imports
+- `src/demo-section.js` - Demo switching, copy functionality, dropdown/badges, tour button wiring
+- `src/code-view.js` - Presents precomputed code HTML with minimal helpers
 - `src/tour-configs.js` - Guided tour step definitions, combined with `demo-data.js` in Vite plugin for precomputation.
 - `plugins/precompute-demo-code.js` - Vite plugin to precompute highlighted code and tour steps at build time
 - `src/guided-tour.js` - Interactive guided tour functionality leveraging precomputed code elements and guided tour segments.
@@ -35,17 +40,14 @@ cd demos/function-url && npm install && npx cdktf synth # Generate function-url 
 
 **Demo Architecture**: Real CDKTF projects in `demos/` that synthesize to actual Terraform
 - Each demo has its own `package.json`, `cdktf.json`, `src/stack.ts`
-- Raw files are imported via Vite for live code display and precomputed to HTML elements through a vite plugin
+- Code is precomputed to HTML (with syntax highlighting and tour segments) via a Vite plugin and exposed as a virtual module
 - Generated Terraform from `cdk.tf` files simulate the output section.
 
-**Current Styling**: Neobrutalist design with thick borders, sharp shadows, custom Tailwind theme
-- Colors: ink (#111111), paper (#ffffff), accent (#6E59FF), neutral (#EDEDED)
-- Typography: Inter (sans), JetBrains Mono (code)
-- Dark mode via class toggle with localStorage persistence
-
-**Target Styling**: Bolt mockup for a cleaner, more modern look
+**Styling**: cleaner, modern look
 - Softer colors, more whitespace, reduced copy
 - Uses lucide UI components
+- Typography: Inter (sans), JetBrains Mono (code)
+- Dark mode via class toggle with localStorage persistence
 
 ## Key Implementation Details
 
@@ -58,10 +60,10 @@ cd demos/function-url && npm install && npx cdktf synth # Generate function-url 
 ## Demo System
 
 The interactive demo section loads real CDKTF projects:
-- `src/demo-data.js` imports raw source files using Vite's `?raw` suffix
-- Dropdown allows switching between workshop and function-url demos
-- "Run" button displays pre-synthesized Terraform with syntax highlighting
-- Statistics show line/character counts for both input and output
+- Uses the virtual module `virtual:demo-precomputed` built by the Vite plugin
+- Dropdown switches between demos; CodeView renders precomputed HTML
+- "Synth" button displays pre-synthesized Terraform (CodeView)
+- Statistics show line counts for both input and output
 
 ## Deployment
 
@@ -71,3 +73,32 @@ Multiple production options in `deploy/` directory:
 - `deploy/cloudfront/` - CloudFront CDN with Lambda@Edge for CSP injection
 
 Each has its own README with specific deployment instructions.
+
+## Code Quality & Formatting
+
+**Key Settings**:
+- Single quotes, semicolons, ES5 trailing commas
+- 2-space indentation, 80 character line width
+- LF line endings, preserve HTML whitespace sensitivity
+- Arrow functions without parentheses when possible
+
+**IDE Integration**:
+- VS Code: Install Prettier extension, enable "Format on Save"
+- Configure `editor.formatOnSave: true` in settings
+- Use `editor.codeActionsOnSave` for additional automation
+
+**Pre-commit Hooks (Optional)**:
+```bash
+# Install husky for git hooks (optional)
+pnpm add -D husky lint-staged
+
+# Configure in package.json
+"lint-staged": {
+  "*.{js,mjs,ts,html,css,md,json}": ["prettier --write"]
+}
+```
+
+**CI/CD Integration**:
+- Add `pnpm run format:check` to CI pipeline
+- Prevents commits with inconsistent formatting
+- Maintains code quality across team contributions

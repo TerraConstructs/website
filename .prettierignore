@@ -1,0 +1,35 @@
+# Build outputs
+dist/
+.vite/
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Generated files
+**/.gen/
+**/cdk.tf.json
+
+# Demo directories (have their own configs)
+demos/*/
+
+# Public assets
+public/logos/
+public/sitemap.xml
+public/robots.txt
+
+# Config files that shouldn't be formatted
+.prettierignore
+.prettierrc.json
+*.config.*
+tsconfig*.json
+cdktf.json
+
+# Mockups and temporary files
+mockups/
+*.md.backup
+
+# IDE and system files
+.vscode/
+.DS_Store
+*.log

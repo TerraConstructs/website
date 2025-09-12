@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import precomputeDemoCode from './plugins/precompute-demo-code.js'
+import sitemapGenerator from './plugins/sitemap-generator.js'
 
 export default defineConfig({
   // Development server configuration
@@ -28,7 +29,8 @@ export default defineConfig({
       output: {
         // Keep asset names readable
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.')
+          const fileName = assetInfo.names?.[0] || 'unknown'
+          const info = fileName.split('.')
           const ext = info[info.length - 1]
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
             return `assets/images/[name].[hash][extname]`
@@ -54,15 +56,7 @@ export default defineConfig({
   publicDir: 'public',
 
   // Optimizations
-  optimizeDeps: {
-    include: [
-      'highlight.js/lib/core',
-      'highlight.js/lib/languages/typescript',
-      'highlight.js/lib/languages/go', 
-      'highlight.js/lib/languages/python',
-      '@taga3s/highlightjs-terraform'
-    ]
-  },
+  optimizeDeps: {},
 
   // Plugin configuration for additional features
   plugins: [
@@ -70,8 +64,8 @@ export default defineConfig({
     {
       name: 'csp-nonce-dev',
       transformIndexHtml: {
-        enforce: 'pre',
-        transform(html, ctx) {
+        order: 'pre',
+        handler(html, ctx) {
           // In development, remove nonce requirements for easier development
           if (ctx.server) {
             return html.replace(/nonce="__CSP_NONCE__"/g, '')
@@ -80,6 +74,7 @@ export default defineConfig({
         }
       }
     },
-    precomputeDemoCode()
+    precomputeDemoCode(),
+    sitemapGenerator()
   ]
 })
