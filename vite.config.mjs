@@ -1,4 +1,7 @@
 import { defineConfig } from 'vite'
+import { readFileSync } from 'node:fs'
+import PluginCritical from 'rollup-plugin-critical'
+import cspHashPlugin from './plugins/csp-hash.js'
 import precomputeDemoCode from './plugins/precompute-demo-code.js'
 import sitemapGenerator from './plugins/sitemap-generator.js'
 
@@ -8,6 +11,25 @@ export default defineConfig({
     port: 8080,
     open: true,
     host: true // Allow access from network
+  },
+
+  // Preview server (serves dist/ with CSP headers for local validation)
+  preview: {
+    port: 4173,
+    strictPort: true,
+    headers: {
+      'Content-Security-Policy': (() => {
+        try {
+          const { csp } = JSON.parse(readFileSync('dist/csp.json', 'utf8'))
+          return csp
+        } catch {
+          return "default-src 'self'"
+        }
+      })(),
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Resource-Policy': 'same-origin',
+      'X-Content-Type-Options': 'nosniff'
+    }
   },
 
   // Build configuration
@@ -42,7 +64,29 @@ export default defineConfig({
         },
         chunkFileNames: 'assets/js/[name].[hash].js',
         entryFileNames: 'assets/js/[name].[hash].js',
-      }
+      },
+      // Generate & inline Critical CSS for the built HTML
+      plugins: [
+        PluginCritical({
+          // Use the build output directory as the base for reading/writing
+          criticalBase: 'dist',
+          // Read the built HTML from the build output
+          criticalUrl: 'dist/',
+          // Single-page app: process index.html
+          criticalPages: [
+            { uri: 'index.html', template: 'index' },
+          ],
+          // Inline above‑the‑fold CSS; full CSS loaded non‑blocking (inline-critical default)
+          // Use boolean true so rollup-plugin-critical actually inlines
+          criticalConfig: {
+            inline: true,
+            extract: false,
+            width: 1200,
+            height: 900,
+            penthouse: { blockJSRequests: false },
+          },
+        }),
+      ],
     }
   },
 
@@ -60,21 +104,9 @@ export default defineConfig({
 
   // Plugin configuration for additional features
   plugins: [
-    // Custom plugin to handle CSP nonce placeholders in development
-    {
-      name: 'csp-nonce-dev',
-      transformIndexHtml: {
-        order: 'pre',
-        handler(html, ctx) {
-          // In development, remove nonce requirements for easier development
-          if (ctx.server) {
-            return html.replace(/nonce="__CSP_NONCE__"/g, '')
-          }
-          return html
-        }
-      }
-    },
     precomputeDemoCode(),
-    sitemapGenerator()
+    sitemapGenerator(),
+    // Generate CSP hashes from built HTML (dist/index.html)
+    cspHashPlugin({ distDir: 'dist', outDir: 'infra' }),
   ]
 })

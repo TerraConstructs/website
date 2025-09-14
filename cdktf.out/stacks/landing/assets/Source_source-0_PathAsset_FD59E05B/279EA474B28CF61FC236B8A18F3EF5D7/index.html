@@ -2,139 +2,69 @@
 
 <html lang="en" class="h-full scroll-smooth">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TerraConstructs — IaC Library for CDKTF L2 Constructs</title>
-    <meta
-      name="description"
-      content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation."
-    />
-    <meta
-      name="keywords"
-      content="CDKTF, Terraform, OpenTofu, AWS CDK, L2 Constructs, Infrastructure as Code, IaC, DevOps, SRE, Platform Engineering, AWS Lambda, API Gateway, Terraform modules alternative, CDK for Terraform, AWS infrastructure, cloud infrastructure, declarative infrastructure, terraform cdk, cdktf constructs"
-    />
-    <meta name="author" content="TerraConstructs" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://terraconstructs.dev/" />
-    <meta name="theme-color" content="#111111" />
+    <meta name="description" content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation.">
+    <meta name="keywords" content="CDKTF, Terraform, OpenTofu, AWS CDK, L2 Constructs, Infrastructure as Code, IaC, DevOps, SRE, Platform Engineering, AWS Lambda, API Gateway, Terraform modules alternative, CDK for Terraform, AWS infrastructure, cloud infrastructure, declarative infrastructure, terraform cdk, cdktf constructs">
+    <meta name="author" content="TerraConstructs">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://terraconstructs.dev/">
+    <meta name="theme-color" content="#111111">
 
     <!-- Favicons -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="logos/terraconstructs_logo_16x16.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="logos/terraconstructs_logo_32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="64x64"
-      href="logos/terraconstructs_logo_64x64.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="128x128"
-      href="logos/terraconstructs_logo_128x128.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="256x256"
-      href="logos/terraconstructs_logo_256x256.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="512x512"
-      href="logos/terraconstructs_logo_512x512.png"
-    />
+    <link rel="icon" type="image/png" sizes="16x16" href="logos/terraconstructs_logo_16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logos/terraconstructs_logo_32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="logos/terraconstructs_logo_64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="logos/terraconstructs_logo_128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="logos/terraconstructs_logo_256x256.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="logos/terraconstructs_logo_512x512.png">
 
     <!-- Open Graph -->
 
-    <meta
-      property="og:title"
-      content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu"
-    />
-    <meta
-      property="og:description"
-      content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="TerraConstructs" />
-    <meta property="og:locale" content="en_US" />
-    <meta
-      property="og:image"
-      content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png"
-    />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
-    <meta
-      property="og:image:alt"
-      content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform"
-    />
-    <meta property="og:url" content="https://terraconstructs.dev/" />
-    <meta property="article:author" content="TerraConstructs" />
-    <meta property="article:section" content="Technology" />
-    <meta property="article:tag" content="Infrastructure as Code" />
-    <meta property="article:tag" content="AWS" />
-    <meta property="article:tag" content="Terraform" />
-    <meta property="article:tag" content="DevOps" />
+    <meta property="og:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu">
+    <meta property="og:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="TerraConstructs">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform">
+    <meta property="og:url" content="https://terraconstructs.dev/">
+    <meta property="article:author" content="TerraConstructs">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Infrastructure as Code">
+    <meta property="article:tag" content="AWS">
+    <meta property="article:tag" content="Terraform">
+    <meta property="article:tag" content="DevOps">
 
     <!-- Twitter -->
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu"
-    />
-    <meta
-      name="twitter:description"
-      content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible."
-    />
-    <meta
-      name="twitter:image"
-      content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png"
-    />
-    <meta
-      name="twitter:image:alt"
-      content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform"
-    />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu">
+    <meta name="twitter:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible.">
+    <meta name="twitter:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png">
+    <meta name="twitter:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform">
 
     <!-- Fonts - Optimized for performance -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="//github.com" />
-    <link rel="dns-prefetch" href="//constructs.dev" />
-    <link rel="dns-prefetch" href="//discord.gg" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//github.com">
+    <link rel="dns-prefetch" href="//constructs.dev">
+    <link rel="dns-prefetch" href="//discord.gg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 
     <!-- Non-blocking font load with fallback -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript
-      ><link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet"
-    /></noscript>
+    <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:after,:before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Inter,system-ui,sans-serif;font-feature-settings:normal;font-variation-settings:normal}body{margin:0;line-height:inherit}h1{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}button{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button{text-transform:none}button{-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}h1,p{margin:0}img{display:block;vertical-align:middle}img{max-width:100%;height:auto}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.invisible{visibility:hidden}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{top:0;right:0;bottom:0;left:0}.left-0{left:0}.left-3{left:.75rem}.right-0{right:0}.top-0{top:0}.top-3{top:.75rem}.top-full{top:100%}.z-50{z-index:50}.z-\[60\]{z-index:60}.mx-auto{margin-left:auto;margin-right:auto}.mb-12{margin-bottom:3rem}.mb-16{margin-bottom:4rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-auto{margin-left:auto}.mr-2{margin-right:.5rem}.mt-3{margin-top:.75rem}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.hidden{display:none}.h-10{height:2.5rem}.h-16{height:4rem}.h-2{height:.5rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.w-10{width:2.5rem}.w-2{width:.5rem}.w-5{width:1.25rem}.w-8{width:2rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-x-2>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.5rem * var(--tw-space-x-reverse));margin-left:calc(.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-4>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.overflow-hidden{overflow:hidden}.scroll-smooth{scroll-behavior:smooth}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity,1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity,1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity,1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity,1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity,1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity,1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity,1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247 / var(--tw-bg-opacity,1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity,1))}.bg-white\/80{background-color:#fffc}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-purple-50{--tw-gradient-from:#faf5ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(250 245 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-purple-600{--tw-gradient-from:#9333ea var(--tw-gradient-from-position);--tw-gradient-to:rgb(147 51 234 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.to-purple-800{--tw-gradient-to:#6b21a8 var(--tw-gradient-to-position)}.to-white{--tw-gradient-to:#fff var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-2{padding:.5rem}.p-3{padding:.75rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-4{padding-bottom:1rem}.pt-16{padding-top:4rem}.pt-3{padding-top:.75rem}.pt-4{padding-top:1rem}.text-center{text-align:center}.font-sans{font-family:Inter,system-ui,sans-serif}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity,1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity,1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity,1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168 / var(--tw-text-opacity,1))}.text-transparent{color:transparent}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity,1))}.opacity-0{opacity:0}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}:root{color-scheme:light dark;--code-line-h:1.35rem;--editor-gutter:calc(2ch + .5rem)}body,html{height:100%}header{isolation:isolate}#mobileMenu{max-height:calc(100vh - 4rem);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom,0)}@supports (height:100dvh){#mobileMenu{max-height:calc(100dvh - 4rem)}}#mobileMenuButton .icon-close,#mobileMenuButton .icon-menu{display:inline-flex;line-height:1}#mobileMenuButton .icon-close{display:none}@media (prefers-reduced-motion:reduce){*{animation-duration:NaNs!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}.faq-panel{max-height:0;overflow:hidden;opacity:0}.container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}@media (min-width:640px){.container{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:1024px){.container{padding-left:2rem;padding-right:2rem}}:root{--hljs-fg:#1f2937;--hljs-comment:#6b7280;--hljs-keyword:#7c3aed;--hljs-type:#2563eb;--hljs-function:#4f46e5;--hljs-string:#16a34a;--hljs-number:#db2777;--hljs-literal:#d97706;--hljs-attr:#9333ea;--hljs-variable:#0d9488;--hljs-meta:#6b7280;--hljs-link:#2563eb}.dark{--hljs-fg:#e5e7eb;--hljs-comment:#9ca3af;--hljs-keyword:#a78bfa;--hljs-type:#93c5fd;--hljs-function:#c4b5fd;--hljs-string:#86efac;--hljs-number:#f472b6;--hljs-literal:#fbbf24;--hljs-attr:#c084fc;--hljs-variable:#5eead4;--hljs-meta:#9ca3af;--hljs-link:#93c5fd}#mobileMenuButton span{display:block;line-height:1}@media (min-width:640px){.sm\:flex-row{flex-direction:row}.sm\:p-4{padding:1rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:768px){.md\:h-10{height:2.5rem}.md\:w-10{width:2.5rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:flex{display:flex}.lg\:hidden{display:none}.lg\:gap-8{gap:2rem}.lg\:px-8{padding-left:2rem;padding-right:2rem}.lg\:py-32{padding-top:8rem;padding-bottom:8rem}.lg\:text-7xl{font-size:4.5rem;line-height:1}}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"></noscript>
 
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-202ZG9CZKL"
-    ></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-202ZG9CZKL"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -286,6 +216,8 @@
         ]
       }
     </script>
+    <script type="module" crossorigin="" src="/assets/js/main.NkgR_MzR.js"></script>
+    <link rel="stylesheet" crossorigin="" href="/assets/css/main.CnN9Hr9m.css" media="print" onload="this.media='all'">
   </head>
 
   <body
@@ -313,11 +245,7 @@
               >
                 <img
                   src="/logos/terraconstructs_logo_64x64.png"
-                  srcset="
-                    /logos/terraconstructs_logo_32x32.png   1x,
-                    /logos/terraconstructs_logo_64x64.png   2x,
-                    /logos/terraconstructs_logo_128x128.png 4x
-                  "
+                  srcset="/logos/terraconstructs_logo_32x32.png 1x, /logos/terraconstructs_logo_64x64.png 2x, /logos/terraconstructs_logo_128x128.png 4x"
                   alt="TerraConstructs logo"
                   class="block w-8 h-8 md:w-10 md:h-10"
                   width="40"
@@ -1342,7 +1270,6 @@
     </script>
 
     <!-- Main JavaScript - deferred to not block rendering -->
-    <script type="module" src="/src/main.js" defer></script>
 
     <!-- Load non-critical features after page load -->
     <script>
@@ -1355,5 +1282,6 @@
         });
       });
     </script>
+    <noscript><link rel="stylesheet" crossorigin="" href="/assets/css/main.CnN9Hr9m.css"></noscript>
   </body>
 </html>

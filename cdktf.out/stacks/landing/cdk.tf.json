@@ -1,0 +1,886 @@
+{
+  "//": {
+    "metadata": {
+      "backend": "local",
+      "stackName": "landing",
+      "version": "0.21.0"
+    },
+    "outputs": {
+      "landing": {
+        "cdn": "cdn"
+      }
+    }
+  },
+  "data": {
+    "aws_caller_identity": {
+      "CallerIdentity": {
+        "//": {
+          "metadata": {
+            "path": "landing/CallerIdentity",
+            "uniqueId": "CallerIdentity"
+          }
+        },
+        "provider": "aws"
+      }
+    },
+    "aws_cloudfront_cache_policy": {
+      "Cdn_Managed-CachingOptimized_58CFD2BA": {
+        "//": {
+          "metadata": {
+            "path": "landing/Cdn/Managed-CachingOptimized",
+            "uniqueId": "Cdn_Managed-CachingOptimized_58CFD2BA"
+          }
+        },
+        "name": "Managed-CachingOptimized"
+      }
+    },
+    "aws_iam_policy_document": {
+      "Source_Policy_BC7DCC4B": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/Policy/Policy/Resource",
+            "uniqueId": "Source_Policy_BC7DCC4B"
+          }
+        },
+        "statement": [
+          {
+            "actions": [
+              "s3:GetObject"
+            ],
+            "effect": "Allow",
+            "principals": [
+              {
+                "identifiers": [
+                  "${aws_cloudfront_origin_access_identity.Source_OriginAccessIdentity_47D1410C.iam_arn}"
+                ],
+                "type": "AWS"
+              }
+            ],
+            "resources": [
+              "${aws_s3_bucket.Source_71E471F1.arn}/*"
+            ]
+          }
+        ]
+      }
+    },
+    "aws_partition": {
+      "Partitition": {
+        "//": {
+          "metadata": {
+            "path": "landing/Partitition",
+            "uniqueId": "Partitition"
+          }
+        },
+        "provider": "aws"
+      }
+    },
+    "aws_route53_zone": {
+      "Zone_A5DE4B68": {
+        "//": {
+          "metadata": {
+            "path": "landing/Zone/Resource",
+            "uniqueId": "Zone_A5DE4B68"
+          }
+        },
+        "zone_id": "Z09339061DF0IQA1CJMKQ"
+      }
+    }
+  },
+  "output": {
+    "cdn": {
+      "description": "Outputs for prod-Cdn",
+      "value": {
+        "arn": "${aws_cloudfront_distribution.Cdn_9963B1AD.arn}",
+        "domainName": "${aws_cloudfront_distribution.Cdn_9963B1AD.domain_name}",
+        "hostedZoneId": "${aws_cloudfront_distribution.Cdn_9963B1AD.hosted_zone_id}",
+        "id": "${aws_cloudfront_distribution.Cdn_9963B1AD.id}",
+        "status": "${aws_cloudfront_distribution.Cdn_9963B1AD.status}"
+      }
+    }
+  },
+  "provider": {
+    "aws": [
+      {
+        "region": "us-east-1"
+      }
+    ]
+  },
+  "resource": {
+    "aws_acm_certificate": {
+      "Certificate_4E7ABB08": {
+        "//": {
+          "metadata": {
+            "path": "landing/Certificate/Resource",
+            "uniqueId": "Certificate_4E7ABB08"
+          }
+        },
+        "domain_name": "terraconstructs.dev",
+        "lifecycle": {
+          "create_before_destroy": true
+        },
+        "subject_alternative_names": [
+          "*.terraconstructs.dev"
+        ],
+        "tags": {
+          "Name": "prod-Certificate",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        },
+        "validation_method": "DNS",
+        "validation_option": [
+          {
+            "domain_name": "terraconstructs.dev",
+            "validation_domain": "${data.aws_route53_zone.Zone_A5DE4B68.name}"
+          }
+        ]
+      }
+    },
+    "aws_acm_certificate_validation": {
+      "Certificate_Validation_1DBF2B44": {
+        "//": {
+          "metadata": {
+            "path": "landing/Certificate/Validation",
+            "uniqueId": "Certificate_Validation_1DBF2B44"
+          }
+        },
+        "certificate_arn": "${aws_acm_certificate.Certificate_4E7ABB08.arn}",
+        "validation_record_fqdns": [
+          "${aws_route53_record.Certificate_ValidationRecord-terraconstructsdev_E1E87186.fqdn}"
+        ]
+      }
+    },
+    "aws_cloudfront_distribution": {
+      "Cdn_9963B1AD": {
+        "//": {
+          "metadata": {
+            "path": "landing/Cdn/Resource",
+            "uniqueId": "Cdn_9963B1AD"
+          }
+        },
+        "aliases": [
+          "terraconstructs.dev"
+        ],
+        "custom_error_response": [
+          {
+            "error_code": 404,
+            "response_code": 200,
+            "response_page_path": "/index.html"
+          },
+          {
+            "error_code": 403,
+            "response_code": 200,
+            "response_page_path": "/index.html"
+          }
+        ],
+        "default_cache_behavior": {
+          "allowed_methods": [
+            "GET",
+            "HEAD"
+          ],
+          "cache_policy_id": "${data.aws_cloudfront_cache_policy.Cdn_Managed-CachingOptimized_58CFD2BA.id}",
+          "cached_methods": [
+            "GET",
+            "HEAD"
+          ],
+          "compress": true,
+          "response_headers_policy_id": "${aws_cloudfront_response_headers_policy.SiteHeaders_DBBF4967.id}",
+          "target_origin_id": "origin-0",
+          "viewer_protocol_policy": "redirect-to-https"
+        },
+        "default_root_object": "index.html",
+        "enabled": true,
+        "http_version": "http2",
+        "origin": [
+          {
+            "domain_name": "${aws_s3_bucket.Source_71E471F1.bucket_regional_domain_name}",
+            "origin_id": "origin-0",
+            "s3_origin_config": {
+              "origin_access_identity": "${aws_cloudfront_origin_access_identity.Source_OriginAccessIdentity_47D1410C.cloudfront_access_identity_path}"
+            }
+          }
+        ],
+        "price_class": "PriceClass_100",
+        "restrictions": {
+          "geo_restriction": {
+            "restriction_type": "none"
+          }
+        },
+        "tags": {
+          "Name": "prod-Cdn",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        },
+        "viewer_certificate": {
+          "acm_certificate_arn": "${aws_acm_certificate.Certificate_4E7ABB08.arn}",
+          "minimum_protocol_version": "TLSv1.2_2021",
+          "ssl_support_method": "sni-only"
+        }
+      }
+    },
+    "aws_cloudfront_origin_access_identity": {
+      "Source_OriginAccessIdentity_47D1410C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/OriginAccessIdentity/Resource",
+            "uniqueId": "Source_OriginAccessIdentity_47D1410C"
+          }
+        },
+        "comment": "OAI for ${aws_s3_bucket.Source_71E471F1.bucket}"
+      }
+    },
+    "aws_cloudfront_response_headers_policy": {
+      "SiteHeaders_DBBF4967": {
+        "//": {
+          "metadata": {
+            "path": "landing/SiteHeaders/Resource",
+            "uniqueId": "SiteHeaders_DBBF4967"
+          }
+        },
+        "name": "websitelandingSiteHeaders187DCAE1",
+        "security_headers_config": {
+          "content_security_policy": {
+            "content_security_policy": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'sha256-U6HJgX+4WJkErNeqXR/7tbJHXAXOn9PKLNRzkZcP7RM='; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'sha256-jnEt9Md5pLcENwSMy3G9IhF0gOxG24PL72VOggWkOiE=' 'sha256-m7Q+SBP3IQL7b+182BHrX+sR+EqDcn2RJ9q4cmD9oek=' 'sha256-FVvkp9qdgdiHP6lWvMZQu3aM9lMJ9yMnslALvw+XH4c=' 'sha256-8x1WwuIMPQHDJV/akUEWAL1+O6gHk1nLU/lvNtpw+14='; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; frame-ancestors 'none'; script-src-attr 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';",
+            "override": true
+          },
+          "content_type_options": {
+            "override": true
+          },
+          "frame_options": {
+            "frame_option": "DENY",
+            "override": true
+          },
+          "referrer_policy": {
+            "override": true,
+            "referrer_policy": "strict-origin-when-cross-origin"
+          },
+          "strict_transport_security": {
+            "access_control_max_age_sec": 31536000,
+            "include_subdomains": true,
+            "override": true
+          },
+          "xss_protection": {
+            "mode_block": true,
+            "override": true,
+            "protection": true
+          }
+        }
+      }
+    },
+    "aws_route53_record": {
+      "CdnAlias_49D721F7": {
+        "//": {
+          "metadata": {
+            "path": "landing/CdnAlias/Resource",
+            "uniqueId": "CdnAlias_49D721F7"
+          }
+        },
+        "alias": {
+          "evaluate_target_health": false,
+          "name": "${aws_cloudfront_distribution.Cdn_9963B1AD.domain_name}",
+          "zone_id": "${aws_cloudfront_distribution.Cdn_9963B1AD.hosted_zone_id}"
+        },
+        "name": "${data.aws_route53_zone.Zone_A5DE4B68.name}",
+        "type": "A",
+        "zone_id": "Z09339061DF0IQA1CJMKQ"
+      },
+      "Certificate_ValidationRecord-terraconstructsdev_E1E87186": {
+        "//": {
+          "metadata": {
+            "path": "landing/Certificate/ValidationRecord-terraconstructs.dev/Resource",
+            "uniqueId": "Certificate_ValidationRecord-terraconstructsdev_E1E87186"
+          }
+        },
+        "allow_overwrite": true,
+        "name": "${tolist(aws_acm_certificate.Certificate_4E7ABB08.domain_validation_options).0.resource_record_name}",
+        "records": [
+          "${tolist(aws_acm_certificate.Certificate_4E7ABB08.domain_validation_options).0.resource_record_value}"
+        ],
+        "ttl": 60,
+        "type": "${tolist(aws_acm_certificate.Certificate_4E7ABB08.domain_validation_options).0.resource_record_type}",
+        "zone_id": "Z09339061DF0IQA1CJMKQ"
+      }
+    },
+    "aws_s3_bucket": {
+      "Source_71E471F1": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/Resource",
+            "uniqueId": "Source_71E471F1"
+          }
+        },
+        "bucket_prefix": "website-landingsource",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      }
+    },
+    "aws_s3_bucket_policy": {
+      "Source_Policy_E5AB5F73": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/Policy/Resource",
+            "uniqueId": "Source_Policy_E5AB5F73"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "policy": "${data.aws_iam_policy_document.Source_Policy_BC7DCC4B.json}"
+      }
+    },
+    "aws_s3_object": {
+      "Source_source-0_File--assets--css--mainCnN9Hr9mcss_0936DC2C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--css--main.CnN9Hr9m.css",
+            "uniqueId": "Source_source-0_File--assets--css--mainCnN9Hr9mcss_0936DC2C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/css; charset=utf-8",
+        "key": "/assets/css/main.CnN9Hr9m.css",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/css/main.CnN9Hr9m.css",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/css/main.CnN9Hr9m.css\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--mainNkgR_MzRjs_F96371CF": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--main.NkgR_MzR.js",
+            "uniqueId": "Source_source-0_File--assets--js--mainNkgR_MzRjs_F96371CF"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/main.NkgR_MzR.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--mainNkgR_MzRjsmap_0954243A": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--main.NkgR_MzR.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--mainNkgR_MzRjsmap_0954243A"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/main.NkgR_MzR.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--indexhtml_14317A08": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--index.html",
+            "uniqueId": "Source_source-0_File--indexhtml_14317A08"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--LICENSE-LOGOS_92E558DB": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--LICENSE-LOGOS",
+            "uniqueId": "Source_source-0_File--logos--LICENSE-LOGOS_92E558DB"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "key": "/logos/LICENSE-LOGOS",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/LICENSE-LOGOS",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/LICENSE-LOGOS\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_dark_1261x256png_04CEC391": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_dark_1261x256.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_dark_1261x256png_04CEC391"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_dark_1261x256.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_1261x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_1261x256.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_dark_2522x512png_D905D069": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_dark_2522x512.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_dark_2522x512png_D905D069"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_dark_2522x512.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_2522x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_2522x512.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_dark_630x128png_B4FEB20B": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_dark_630x128.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_dark_630x128png_B4FEB20B"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_dark_630x128.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_630x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_630x128.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_darksvg_93000DCB": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_dark.svg",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_darksvg_93000DCB"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/svg+xml",
+        "key": "/logos/terraconstructs_horizontal_dark.svg",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark.svg\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_light_1261x256png_B4030CD7": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_light_1261x256.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_light_1261x256png_B4030CD7"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_light_1261x256.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_1261x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_1261x256.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_light_2522x512png_377091C4": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_light_2522x512.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_light_2522x512png_377091C4"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_light_2522x512.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_2522x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_2522x512.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_light_630x128png_F5DF4A7A": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_light_630x128.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_light_630x128png_F5DF4A7A"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_horizontal_light_630x128.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_630x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_630x128.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_horizontal_lightsvg_414E5FE2": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_horizontal_light.svg",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_horizontal_lightsvg_414E5FE2"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/svg+xml",
+        "key": "/logos/terraconstructs_horizontal_light.svg",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light.svg\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_128x128png_C7491BE7": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_128x128.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_128x128png_C7491BE7"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_128x128.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_128x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_128x128.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_16x16png_E60D4CF7": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_16x16.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_16x16png_E60D4CF7"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_16x16.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_16x16.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_16x16.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_256x256png_AC08D233": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_256x256.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_256x256png_AC08D233"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_256x256.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_256x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_256x256.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_32x32png_026B2F49": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_32x32.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_32x32png_026B2F49"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_32x32.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_32x32.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_32x32.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_512x512png_33E2DB3B": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_512x512.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_512x512png_33E2DB3B"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_512x512.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_512x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_512x512.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_logo_64x64png_184F3A1E": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_logo_64x64.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_logo_64x64png_184F3A1E"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_logo_64x64.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_64x64.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_64x64.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_triangle_logosvg_648CA763": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_triangle_logo.svg",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_triangle_logosvg_648CA763"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/svg+xml",
+        "key": "/logos/terraconstructs_triangle_logo.svg",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_triangle_logo.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_triangle_logo.svg\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_dark_115x128png_DA0564E9": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_dark_115x128.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_dark_115x128png_DA0564E9"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_dark_115x128.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_115x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_115x128.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_dark_229x256png_515E6428": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_dark_229x256.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_dark_229x256png_515E6428"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_dark_229x256.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_229x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_229x256.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_dark_458x512png_E98AFEF5": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_dark_458x512.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_dark_458x512png_E98AFEF5"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_dark_458x512.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_458x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_458x512.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_darksvg_215DA03C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_dark.svg",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_darksvg_215DA03C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/svg+xml",
+        "key": "/logos/terraconstructs_vertical_dark.svg",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark.svg\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_light_115x128png_3211D949": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_light_115x128.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_light_115x128png_3211D949"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_light_115x128.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_115x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_115x128.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_light_229x256png_0E23677C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_light_229x256.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_light_229x256png_0E23677C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_light_229x256.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_229x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_229x256.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_light_458x512png_A4997BE2": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_light_458x512.png",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_light_458x512png_A4997BE2"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/png",
+        "key": "/logos/terraconstructs_vertical_light_458x512.png",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_458x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_458x512.png\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--logos--terraconstructs_vertical_lightsvg_ECC6301B": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--logos--terraconstructs_vertical_light.svg",
+            "uniqueId": "Source_source-0_File--logos--terraconstructs_vertical_lightsvg_ECC6301B"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "image/svg+xml",
+        "key": "/logos/terraconstructs_vertical_light.svg",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light.svg\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--robotstxt_6F2DD3AC": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--robots.txt",
+            "uniqueId": "Source_source-0_File--robotstxt_6F2DD3AC"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/plain; charset=utf-8",
+        "key": "/robots.txt",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/robots.txt",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/robots.txt\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--sitemapxml_104FAD80": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--sitemap.xml",
+            "uniqueId": "Source_source-0_File--sitemapxml_104FAD80"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/xml",
+        "key": "/sitemap.xml",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/sitemap.xml",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/sitemap.xml\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      }
+    }
+  },
+  "terraform": {
+    "backend": {
+      "local": {
+        "path": "landing.tfstate"
+      }
+    },
+    "required_providers": {
+      "aws": {
+        "source": "aws",
+        "version": "5.100.0"
+      }
+    }
+  }
+}

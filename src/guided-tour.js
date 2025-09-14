@@ -230,7 +230,7 @@ export class GuidedTour {
     tooltip.innerHTML = this.createTooltipContent(step);
 
     // Advance on click anywhere on the tooltip
-    tooltip.addEventListener("click", (e) => {
+    tooltip.addEventListener("click", e => {
       e.stopPropagation();
       this.nextStep();
     });
@@ -306,7 +306,7 @@ export class GuidedTour {
       { name: "right", ok: spaces.right >= tipRect.width + gap },
       { name: "left", ok: spaces.left >= tipRect.width + gap },
     ];
-    const chosen = placements.find((p) => p.ok) || placements[0];
+    const chosen = placements.find(p => p.ok) || placements[0];
 
     let top, left;
     switch (chosen.name) {
@@ -419,7 +419,7 @@ export class GuidedTour {
     ];
 
     // Find best placement (preferring those that fit completely)
-    const fitting = positions.filter((p) => p.available >= p.needsSpace);
+    const fitting = positions.filter(p => p.available >= p.needsSpace);
     const chosen =
       fitting.length > 0
         ? fitting.sort((a, b) => b.available - a.available)[0]
@@ -524,7 +524,7 @@ export class GuidedTour {
   }
 
   clearHighlights() {
-    this.highlightElements.forEach((element) => {
+    this.highlightElements.forEach(element => {
       if (element && element.classList) {
         // Remove highlight classes and attributes
         element.classList.remove(
@@ -847,8 +847,8 @@ export class GuidedTour {
     if (!target) return;
 
     this.intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (!entry.isIntersecting && this.tooltip) {
             // Hide tooltip when target segment is out of view within container
             this.tooltip.style.opacity = "0";

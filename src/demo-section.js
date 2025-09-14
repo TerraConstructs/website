@@ -179,8 +179,8 @@ function initCustomDropdown() {
 
   button.addEventListener("click", toggleDropdown);
 
-  options.forEach((option) => {
-    option.addEventListener("click", (e) => {
+  options.forEach(option => {
+    option.addEventListener("click", e => {
       e.preventDefault();
       const value = option.getAttribute("data-value");
       const displayText = option.textContent.trim();
@@ -188,14 +188,14 @@ function initCustomDropdown() {
     });
   });
 
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", e => {
     if (!button.contains(e.target) && !menu.contains(e.target)) {
       const isOpen = button.getAttribute("aria-expanded") === "true";
       if (isOpen) closeDropdown();
     }
   });
 
-  button.addEventListener("keydown", (e) => {
+  button.addEventListener("keydown", e => {
     if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
       e.preventDefault();
       if (button.getAttribute("aria-expanded") === "false") {
@@ -206,7 +206,7 @@ function initCustomDropdown() {
     }
   });
 
-  menu.addEventListener("keydown", (e) => {
+  menu.addEventListener("keydown", e => {
     const currentFocus = document.activeElement;
     const currentIndex = Array.from(options).indexOf(currentFocus);
 
@@ -276,7 +276,7 @@ export function initDemoBadges() {
   const badges = ["demoBadge1", "demoBadge2", "demoBadge3"];
 
   function setActiveBadge(badgeId) {
-    badges.forEach((id) => {
+    badges.forEach(id => {
       const badge = document.getElementById(id);
       if (badge) {
         badge.classList.remove("badge-active", "animate-badge-pulse");
@@ -291,7 +291,7 @@ export function initDemoBadges() {
     }
   }
 
-  badges.forEach((badgeId) => {
+  badges.forEach(badgeId => {
     const badge = document.getElementById(badgeId);
     if (badge) {
       badge.addEventListener("mouseenter", () => {

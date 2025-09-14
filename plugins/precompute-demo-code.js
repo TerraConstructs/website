@@ -250,7 +250,7 @@ export default function precomputeDemoCode() {
         changed === tourConfigJson ||
         changed === tourConfigJs ||
         Object.values(demos).some(
-          (d) => d.typescriptPath === changed || d.terraformPath === changed
+          d => d.typescriptPath === changed || d.terraformPath === changed
         )
       ) {
         const mod = ctx.server.moduleGraph.getModuleById(RESOLVED_VIRTUAL_ID);

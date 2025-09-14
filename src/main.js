@@ -11,7 +11,7 @@ import { initIcons } from "./icons.js";
 const root = document.documentElement;
 const THEME_KEY = "tc-theme";
 
-const applyTheme = (t) => {
+const applyTheme = t => {
   const isDark =
     t === "dark" ||
     (t == null && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -57,7 +57,7 @@ if (yearEl) {
 function initFAQ() {
   const faqToggles = document.querySelectorAll(".faq-toggle");
 
-  faqToggles.forEach((toggle) => {
+  faqToggles.forEach(toggle => {
     const panel = document.getElementById(toggle.getAttribute("aria-controls"));
 
     if (!panel) return;
@@ -133,7 +133,7 @@ if (mobileMenuButton && mobileMenu) {
 
   // Close menu when clicking on menu links
   const mobileMenuLinks = mobileMenu.querySelectorAll("a");
-  mobileMenuLinks.forEach((link) => {
+  mobileMenuLinks.forEach(link => {
     link.addEventListener("click", () => {
       mobileMenuButton.setAttribute("aria-expanded", "false");
       mobileMenu.classList.remove("opacity-100", "visible");
@@ -145,7 +145,7 @@ if (mobileMenuButton && mobileMenu) {
   });
 
   // Close menu when clicking outside
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", e => {
     if (
       !mobileMenuButton.contains(e.target) &&
       !mobileMenu.contains(e.target)
@@ -164,7 +164,7 @@ if (mobileMenuButton && mobileMenu) {
   });
 
   // Close with Escape key
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", e => {
     if (
       e.key === "Escape" &&
       mobileMenuButton.getAttribute("aria-expanded") === "true"
@@ -207,4 +207,4 @@ window.addEventListener("load", () => {
 });
 
 // Make icon refresh available globally
-window.refreshIcons = (el) => initIcons(el);
+window.refreshIcons = el => initIcons(el);

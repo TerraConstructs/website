@@ -1,0 +1,1905 @@
+aws_s3_object.Source_source-0_File--_next--static--chunks--main-app-f5647b31fb1c0cb3js_1F747488: Refreshing state... [id=/_next/static/chunks/main-app-f5647b31fb1c0cb3.js]
+aws_s3_object.Source_source-0_File--_next--static--media--6d93bde91c0c2823-swoff2_86B107EB: Refreshing state... [id=/_next/static/media/6d93bde91c0c2823-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--media--df0a9ae256c0569c-swoff2_5E845A94: Refreshing state... [id=/_next/static/media/df0a9ae256c0569c-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--media--26a46d62cd723877-swoff2_6EE4EEB5: Refreshing state... [id=/_next/static/media/26a46d62cd723877-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--chunks--app--_not-found--page-fa2f28c63e4dbcedjs_499F0F28: Refreshing state... [id=/_next/static/chunks/app/_not-found/page-fa2f28c63e4dbced.js]
+aws_s3_object.Source_source-0_File--manifestjson_C96D116B: Refreshing state... [id=/manifest.json]
+aws_s3_object.Source_source-0_File--_next--static--chunks--app--page-991606bc7837f37cjs_84309E2B: Refreshing state... [id=/_next/static/chunks/app/page-991606bc7837f37c.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--webpack-bbfb8465a2ac6b60js_358B3295: Refreshing state... [id=/_next/static/chunks/webpack-bbfb8465a2ac6b60.js]
+aws_s3_object.Source_source-0_File--_next--static--media--55c55f0601d81cf3-swoff2_CBEBEC9C: Refreshing state... [id=/_next/static/media/55c55f0601d81cf3-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--chunks--app--layout-9bc57b418fe11c25js_24473274: Refreshing state... [id=/_next/static/chunks/app/layout-9bc57b418fe11c25.js]
+aws_s3_object.Source_source-0_File--faviconico_3DAAE0DC: Refreshing state... [id=/favicon.ico]
+aws_s3_object.Source_source-0_File--indextxt_144D830E: Refreshing state... [id=/index.txt]
+aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_ssgManifestjs_4417ACF8: Refreshing state... [id=/_next/static/B92az6b2k-72Dzb-Pm43m/_ssgManifest.js]
+aws_s3_object.Source_source-0_File--_next--static--css--fbdf3b014ad87361css_F6532687: Refreshing state... [id=/_next/static/css/fbdf3b014ad87361.css]
+aws_s3_object.Source_source-0_File--_next--static--media--581909926a08bbc8-swoff2_0ABD2A27: Refreshing state... [id=/_next/static/media/581909926a08bbc8-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_buildManifestjs_94B0882D: Refreshing state... [id=/_next/static/B92az6b2k-72Dzb-Pm43m/_buildManifest.js]
+aws_s3_object.Source_source-0_File--_next--static--media--97e0cb1ae144a2a9-swoff2_64B51E63: Refreshing state... [id=/_next/static/media/97e0cb1ae144a2a9-s.woff2]
+aws_s3_object.Source_source-0_File--_next--static--chunks--polyfills-42372ed130431b0ajs_25A3A785: Refreshing state... [id=/_next/static/chunks/polyfills-42372ed130431b0a.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--framework-6e06c675866dc992js_B204EF5E: Refreshing state... [id=/_next/static/chunks/framework-6e06c675866dc992.js]
+aws_s3_object.Source_source-0_File--_next--static--media--a34f9d1faa5f3315-spwoff2_5BAF7296: Refreshing state... [id=/_next/static/media/a34f9d1faa5f3315-s.p.woff2]
+aws_s3_object.Source_source-0_File--404html_448C3D8C: Refreshing state... [id=/404.html]
+aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_error-c2458e60835cb6fejs_4AFAEC19: Refreshing state... [id=/_next/static/chunks/pages/_error-c2458e60835cb6fe.js]
+aws_s3_object.Source_source-0_File--_next--static--css--5c3da54741072322css_F702C114: Refreshing state... [id=/_next/static/css/5c3da54741072322.css]
+aws_s3_object.Source_source-0_File--_next--static--chunks--main-629ed3eaffe4e2eajs_E62F5536: Refreshing state... [id=/_next/static/chunks/main-629ed3eaffe4e2ea.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--371-517f5283dabc353fjs_E4E17837: Refreshing state... [id=/_next/static/chunks/371-517f5283dabc353f.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--240-19ec6492ebfd4ea6js_A290B613: Refreshing state... [id=/_next/static/chunks/240-19ec6492ebfd4ea6.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_app-492a7d358b41173djs_5E0A89CA: Refreshing state... [id=/_next/static/chunks/pages/_app-492a7d358b41173d.js]
+aws_s3_object.Source_source-0_File--_next--static--chunks--8bc8d761-e6b58d289b05d960js_D87EF850: Refreshing state... [id=/_next/static/chunks/8bc8d761-e6b58d289b05d960.js]
+data.aws_cloudfront_cache_policy.Cdn_Managed-CachingOptimized_58CFD2BA: Reading...
+data.aws_partition.Partitition: Reading...
+data.aws_partition.Partitition: Read complete after 0s [id=aws]
+data.aws_caller_identity.CallerIdentity: Reading...
+data.aws_caller_identity.CallerIdentity: Read complete after 0s [id=694710432912]
+data.aws_route53_zone.Zone_A5DE4B68: Reading...
+aws_s3_bucket.Source_71E471F1: Refreshing state... [id=website-landingsource20241224042259745700000002]
+data.aws_cloudfront_cache_policy.Cdn_Managed-CachingOptimized_58CFD2BA: Read complete after 1s [id=658327ea-f89d-4fab-a63d-7e88639e58f6]
+data.aws_route53_zone.Zone_A5DE4B68: Read complete after 1s [id=Z09339061DF0IQA1CJMKQ]
+aws_acm_certificate.Certificate_4E7ABB08: Refreshing state... [id=arn:aws:acm:us-east-1:694710432912:certificate/ad36002b-f4e1-48a0-a016-995e8efb3165]
+aws_route53_record.Certificate_ValidationRecord-terraconstructsdev_E1E87186: Refreshing state... [id=Z09339061DF0IQA1CJMKQ__2b12036ef3cde0d6125e67a032915caa.terraconstructs.dev._CNAME]
+aws_acm_certificate_validation.Certificate_Validation_1DBF2B44: Refreshing state... [id=2024-12-24 04:23:20.647 +0000 UTC]
+aws_s3_object.Source_source-0_File--sitemapxml_104FAD80: Refreshing state... [id=/sitemap.xml]
+aws_s3_object.Source_source-0_File--robotstxt_6F2DD3AC: Refreshing state... [id=/robots.txt]
+aws_s3_object.Source_source-0_File--indexhtml_14317A08: Refreshing state... [id=/index.html]
+aws_cloudfront_origin_access_identity.Source_OriginAccessIdentity_47D1410C: Refreshing state... [id=E17UNOLO94PGAC]
+data.aws_iam_policy_document.Source_Policy_BC7DCC4B: Reading...
+data.aws_iam_policy_document.Source_Policy_BC7DCC4B: Read complete after 0s [id=3983898907]
+aws_s3_bucket_policy.Source_Policy_E5AB5F73: Refreshing state... [id=website-landingsource20241224042259745700000002]
+aws_cloudfront_distribution.Cdn_9963B1AD: Refreshing state... [id=EU7L1RD1IYZ3E]
+aws_route53_record.CdnAlias_49D721F7: Refreshing state... [id=Z09339061DF0IQA1CJMKQ_terraconstructs.dev_A]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_acm_certificate.Certificate_4E7ABB08 will be updated in-place
+  ~ resource "aws_acm_certificate" "Certificate_4E7ABB08" {
+        id                        = "arn:aws:acm:us-east-1:694710432912:certificate/ad36002b-f4e1-48a0-a016-995e8efb3165"
+        tags                      = {
+            "Name"                 = "prod-Certificate"
+            "grid:EnvironmentName" = "prod"
+            "grid:UUID"            = "website"
+        }
+        # (15 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # aws_cloudfront_distribution.Cdn_9963B1AD will be updated in-place
+  ~ resource "aws_cloudfront_distribution" "Cdn_9963B1AD" {
+        id                             = "EU7L1RD1IYZ3E"
+        tags                           = {
+            "Name"                 = "prod-Cdn"
+            "grid:EnvironmentName" = "prod"
+            "grid:UUID"            = "website"
+        }
+        # (20 unchanged attributes hidden)
+
+      ~ default_cache_behavior {
+          + response_headers_policy_id = (known after apply)
+            # (12 unchanged attributes hidden)
+
+            # (1 unchanged block hidden)
+        }
+
+        # (5 unchanged blocks hidden)
+    }
+
+  # aws_cloudfront_response_headers_policy.SiteHeaders_DBBF4967 will be created
+  + resource "aws_cloudfront_response_headers_policy" "SiteHeaders_DBBF4967" {
+      + arn  = (known after apply)
+      + etag = (known after apply)
+      + id   = (known after apply)
+      + name = "websitelandingSiteHeaders187DCAE1"
+
+      + security_headers_config {
+          + content_security_policy {
+              + content_security_policy = "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'sha256-U6HJgX+4WJkErNeqXR/7tbJHXAXOn9PKLNRzkZcP7RM='; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'sha256-jnEt9Md5pLcENwSMy3G9IhF0gOxG24PL72VOggWkOiE=' 'sha256-m7Q+SBP3IQL7b+182BHrX+sR+EqDcn2RJ9q4cmD9oek=' 'sha256-FVvkp9qdgdiHP6lWvMZQu3aM9lMJ9yMnslALvw+XH4c=' 'sha256-8x1WwuIMPQHDJV/akUEWAL1+O6gHk1nLU/lvNtpw+14='; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; frame-ancestors 'none'; script-src-attr 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';"
+              + override                = true
+            }
+          + content_type_options {
+              + override = true
+            }
+          + frame_options {
+              + frame_option = "DENY"
+              + override     = true
+            }
+          + referrer_policy {
+              + override        = true
+              + referrer_policy = "strict-origin-when-cross-origin"
+            }
+          + strict_transport_security {
+              + access_control_max_age_sec = 31536000
+              + include_subdomains         = true
+              + override                   = true
+            }
+          + xss_protection {
+              + mode_block = true
+              + override   = true
+              + protection = true
+            }
+        }
+    }
+
+  # aws_s3_object.Source_source-0_File--404html_448C3D8C will be destroyed
+  # (because aws_s3_object.Source_source-0_File--404html_448C3D8C is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--404html_448C3D8C" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/404.html" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "text/html; charset=utf-8" -> null
+      - etag                   = "a7bf127e5b184b921705090607d8f754" -> null
+      - force_destroy          = false -> null
+      - id                     = "/404.html" -> null
+      - key                    = "/404.html" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/404.html" -> null
+      - source_hash            = "a7bf127e5b184b921705090607d8f754" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_buildManifestjs_94B0882D will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_buildManifestjs_94B0882D is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_buildManifestjs_94B0882D" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/B92az6b2k-72Dzb-Pm43m/_buildManifest.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "d4cdf765f98f07a1db5d0a47e59823ca" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/B92az6b2k-72Dzb-Pm43m/_buildManifest.js" -> null
+      - key                    = "/_next/static/B92az6b2k-72Dzb-Pm43m/_buildManifest.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/B92az6b2k-72Dzb-Pm43m/_buildManifest.js" -> null
+      - source_hash            = "d4cdf765f98f07a1db5d0a47e59823ca" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_ssgManifestjs_4417ACF8 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_ssgManifestjs_4417ACF8 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--B92az6b2k-72Dzb-Pm43m--_ssgManifestjs_4417ACF8" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/B92az6b2k-72Dzb-Pm43m/_ssgManifest.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "b404e23d62d95bafd03ad7747cc0e88b" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/B92az6b2k-72Dzb-Pm43m/_ssgManifest.js" -> null
+      - key                    = "/_next/static/B92az6b2k-72Dzb-Pm43m/_ssgManifest.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/B92az6b2k-72Dzb-Pm43m/_ssgManifest.js" -> null
+      - source_hash            = "b404e23d62d95bafd03ad7747cc0e88b" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--240-19ec6492ebfd4ea6js_A290B613 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--240-19ec6492ebfd4ea6js_A290B613 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--240-19ec6492ebfd4ea6js_A290B613" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/240-19ec6492ebfd4ea6.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "f447da16149a73efe708fa5eccd20a26" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/240-19ec6492ebfd4ea6.js" -> null
+      - key                    = "/_next/static/chunks/240-19ec6492ebfd4ea6.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/240-19ec6492ebfd4ea6.js" -> null
+      - source_hash            = "f447da16149a73efe708fa5eccd20a26" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--371-517f5283dabc353fjs_E4E17837 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--371-517f5283dabc353fjs_E4E17837 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--371-517f5283dabc353fjs_E4E17837" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/371-517f5283dabc353f.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "319e8f7ad4fffd76efebc864290ec867" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/371-517f5283dabc353f.js" -> null
+      - key                    = "/_next/static/chunks/371-517f5283dabc353f.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/371-517f5283dabc353f.js" -> null
+      - source_hash            = "319e8f7ad4fffd76efebc864290ec867" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--8bc8d761-e6b58d289b05d960js_D87EF850 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--8bc8d761-e6b58d289b05d960js_D87EF850 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--8bc8d761-e6b58d289b05d960js_D87EF850" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/8bc8d761-e6b58d289b05d960.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "ebe6ec6c9d15364104ed910391da6126" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/8bc8d761-e6b58d289b05d960.js" -> null
+      - key                    = "/_next/static/chunks/8bc8d761-e6b58d289b05d960.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/8bc8d761-e6b58d289b05d960.js" -> null
+      - source_hash            = "ebe6ec6c9d15364104ed910391da6126" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--app--_not-found--page-fa2f28c63e4dbcedjs_499F0F28 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--app--_not-found--page-fa2f28c63e4dbcedjs_499F0F28 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--app--_not-found--page-fa2f28c63e4dbcedjs_499F0F28" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/app/_not-found/page-fa2f28c63e4dbced.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "4c4dfc1aee4e3afdbe3431ac3a013bce" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/app/_not-found/page-fa2f28c63e4dbced.js" -> null
+      - key                    = "/_next/static/chunks/app/_not-found/page-fa2f28c63e4dbced.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/app/_not-found/page-fa2f28c63e4dbced.js" -> null
+      - source_hash            = "4c4dfc1aee4e3afdbe3431ac3a013bce" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--app--layout-9bc57b418fe11c25js_24473274 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--app--layout-9bc57b418fe11c25js_24473274 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--app--layout-9bc57b418fe11c25js_24473274" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/app/layout-9bc57b418fe11c25.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "9fa9279b09c33b5faf06e1d46a39ecd8" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/app/layout-9bc57b418fe11c25.js" -> null
+      - key                    = "/_next/static/chunks/app/layout-9bc57b418fe11c25.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/app/layout-9bc57b418fe11c25.js" -> null
+      - source_hash            = "9fa9279b09c33b5faf06e1d46a39ecd8" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--app--page-991606bc7837f37cjs_84309E2B will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--app--page-991606bc7837f37cjs_84309E2B is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--app--page-991606bc7837f37cjs_84309E2B" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/app/page-991606bc7837f37c.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "812fbc61b12b54ce82c9f7c84e23dd8b" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/app/page-991606bc7837f37c.js" -> null
+      - key                    = "/_next/static/chunks/app/page-991606bc7837f37c.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/app/page-991606bc7837f37c.js" -> null
+      - source_hash            = "812fbc61b12b54ce82c9f7c84e23dd8b" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--framework-6e06c675866dc992js_B204EF5E will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--framework-6e06c675866dc992js_B204EF5E is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--framework-6e06c675866dc992js_B204EF5E" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/framework-6e06c675866dc992.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "a302e873a0eed7958ba636dbd03b8849" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/framework-6e06c675866dc992.js" -> null
+      - key                    = "/_next/static/chunks/framework-6e06c675866dc992.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/framework-6e06c675866dc992.js" -> null
+      - source_hash            = "a302e873a0eed7958ba636dbd03b8849" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--main-629ed3eaffe4e2eajs_E62F5536 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--main-629ed3eaffe4e2eajs_E62F5536 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--main-629ed3eaffe4e2eajs_E62F5536" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/main-629ed3eaffe4e2ea.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "4b56c7e11781a9e52b6365289b840564" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/main-629ed3eaffe4e2ea.js" -> null
+      - key                    = "/_next/static/chunks/main-629ed3eaffe4e2ea.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/main-629ed3eaffe4e2ea.js" -> null
+      - source_hash            = "4b56c7e11781a9e52b6365289b840564" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--main-app-f5647b31fb1c0cb3js_1F747488 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--main-app-f5647b31fb1c0cb3js_1F747488 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--main-app-f5647b31fb1c0cb3js_1F747488" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/main-app-f5647b31fb1c0cb3.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "9614923dae0ea275e4ffda2bbf9febc1" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/main-app-f5647b31fb1c0cb3.js" -> null
+      - key                    = "/_next/static/chunks/main-app-f5647b31fb1c0cb3.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/main-app-f5647b31fb1c0cb3.js" -> null
+      - source_hash            = "9614923dae0ea275e4ffda2bbf9febc1" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_app-492a7d358b41173djs_5E0A89CA will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_app-492a7d358b41173djs_5E0A89CA is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--pages--_app-492a7d358b41173djs_5E0A89CA" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/pages/_app-492a7d358b41173d.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "760a12ceef456929b6d77bda93462808" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/pages/_app-492a7d358b41173d.js" -> null
+      - key                    = "/_next/static/chunks/pages/_app-492a7d358b41173d.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/pages/_app-492a7d358b41173d.js" -> null
+      - source_hash            = "760a12ceef456929b6d77bda93462808" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_error-c2458e60835cb6fejs_4AFAEC19 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--pages--_error-c2458e60835cb6fejs_4AFAEC19 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--pages--_error-c2458e60835cb6fejs_4AFAEC19" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/pages/_error-c2458e60835cb6fe.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "855023d061016c9a10047e637105ed05" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/pages/_error-c2458e60835cb6fe.js" -> null
+      - key                    = "/_next/static/chunks/pages/_error-c2458e60835cb6fe.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/pages/_error-c2458e60835cb6fe.js" -> null
+      - source_hash            = "855023d061016c9a10047e637105ed05" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--polyfills-42372ed130431b0ajs_25A3A785 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--polyfills-42372ed130431b0ajs_25A3A785 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--polyfills-42372ed130431b0ajs_25A3A785" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/polyfills-42372ed130431b0a.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "846118c33b2c0e922d7b3a7676f81f6f" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/polyfills-42372ed130431b0a.js" -> null
+      - key                    = "/_next/static/chunks/polyfills-42372ed130431b0a.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/polyfills-42372ed130431b0a.js" -> null
+      - source_hash            = "846118c33b2c0e922d7b3a7676f81f6f" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--chunks--webpack-bbfb8465a2ac6b60js_358B3295 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--chunks--webpack-bbfb8465a2ac6b60js_358B3295 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--chunks--webpack-bbfb8465a2ac6b60js_358B3295" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/chunks/webpack-bbfb8465a2ac6b60.js" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/javascript; charset=utf-8" -> null
+      - etag                   = "8506b30703e6cdede0a7fc5d443999ba" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/chunks/webpack-bbfb8465a2ac6b60.js" -> null
+      - key                    = "/_next/static/chunks/webpack-bbfb8465a2ac6b60.js" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/chunks/webpack-bbfb8465a2ac6b60.js" -> null
+      - source_hash            = "8506b30703e6cdede0a7fc5d443999ba" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--css--5c3da54741072322css_F702C114 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--css--5c3da54741072322css_F702C114 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--css--5c3da54741072322css_F702C114" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/css/5c3da54741072322.css" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "text/css; charset=utf-8" -> null
+      - etag                   = "aa2bbf8979addd09c0b2580b171325f7" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/css/5c3da54741072322.css" -> null
+      - key                    = "/_next/static/css/5c3da54741072322.css" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/css/5c3da54741072322.css" -> null
+      - source_hash            = "aa2bbf8979addd09c0b2580b171325f7" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--css--fbdf3b014ad87361css_F6532687 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--css--fbdf3b014ad87361css_F6532687 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--css--fbdf3b014ad87361css_F6532687" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/css/fbdf3b014ad87361.css" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "text/css; charset=utf-8" -> null
+      - etag                   = "845e037b4d7724704cb19b68723b6bea" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/css/fbdf3b014ad87361.css" -> null
+      - key                    = "/_next/static/css/fbdf3b014ad87361.css" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/css/fbdf3b014ad87361.css" -> null
+      - source_hash            = "845e037b4d7724704cb19b68723b6bea" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--26a46d62cd723877-swoff2_6EE4EEB5 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--26a46d62cd723877-swoff2_6EE4EEB5 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--26a46d62cd723877-swoff2_6EE4EEB5" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/26a46d62cd723877-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "befd9c0fdfa3d8a645d5f95717ed6420" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/26a46d62cd723877-s.woff2" -> null
+      - key                    = "/_next/static/media/26a46d62cd723877-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/26a46d62cd723877-s.woff2" -> null
+      - source_hash            = "befd9c0fdfa3d8a645d5f95717ed6420" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--55c55f0601d81cf3-swoff2_CBEBEC9C will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--55c55f0601d81cf3-swoff2_CBEBEC9C is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--55c55f0601d81cf3-swoff2_CBEBEC9C" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/55c55f0601d81cf3-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "43828e14271c77b87e3ed582dbff9f74" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/55c55f0601d81cf3-s.woff2" -> null
+      - key                    = "/_next/static/media/55c55f0601d81cf3-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/55c55f0601d81cf3-s.woff2" -> null
+      - source_hash            = "43828e14271c77b87e3ed582dbff9f74" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--581909926a08bbc8-swoff2_0ABD2A27 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--581909926a08bbc8-swoff2_0ABD2A27 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--581909926a08bbc8-swoff2_0ABD2A27" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/581909926a08bbc8-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "f0b86e7c24f455280b8df606b89af891" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/581909926a08bbc8-s.woff2" -> null
+      - key                    = "/_next/static/media/581909926a08bbc8-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/581909926a08bbc8-s.woff2" -> null
+      - source_hash            = "f0b86e7c24f455280b8df606b89af891" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--6d93bde91c0c2823-swoff2_86B107EB will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--6d93bde91c0c2823-swoff2_86B107EB is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--6d93bde91c0c2823-swoff2_86B107EB" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/6d93bde91c0c2823-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "621a07228c8ccbfd647918f1021b4868" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/6d93bde91c0c2823-s.woff2" -> null
+      - key                    = "/_next/static/media/6d93bde91c0c2823-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/6d93bde91c0c2823-s.woff2" -> null
+      - source_hash            = "621a07228c8ccbfd647918f1021b4868" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--97e0cb1ae144a2a9-swoff2_64B51E63 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--97e0cb1ae144a2a9-swoff2_64B51E63 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--97e0cb1ae144a2a9-swoff2_64B51E63" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/97e0cb1ae144a2a9-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "e360c61c5bd8d90639fd4503c829c2dc" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/97e0cb1ae144a2a9-s.woff2" -> null
+      - key                    = "/_next/static/media/97e0cb1ae144a2a9-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/97e0cb1ae144a2a9-s.woff2" -> null
+      - source_hash            = "e360c61c5bd8d90639fd4503c829c2dc" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--a34f9d1faa5f3315-spwoff2_5BAF7296 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--a34f9d1faa5f3315-spwoff2_5BAF7296 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--a34f9d1faa5f3315-spwoff2_5BAF7296" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/a34f9d1faa5f3315-s.p.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "d4fe31e6a2aebc06b8d6e558c9141119" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/a34f9d1faa5f3315-s.p.woff2" -> null
+      - key                    = "/_next/static/media/a34f9d1faa5f3315-s.p.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/a34f9d1faa5f3315-s.p.woff2" -> null
+      - source_hash            = "d4fe31e6a2aebc06b8d6e558c9141119" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--_next--static--media--df0a9ae256c0569c-swoff2_5E845A94 will be destroyed
+  # (because aws_s3_object.Source_source-0_File--_next--static--media--df0a9ae256c0569c-swoff2_5E845A94 is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--_next--static--media--df0a9ae256c0569c-swoff2_5E845A94" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/_next/static/media/df0a9ae256c0569c-s.woff2" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "font/woff2" -> null
+      - etag                   = "d54db44de5ccb18886ece2fda72bdfe0" -> null
+      - force_destroy          = false -> null
+      - id                     = "/_next/static/media/df0a9ae256c0569c-s.woff2" -> null
+      - key                    = "/_next/static/media/df0a9ae256c0569c-s.woff2" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/_next/static/media/df0a9ae256c0569c-s.woff2" -> null
+      - source_hash            = "d54db44de5ccb18886ece2fda72bdfe0" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--assets--css--mainCnN9Hr9mcss_0936DC2C will be created
+  + resource "aws_s3_object" "Source_source-0_File--assets--css--mainCnN9Hr9mcss_0936DC2C" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "text/css; charset=utf-8"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/assets/css/main.CnN9Hr9m.css"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/css/main.CnN9Hr9m.css"
+      + source_hash            = "9659ab5849e21143b60316eee8f08ad1"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--assets--js--mainNkgR_MzRjs_F96371CF will be created
+  + resource "aws_s3_object" "Source_source-0_File--assets--js--mainNkgR_MzRjs_F96371CF" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "application/javascript; charset=utf-8"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/assets/js/main.NkgR_MzR.js"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js"
+      + source_hash            = "85123ae6bd3bc869bc566ddfc1a35210"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--assets--js--mainNkgR_MzRjsmap_0954243A will be created
+  + resource "aws_s3_object" "Source_source-0_File--assets--js--mainNkgR_MzRjsmap_0954243A" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "application/json; charset=utf-8"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/assets/js/main.NkgR_MzR.js.map"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/assets/js/main.NkgR_MzR.js.map"
+      + source_hash            = "9838eafd9ab6be017d8072a6f3d5aa1f"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--faviconico_3DAAE0DC will be destroyed
+  # (because aws_s3_object.Source_source-0_File--faviconico_3DAAE0DC is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--faviconico_3DAAE0DC" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/favicon.ico" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "image/vnd.microsoft.icon" -> null
+      - etag                   = "c30c7d42707a47a3f4591831641e50dc" -> null
+      - force_destroy          = false -> null
+      - id                     = "/favicon.ico" -> null
+      - key                    = "/favicon.ico" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/favicon.ico" -> null
+      - source_hash            = "c30c7d42707a47a3f4591831641e50dc" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--indexhtml_14317A08 will be updated in-place
+  ~ resource "aws_s3_object" "Source_source-0_File--indexhtml_14317A08" {
+        id                     = "/index.html"
+      ~ source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/index.html" -> "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/index.html"
+      ~ source_hash            = "ab9b25f242efb87716fbc17ffc7d781f" -> "9f2c3cdaed10b9091b83b9944930882b"
+        tags                   = {
+            "Name"                 = "prod-Source"
+            "grid:EnvironmentName" = "prod"
+            "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+        # (11 unchanged attributes hidden)
+    }
+
+  # aws_s3_object.Source_source-0_File--indextxt_144D830E will be destroyed
+  # (because aws_s3_object.Source_source-0_File--indextxt_144D830E is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--indextxt_144D830E" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/index.txt" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "text/plain; charset=utf-8" -> null
+      - etag                   = "d9e751b306189149725a822d28c20534" -> null
+      - force_destroy          = false -> null
+      - id                     = "/index.txt" -> null
+      - key                    = "/index.txt" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/index.txt" -> null
+      - source_hash            = "d9e751b306189149725a822d28c20534" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--LICENSE-LOGOS_92E558DB will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--LICENSE-LOGOS_92E558DB" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = (known after apply)
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/LICENSE-LOGOS"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/LICENSE-LOGOS"
+      + source_hash            = "304c0384e156a136f538ddfb3c9403d4"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_dark_1261x256png_04CEC391 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_dark_1261x256png_04CEC391" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_dark_1261x256.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_1261x256.png"
+      + source_hash            = "6492ed98f461897374cf2c66e5a59fe3"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_dark_2522x512png_D905D069 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_dark_2522x512png_D905D069" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_dark_2522x512.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_2522x512.png"
+      + source_hash            = "60c1d7abf24c899026d105caae1f823a"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_dark_630x128png_B4FEB20B will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_dark_630x128png_B4FEB20B" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_dark_630x128.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark_630x128.png"
+      + source_hash            = "2c35b4b7b2c684915f1ca67f7f9cf042"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_darksvg_93000DCB will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_darksvg_93000DCB" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/svg+xml"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_dark.svg"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_dark.svg"
+      + source_hash            = "40709ebdcdc662298fa7d51ee97d4926"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_light_1261x256png_B4030CD7 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_light_1261x256png_B4030CD7" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_light_1261x256.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_1261x256.png"
+      + source_hash            = "83868f652f420dfa8afb25f4ec7d9109"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_light_2522x512png_377091C4 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_light_2522x512png_377091C4" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_light_2522x512.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_2522x512.png"
+      + source_hash            = "2238cb2e9193e9fa16018c2cc6601095"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_light_630x128png_F5DF4A7A will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_light_630x128png_F5DF4A7A" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_light_630x128.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light_630x128.png"
+      + source_hash            = "e36f21fbb0a844ea36c85a14cd84c746"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_horizontal_lightsvg_414E5FE2 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_horizontal_lightsvg_414E5FE2" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/svg+xml"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_horizontal_light.svg"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_horizontal_light.svg"
+      + source_hash            = "f02327755e7772f97299feb417e3e981"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_128x128png_C7491BE7 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_128x128png_C7491BE7" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_128x128.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_128x128.png"
+      + source_hash            = "38f1a213376af0c5837c4ae0ce4b2d2d"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_16x16png_E60D4CF7 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_16x16png_E60D4CF7" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_16x16.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_16x16.png"
+      + source_hash            = "cd5b1b482c070ca070e0d310e6f6c661"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_256x256png_AC08D233 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_256x256png_AC08D233" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_256x256.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_256x256.png"
+      + source_hash            = "601df59b5cb812f66745f1bbb4b816a1"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_32x32png_026B2F49 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_32x32png_026B2F49" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_32x32.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_32x32.png"
+      + source_hash            = "509cd03b5ac7a63292d65b9685e3887c"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_512x512png_33E2DB3B will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_512x512png_33E2DB3B" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_512x512.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_512x512.png"
+      + source_hash            = "eaf7e620deac4611ce60f3c21330b7dc"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_logo_64x64png_184F3A1E will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_logo_64x64png_184F3A1E" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_logo_64x64.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_logo_64x64.png"
+      + source_hash            = "aa64a17b5f9675eecf76308e04794cd2"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_triangle_logosvg_648CA763 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_triangle_logosvg_648CA763" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/svg+xml"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_triangle_logo.svg"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_triangle_logo.svg"
+      + source_hash            = "108e7a58e0f6ffdbb2d7d209bcc03814"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_dark_115x128png_DA0564E9 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_dark_115x128png_DA0564E9" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_dark_115x128.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_115x128.png"
+      + source_hash            = "63f85387fa65fe6658644fb7399746c2"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_dark_229x256png_515E6428 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_dark_229x256png_515E6428" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_dark_229x256.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_229x256.png"
+      + source_hash            = "6aa031684ae8e19020ab2785726ffc67"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_dark_458x512png_E98AFEF5 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_dark_458x512png_E98AFEF5" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_dark_458x512.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark_458x512.png"
+      + source_hash            = "2e64091bb5862302745d069b0fee66a8"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_darksvg_215DA03C will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_darksvg_215DA03C" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/svg+xml"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_dark.svg"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_dark.svg"
+      + source_hash            = "df1f660766724b9959317e1ade582e4c"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_light_115x128png_3211D949 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_light_115x128png_3211D949" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_light_115x128.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_115x128.png"
+      + source_hash            = "34fe5cf4eea9fc671ef174f6e9b1dc87"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_light_229x256png_0E23677C will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_light_229x256png_0E23677C" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_light_229x256.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_229x256.png"
+      + source_hash            = "1600a7576b7a74d25c551f4d19e31240"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_light_458x512png_A4997BE2 will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_light_458x512png_A4997BE2" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/png"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_light_458x512.png"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light_458x512.png"
+      + source_hash            = "17ed589dca94832452d8abe547b8e1cf"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--logos--terraconstructs_vertical_lightsvg_ECC6301B will be created
+  + resource "aws_s3_object" "Source_source-0_File--logos--terraconstructs_vertical_lightsvg_ECC6301B" {
+      + acl                    = (known after apply)
+      + arn                    = (known after apply)
+      + bucket                 = "website-landingsource20241224042259745700000002"
+      + bucket_key_enabled     = (known after apply)
+      + checksum_crc32         = (known after apply)
+      + checksum_crc32c        = (known after apply)
+      + checksum_crc64nvme     = (known after apply)
+      + checksum_sha1          = (known after apply)
+      + checksum_sha256        = (known after apply)
+      + content_type           = "image/svg+xml"
+      + etag                   = (known after apply)
+      + force_destroy          = false
+      + id                     = (known after apply)
+      + key                    = "/logos/terraconstructs_vertical_light.svg"
+      + kms_key_id             = (known after apply)
+      + server_side_encryption = (known after apply)
+      + source                 = "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/logos/terraconstructs_vertical_light.svg"
+      + source_hash            = "461aff024b2cfebdf660d70ca43029cb"
+      + storage_class          = (known after apply)
+      + tags                   = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + tags_all               = {
+          + "Name"                 = "prod-Source"
+          + "grid:EnvironmentName" = "prod"
+          + "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_object.Source_source-0_File--manifestjson_C96D116B will be destroyed
+  # (because aws_s3_object.Source_source-0_File--manifestjson_C96D116B is not in configuration)
+  - resource "aws_s3_object" "Source_source-0_File--manifestjson_C96D116B" {
+      - arn                    = "arn:aws:s3:::website-landingsource20241224042259745700000002/manifest.json" -> null
+      - bucket                 = "website-landingsource20241224042259745700000002" -> null
+      - bucket_key_enabled     = false -> null
+      - content_type           = "application/json; charset=utf-8" -> null
+      - etag                   = "16676eb3183686195a1fc939b673a740" -> null
+      - force_destroy          = false -> null
+      - id                     = "/manifest.json" -> null
+      - key                    = "/manifest.json" -> null
+      - metadata               = {} -> null
+      - region                 = "us-east-1" -> null
+      - server_side_encryption = "AES256" -> null
+      - source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/manifest.json" -> null
+      - source_hash            = "16676eb3183686195a1fc939b673a740" -> null
+      - storage_class          = "STANDARD" -> null
+      - tags                   = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+      - tags_all               = {
+          - "Name"                 = "prod-Source"
+          - "grid:EnvironmentName" = "prod"
+          - "grid:UUID"            = "website"
+        } -> null
+    }
+
+  # aws_s3_object.Source_source-0_File--robotstxt_6F2DD3AC will be updated in-place
+  ~ resource "aws_s3_object" "Source_source-0_File--robotstxt_6F2DD3AC" {
+        id                     = "/robots.txt"
+      ~ source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/robots.txt" -> "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/robots.txt"
+      ~ source_hash            = "ef210332b9fda7901145542b01aa9c6e" -> "ddf1c47ba283ae21548e56806f39c5b4"
+        tags                   = {
+            "Name"                 = "prod-Source"
+            "grid:EnvironmentName" = "prod"
+            "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+        # (11 unchanged attributes hidden)
+    }
+
+  # aws_s3_object.Source_source-0_File--sitemapxml_104FAD80 will be updated in-place
+  ~ resource "aws_s3_object" "Source_source-0_File--sitemapxml_104FAD80" {
+        id                     = "/sitemap.xml"
+      ~ source                 = "assets/Source_source-0_PathAsset_FD59E05B/72391E3BE10065FB0A998DB3AFE815F3/sitemap.xml" -> "assets/Source_source-0_PathAsset_FD59E05B/279EA474B28CF61FC236B8A18F3EF5D7/sitemap.xml"
+      ~ source_hash            = "aa6dfd843bb5de95940d6553a17d0426" -> "4f12d8893f53f5f95b128337b0f45e89"
+        tags                   = {
+            "Name"                 = "prod-Source"
+            "grid:EnvironmentName" = "prod"
+            "grid:UUID"            = "website"
+        }
+      + version_id             = (known after apply)
+        # (11 unchanged attributes hidden)
+    }
+
+Plan: 28 to add, 5 to change, 28 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
