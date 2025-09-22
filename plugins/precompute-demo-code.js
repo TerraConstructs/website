@@ -164,11 +164,17 @@ export default function precomputeDemoCode() {
       terraformPath: path.join(root, "demos/workshop/cdk.tf"),
       fileName: "main.ts",
     },
-    "function-url": {
-      // Lambda function with direct HTTP endpoint using Function URL
-      typescriptPath: path.join(root, "demos/function-url/src/stack.ts"),
-      terraformPath: path.join(root, "demos/function-url/cdk.tf"),
-      fileName: "main.ts",
+    // "function-url": {
+    //   // Lambda function with direct HTTP endpoint using Function URL
+    //   typescriptPath: path.join(root, "demos/function-url/src/stack.ts"),
+    //   terraformPath: path.join(root, "demos/function-url/cdk.tf"),
+    //   fileName: "main.ts",
+    // },
+    "instance-signal": {
+      // EC2 instance with CloudFormation signal
+      typescriptPath: path.join(root, "demos/instance-signal/src/stack.ts"),
+      terraformPath: path.join(root, "demos/instance-signal/cdk.tf"),
+      fileName: "instance.ts",
     },
   };
 

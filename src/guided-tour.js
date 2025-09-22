@@ -714,7 +714,7 @@ export class GuidedTour {
     completion.innerHTML = `
       <div class="tour-completion-content">
         <h3>🎉 Tour Complete!</h3>
-        <p>You've learned the basics of TerraConstructs L2 constructs and how they generate clean Terraform.</p>
+        <p>Thanks for taking the time! Get hands-on practice through the Workshops!</p>
       </div>
     `;
 

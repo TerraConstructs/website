@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import * as fs from "node:fs";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import { Construct } from "constructs";
 import { App, LocalBackend } from "cdktf";
 import { AwsStack, AwsStackProps } from "terraconstructs/lib/aws";
@@ -69,23 +69,23 @@ class LandingPageStack extends AwsStack {
           override: true,
         },
         frameOptions: {
-            frameOption: HeadersFrameOption.DENY,
-            override: true,
+          frameOption: HeadersFrameOption.DENY,
+          override: true,
         },
         contentTypeOptions: { override: true },
         xssProtection: {
-            protection: true,
-            modeBlock: true,
-            override: true,
+          protection: true,
+          modeBlock: true,
+          override: true,
         },
         referrerPolicy: {
-            referrerPolicy: HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
-            override: true,
+          referrerPolicy: HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+          override: true,
         },
         strictTransportSecurity: {
-            accessControlMaxAge: Duration.seconds(31536000),
-            includeSubdomains: true,
-            override: true,
+          accessControlMaxAge: Duration.seconds(31536000),
+          includeSubdomains: true,
+          override: true,
         },
       },
     });

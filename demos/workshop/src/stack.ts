@@ -18,9 +18,9 @@ export class CdkWorkshopStack extends AwsStack {
     });
 
     new LambdaRestApi(this, "Endpoint", {
-      cloudWatchRole: false,
       handler: hello,
       registerOutputs: true,
+      cloudWatchRole: false,
     });
   }
 }

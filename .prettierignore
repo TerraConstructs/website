@@ -1,6 +1,7 @@
 # Build outputs
 dist/
 .vite/
+cdktf.out/
 
 # Dependencies
 node_modules/

@@ -408,11 +408,14 @@
                 ></i>
               </a>
 
-              <button
+              <a
+                href="https://aws-workshop.terraconstructs.dev"
                 class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                target="_blank"
+                rel="noopener"
               >
-                Get Started
-              </button>
+                Workshops
+              </a>
             </div>
 
             <!-- Mobile actions -->
@@ -521,11 +524,14 @@
               ></i>
             </a>
 
-            <button
+            <a
+              href="https://aws-workshop.terraconstructs.dev"
               class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ml-auto"
+              target="_blank"
+              rel="noopener"
             >
-              Get Started
-            </button>
+              Workshops
+            </a>
           </div>
         </nav>
       </div>
@@ -548,12 +554,12 @@
             </div>
 
             <h1 class="text-5xl lg:text-7xl font-bold mb-6">
-              Infrastructure as
+              Build Reliable Infrastructure with
               <br />
               <span
                 class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-800 dark:from-purple-400 dark:to-purple-600"
               >
-                Code Simplified
+                Confidence
               </span>
             </h1>
 
@@ -561,10 +567,28 @@
             <p
               class="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              TerraConstructs provides Level 2 CDKTF Constructs ported from AWS
-              CDK, synthesizing directly to Terraform configurations. Build
-              cloud infrastructure with type safety and familiar patterns.
+              Enable the <strong>Architectural Depth</strong> platform engineers
+              need while maintaining the
+              <strong>Developer Experience</strong> product teams demand.
             </p>
+
+            <!-- Key benefits -->
+            <div
+              class="flex flex-wrap items-center justify-center gap-8 mb-12 text-sm text-gray-500 dark:text-gray-400"
+            >
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Deterministic &amp; Type Safe</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span>OpenTofu &amp; Terraform Ready</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span>Apache 2.0 Licensed</span>
+              </div>
+            </div>
 
             <div
               class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
@@ -588,23 +612,17 @@
               </a>
             </div>
 
-            <!-- Key benefits -->
-            <div
-              class="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500 dark:text-gray-400"
-            >
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Type Safe</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>Unit Tested</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span>Production Ready</span>
-              </div>
+            <!-- TODO: Quick start hint -->
+            <!--
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 max-w-2xl mx-auto">
+              <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 text-center">
+                Quick Start:
+              </p>
+              <code class="block bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-6 py-4 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+                npx projen new --from @tcons/aws-app-ts
+              </code>
             </div>
+            -->
           </div>
         </div>
       </section>
@@ -619,9 +637,8 @@
             <p
               class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
             >
-              Watch how our L2 constructs transform TypeScript code into
-              production-ready Terraform configurations. Interactive demos show
-              real conversion in action.
+              Step through TypeScript code samples and their generated Terraform
+              configurations. Click "Start Tour" for guided walkthroughs.
             </p>
           </div>
 
@@ -662,7 +679,7 @@
                       Serverless Sample
                     </button>
                   </li>
-                  <li class="relative">
+                  <!-- <li class="relative">
                     <button
                       type="button"
                       class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
@@ -670,6 +687,16 @@
                       role="option"
                     >
                       Lambda with Function URL
+                    </button>
+                  </li> -->
+                  <li class="relative">
+                    <button
+                      type="button"
+                      class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                      data-value="instance-signal"
+                      role="option"
+                    >
+                      EC2 Instance with CFN Signal
                     </button>
                   </li>
                 </ul>
@@ -781,24 +808,30 @@
           <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
             <span
               id="demoBadge1"
-              class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full"
-            >
-              <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Deterministic output
-            </span>
-            <span
-              id="demoBadge2"
               class="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full"
             >
               <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-              First Class Ecosystem support
+              Extensive Unit &amp; E2E Testing
+            </span>
+            <span
+              id="demoBadge2"
+              class="inline-flex items-center px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+              AWS CDK inspired
             </span>
             <span
               id="demoBadge3"
               class="inline-flex items-center px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full"
             >
               <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-              No CloudFormation
+              IAM that makes sense </span
+            ><span
+              id="demoBadge4"
+              class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              Powerful Asset Pipelines
             </span>
           </div>
         </div>
@@ -815,8 +848,8 @@
               class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
             >
               Bridge the gap between AWS CDK's developer experience and
-              Terraform's reliability with our comprehensive L2 construct
-              library.
+              Terraform's operational excellence with this comprehensive L2
+              construct library.
             </p>
           </div>
 
@@ -859,8 +892,9 @@
                 Battle-Tested Reliability
               </h3>
               <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                All AWS CDK unit tests ported and extensive end-to-end testing
-                ensures your Terraform configurations work in production.
+                Ported AWS CDK <strong>Unit Tests</strong> and extensive
+                end-to-end TerraTest <strong>Integration Tests</strong> ensure
+                your Terraform configurations work reliably.
               </p>
             </div>
 
@@ -871,7 +905,7 @@
                 class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
               >
                 <i
-                  data-lucide="zap"
+                  data-lucide="circle-minus"
                   class="w-6 h-6 text-purple-600 dark:text-purple-400"
                 ></i>
               </div>
@@ -879,7 +913,7 @@
               <h3 class="text-xl font-semibold mb-3">Zero CloudFormation</h3>
               <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Pure Terraform output with no CloudFormation dependency. Perfect
-                for teams committed to OpenTofu or Terraform workflows.
+                for teams with a heavy OpenTofu or Terraform footprint.
               </p>
             </div>
 
@@ -890,7 +924,7 @@
                 class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
               >
                 <i
-                  data-lucide="users"
+                  data-lucide="rocket"
                   class="w-6 h-6 text-purple-600 dark:text-purple-400"
                 ></i>
               </div>
@@ -928,29 +962,31 @@
                 class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
               >
                 <i
-                  data-lucide="rocket"
+                  data-lucide="boxes"
                   class="w-6 h-6 text-purple-600 dark:text-purple-400"
                 ></i>
               </div>
 
-              <h3 class="text-xl font-semibold mb-3">Production Scale</h3>
+              <h3 class="text-xl font-semibold mb-3">Built on Constructs</h3>
               <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Deterministic code base with comprehensive testing guarantees
-                your infrastructure deployments work at enterprise scale.
+                Compose like code: a hierarchical construct tree, late-bound
+                values, and Aspects for cross-cutting concerns deliver
+                flexibility modules can't.
               </p>
             </div>
           </div>
 
           <div class="mt-16 text-center">
             <div
-              class="inline-flex items-center px-6 py-3 bg-purple-50 dark:bg-purple-900/20 rounded-full"
+              class="inline-flex items-center px-6 py-3 bg-purple-50 dark:bg-purple-900/20 rounded-full relative group cursor-help"
+              title='Powered by terraform-provider-aws, the longest-standing (since 2014) and most-used Terraform provider so existing scanners and cost tools "just work."'
             >
               <i
-                data-lucide="check-circle"
+                data-lucide="plug"
                 class="w-5 h-5 text-purple-600 dark:text-purple-400 mr-2"
               ></i>
               <span class="text-purple-800 dark:text-purple-300 font-medium">
-                Fully deterministic codebase with extensive end-to-end tests
+                Plug and Play: supports tflint, infracost, OPA, ...
               </span>
             </div>
           </div>
@@ -996,10 +1032,12 @@
                   class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
                 >
                   TerraConstructs is a library of Level 2 CDKTF Constructs that
-                  are ported from AWS CDK L2 constructs. The key difference is
-                  that TerraConstructs synthesizes to pure Terraform/OpenTofu
-                  configurations instead of CloudFormation, eliminating vendor
-                  lock-in while maintaining the developer experience of AWS CDK.
+                  are initially ported from AWS CDK L2 constructs. The key
+                  difference is that TerraConstructs synthesizes to pure
+                  Terraform/OpenTofu configurations instead of CloudFormation,
+                  allowing minimal effort adoption for teams with existing
+                  Terraform footprint while enabling the excellent developer
+                  experience AWS CDK is famous for.
                 </p>
               </div>
             </div>
@@ -1013,8 +1051,8 @@
                 aria-controls="faq-2"
               >
                 <span class="font-semibold text-lg pr-4"
-                  >Can I use TerraConstructs with existing Terraform
-                  configurations?</span
+                  >How is TerraConstructs different from CDK for Terraform
+                  (CDKTF)</span
                 >
                 <i
                   data-lucide="chevron-down"
@@ -1029,10 +1067,22 @@
                 <p
                   class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
                 >
-                  Yes! TerraConstructs generates standard Terraform HCL
-                  configurations that can be integrated with existing Terraform
-                  code. You can gradually migrate to TerraConstructs or use it
-                  alongside your current infrastructure code.
+                  CDKTF is a combination of a CLI, a core library and a
+                  collection of Level 1 Construct libraries auto generated from
+                  a select few terraform providers. This includes cloud
+                  providers such as AWS, but lacks any cloud specific
+                  functionality typically provided by L2 Constructs.
+                  <br /><br />
+                  Example L2 Constructs functionality available in AWSCDK but
+                  missing in CDKTF: Service Common Usage Patterns, Asset
+                  pipelines, Permission management, Service Config DSLs, etc.
+                  <br /><br />
+                  TerraConstructs is filling this gap by building the missing
+                  pieces available in AWS CDK on top of CDKTF.
+                  <br /><br />
+                  TerraConstructs is initially a ported version of AWS CDK L2
+                  constructs, but longer term aims to build L2 support for other
+                  cloud providers as well.
                 </p>
               </div>
             </div>
@@ -1046,7 +1096,7 @@
                 aria-controls="faq-3"
               >
                 <span class="font-semibold text-lg pr-4"
-                  >How reliable are the generated Terraform
+                  >Can I use TerraConstructs with existing Terraform
                   configurations?</span
                 >
                 <i
@@ -1062,11 +1112,13 @@
                 <p
                   class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
                 >
-                  Extremely reliable. All AWS CDK unit tests have been ported to
-                  ensure feature parity, and we maintain extensive end-to-end
-                  tests that validate the generated Terraform configurations
-                  work in real AWS environments. The codebase is fully
-                  deterministic.
+                  Yes! TerraConstructs generates standard Terraform HCL
+                  configurations that can be integrated with existing Terraform
+                  code. You can gradually migrate to TerraConstructs or use it
+                  alongside your current infrastructure code.
+                  <br /><br />
+                  Join our Community for guidance on best practices for
+                  integrating TerraConstructs into your existing workflows.
                 </p>
               </div>
             </div>
@@ -1080,7 +1132,8 @@
                 aria-controls="faq-4"
               >
                 <span class="font-semibold text-lg pr-4"
-                  >Does TerraConstructs support OpenTofu?</span
+                  >How reliable are the generated Terraform
+                  configurations?</span
                 >
                 <i
                   data-lucide="chevron-down"
@@ -1090,6 +1143,43 @@
 
               <div
                 id="faq-4"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Extremely reliable. All AWS CDK unit tests have been ported to
+                  ensure feature parity, and we maintain extensive end-to-end
+                  tests leveraging
+                  <a href="https://terratest.com">Terratest</a> that validate
+                  the generated Terraform configurations work in real AWS
+                  environments. The codebase is fully deterministic.
+                  <br /><br />
+                  If you encounter any issues, please report them via GitHub so
+                  we can address them promptly.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-5"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Does TerraConstructs support OpenTofu?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-5"
                 class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
               >
                 <p
@@ -1109,42 +1199,10 @@
               <button
                 class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 aria-expanded="false"
-                aria-controls="faq-5"
-              >
-                <span class="font-semibold text-lg pr-4"
-                  >What AWS services are currently supported?</span
-                >
-                <i
-                  data-lucide="chevron-down"
-                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
-                ></i>
-              </button>
-
-              <div
-                id="faq-5"
-                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
-              >
-                <p
-                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
-                >
-                  TerraConstructs supports the most commonly used AWS services
-                  including VPC, EC2, S3, CloudFront, RDS, Lambda, and many
-                  more. We continuously add support for additional services
-                  based on community feedback and AWS CDK updates.
-                </p>
-              </div>
-            </div>
-
-            <div
-              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
-            >
-              <button
-                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                aria-expanded="false"
                 aria-controls="faq-6"
               >
                 <span class="font-semibold text-lg pr-4"
-                  >Is TerraConstructs suitable for enterprise use?</span
+                  >Does TerraConstructs support Azure/GCP?</span
                 >
                 <i
                   data-lucide="chevron-down"
@@ -1159,11 +1217,249 @@
                 <p
                   class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
                 >
-                  Absolutely. TerraConstructs is designed for production-scale
-                  deployments with platform teams in mind. It provides
-                  consistent patterns, comprehensive testing, and deterministic
-                  outputs that enterprises require for reliable infrastructure
-                  management.
+                  Not at the moment. We are focused on delivering AWS support
+                  equivalent to AWS CDK for validation and buy in from the
+                  community. To build the level of quality and reliability for
+                  other Cloud Providers requires active community involvement
+                  and support from those providers.
+                  <br /><br />
+                  If you are interested in contributing to Azure or GCP support,
+                  please reach out to us via GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-7"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >What AWS services are currently supported?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-7"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs supports the most commonly used AWS services
+                  including VPC, EC2, S3, CloudFront, Route53, Lambda, and many
+                  more. We continuously add support for additional services
+                  based on community feedback and AWS CDK updates.
+                  <br /><br />
+                  If support for a specific service is missing for your use
+                  case, please let us know via GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-8"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Is TerraConstructs suitable for enterprise use?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-8"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs is designed for production-scale deployments
+                  with platform teams in mind. It provides consistent patterns,
+                  comprehensive testing, and deterministic outputs that
+                  enterprises require for reliable infrastructure management.
+                  <br /><br />
+                  For dedicated enterprise support, please reach out to us via
+                  GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-9"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Why use
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >terraform-provider-aws</code
+                  >
+                  instead of
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-9"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  The 
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >terraform-provider-aws</code
+                  >
+                  is the de-facto standard: broadest resource coverage, long
+                  production history, and first-class support across the TF
+                  ecosystem (tflint, Infracost, Checkov/OPA, Trivy SAST, etc.).
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >
+                  only reached GA in mid 2024 and still lags in coverage; its
+                  schemas and resource names differ, which breaks or dilutes
+                  many existing rules, cost mappings, and scanners.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-10"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >How does TerraConstructs compare to <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >cdktf-aws-cdk</code>?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-10"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  The >AWS adapter (technical preview) maps
+                  <strong>final CloudFormation YAML</strong> into
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >
+                  resources. That loses important L2 synthesis logic and often
+                  can't represent the same graph: CFN sometimes nests multiple
+                  API concepts inside a single resource, while Terraform models
+                  them as <strong>separate resources</strong> with distinct
+                  lifecycles and dependencies. The result can be incomplete
+                  mappings, unstable plans, and missing features (such as the asset pipeline).
+                  TerraConstructs re-implements the AWS CDK
+                  L2 behaviors on top of
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >provider-aws</code
+                  >, preserving intent and producing Terraform resources that
+                  align with the provider and ecosystem tools.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-11"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >What about AI-generated IaC?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-11"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs pairs perfectly with LLMs because its APIs are
+                  intent based. Clear class names, typed props, and enums give
+                  models the context they lack in raw HCL, while synth still
+                  produces deterministic, test-backed Terraform JSON.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-12"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Why not just have my LLM write HCL directly?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-12"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Raw HCL is verbose and context heavy. LLMs tend to hallucinate
+                  enum values, miss nested attributes, and mis-wire
+                  dependencies. TerraConstructs collapse that surface area into
+                  typed, higher-level calls, so models (and humans) make fewer
+                  mistakes and ship faster. Moreover, a shared community effort
+                  for a well tested and deterministic library is more efficient
+                  than each team building their own prompt engineering and
+                  validation layers.
                 </p>
               </div>
             </div>
@@ -1173,7 +1469,9 @@
             <div
               class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-800 max-w-2xl mx-auto"
             >
-              <h3 class="text-2xl font-bold mb-4">Contributing</h3>
+              <h3 class="text-2xl font-bold mb-4">
+                Community &amp; Contributing
+              </h3>
               <p class="text-gray-600 dark:text-gray-300 mb-6">
                 TerraConstructs is open source and welcomes contributions.
                 Whether you're fixing bugs, adding features, or improving
@@ -1184,18 +1482,25 @@
                 class="flex flex-col sm:flex-row items-center justify-center gap-4"
               >
                 <a
-                  href="https://github.com/terraconstructs/base"
-                  class="border border-gray-300 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  href="https://discord.gg/gEu3D8hJGz"
+                  class="border border-gray-300 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center space-x-2"
                   target="_blank"
                   rel="noopener"
                 >
-                  Contributing Guide
+                  <i data-lucide="message-circle" class="w-5 h-5"></i>
+                  <span>Join Discord</span>
                 </a>
-                <button
-                  class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                <!-- TODO: Add contribution guide -->
+                <!-- <a
+                  href="https://github.com/terraconstructs/base"
+                  class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center space-x-2"
+                  target="_blank"
+                  rel="noopener"
                 >
-                  Start Contributing
-                </button>
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                  <span>Start Contributing</span>
+                </a>
+                -->
               </div>
             </div>
           </div>
@@ -1210,18 +1515,25 @@
         <div class="grid md:grid-cols-4 gap-8">
           <div class="md:col-span-2">
             <div class="flex items-center space-x-2 mb-4">
-              <div
-                class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center"
-              >
-                <span class="text-white font-bold text-sm">T</span>
-              </div>
+              <img
+                src="/logos/terraconstructs_logo_64x64.png"
+                srcset="
+                  /logos/terraconstructs_logo_32x32.png   1x,
+                  /logos/terraconstructs_logo_64x64.png   2x,
+                  /logos/terraconstructs_logo_128x128.png 4x
+                "
+                alt="TerraConstructs logo"
+                class="block w-8 h-8"
+                width="32"
+                height="32"
+                decoding="async"
+              />
               <span class="text-xl font-bold">TerraConstructs</span>
             </div>
             <p class="text-gray-400 mb-6 max-w-md">
-              A minimalist, reliable L2 CDKTF Constructs library that ports
-              proven AWS CDK L2 constructs to Terraform/OpenTofu. Deterministic
-              codebase. Well tested. Designed for production-grade
-              infrastructure synthesis.
+              A powerful, reliable L2 CDKTF Constructs library that ports proven
+              AWS CDK L2 constructs to Terraform/OpenTofu. Deterministic
+              codebase, built for serious platform teams.
             </p>
           </div>
 
@@ -1262,6 +1574,15 @@
                   target="_blank"
                   rel="noopener"
                   >Workshop</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://learn.terraconstructs.dev"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >Playground (Alpha)</a
                 >
               </li>
             </ul>

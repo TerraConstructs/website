@@ -20,7 +20,7 @@ export default defineConfig({
     headers: {
       'Content-Security-Policy': (() => {
         try {
-          const { csp } = JSON.parse(readFileSync('dist/csp.json', 'utf8'))
+          const { csp } = JSON.parse(readFileSync('infra/csp.json', 'utf8'))
           return csp
         } catch {
           return "default-src 'self'"
