@@ -245,6 +245,145 @@ export const tourConfigs = {
       },
     ],
   },
+  "community-day": {
+    name: "Community Day Example using L2 Constructs",
+    description:
+      "Learn about L2 Constructs, IAM patterns, and deterministic synthesis",
+    inputSteps: [
+      {
+        id: "imports",
+        type: "line-range",
+        startLine: 37,
+        endLine: 37,
+        title: "L2 Construct Imports",
+        content:
+          "Creating VPC at ease including multiple AZs subnets and route tables.",
+        highlight: "border",
+      },
+      {
+        id: "lambda",
+        type: "line-range",
+        startLine: 39,
+        endLine: 43,
+        title: "Lambda Function",
+        content:
+          "LambdaFunction provides strong typing and sensible defaults. Code.fromAsset() uses the asset pipeline for bundling and deployment. We can skip the archive provider .. etc here.",
+        highlight: "border",
+      },
+      {
+        id: "event-bridge",
+        type: "line-range",
+        startLine: 45,
+        endLine: 63,
+        title: "Event Bridge Rule",
+        content:
+          "L2 Construct for EventBridge provides a simple way to create rules and targets.",
+        highlight: "border",
+      },
+      {
+        id: "sqs",
+        type: "line-range",
+        startLine: 65,
+        endLine: 67,
+        title: "Sqs Subscription",
+        content:
+          "Creates an SNS Topic, an SQS Queue, and subscribes the queue to the topic (SQS subscription).",
+        highlight: "border",
+      },
+      {
+        id: "instance-create",
+        type: "line-range",
+        startLine: 69,
+        endLine: 81,
+        title: "EC2 Instance creation",
+        content:
+          "Instantiates an Instance L2 with explicit instanceType and machineImage (Amazon Linux).",
+        highlight: "border",
+      },
+      {
+        id: "sqs-grant",
+        type: "line-range",
+        startLine: 82,
+        endLine: 82,
+        title: "SQS consume grant",
+        content:
+          "Grants the EC2 instance permission to consume messages from the SQS queue.",
+        highlight: "border",
+      },
+      {
+        id: "rds-sg-from-id",
+        type: "line-range",
+        startLine: 84,
+        endLine: 88,
+        title: "Import existing Security Group by ID",
+        content:
+          "Loads an existing Security Group (`sg-0123456789abcdef0`) via `fromSecurityGroupId` for cross-resource connectivity checks.",
+        highlight: "border",
+      },
+      {
+        id: "sg-allow-from",
+        type: "line-range",
+        startLine: 89,
+        endLine: 93,
+        title: "Allow DB access from Instance",
+        content:
+          "Adds a `connections.allowFrom` rule to permit the instance to reach the RDS security group on TCP 1433 (MSSQL port used here).",
+        highlight: "border",
+      },
+      {
+        id: "bucket",
+        type: "line-range",
+        startLine: 95,
+        endLine: 98,
+        title: "Create bucket and allow read write from instance.",
+        content:
+          "Creates an S3 bucket and allows read/write access from the EC2 instance.",
+        highlight: "border",
+      },
+    ],
+    outputSteps: [
+      // {
+      //   id: "iam-role-assume-policy",
+      //   type: "line-range",
+      //   startLine: 22,
+      //   endLine: 32,
+      //   title: "IAM Role Assume Policy",
+      //   content:
+      //     'The "hello" Handler IAM policies ensures Lambda service principal access.',
+      //   highlight: "background",
+      // },
+      // {
+      //   id: "asset-pipeline",
+      //   type: "line-range",
+      //   startLine: 109,
+      //   endLine: 117,
+      //   title: "Asset Pipeline",
+      //   content:
+      //     "The AwsStack asset pipeline handles checksums, packaging and uploads.",
+      //   highlight: "border",
+      // },
+      // {
+      //   id: "api-gateway-dependencies",
+      //   type: "line-range",
+      //   startLine: 134,
+      //   endLine: 149,
+      //   title: "API Gateway Dependencies",
+      //   content:
+      //     "API Gateway resources are properly configured with deployment stage triggers and dependencies avoiding common race condition pitfalls.",
+      //   highlight: "background",
+      // },
+      // {
+      //   id: "lambda-permissions",
+      //   type: "line-range",
+      //   startLine: 192,
+      //   endLine: 197,
+      //   title: "Lambda Permissions",
+      //   content:
+      //     "Deep IAM, Lambda and ApiGateway integrations ensure necessary permissions are created automatically.",
+      //   highlight: "background",
+      // },
+    ],
+  },
 };
 
 export function getTourConfig(demoKey) {

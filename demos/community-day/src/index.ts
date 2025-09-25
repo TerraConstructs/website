@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { App,} from "cdktf/lib/app";
+import { App, } from "cdktf/lib/app";
 import { CloudinitProvider } from "@cdktf/provider-cloudinit/lib/provider";
 import { provider } from "@tcons/provider-tconsaws";
 import { Testing } from "cdktf/lib/testing";
@@ -11,7 +11,7 @@ const outdir = "cdktf.out";
 const app = Testing.app({
   outdir,
 });
-const stack = new CdkWorkshopStack(app, "Default",{
+const stack = new CdkWorkshopStack(app, "Default", {
   environmentName: "demo",
   providerConfig: {
     region: "us-east-1",
@@ -19,9 +19,6 @@ const stack = new CdkWorkshopStack(app, "Default",{
   gridUUID: "demo-uuid",
 });
 new CloudinitProvider(stack, "CloudInit");
-new provider.TconsawsProvider(stack, "Tconsaws", {
-  region: stack.region,
-});
 
 const resultString = Testing.synth(stack);
 fs.writeFileSync("cdk.tf.json", resultString);

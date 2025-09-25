@@ -16,18 +16,24 @@ import {
   LambdaFunction,
   Runtime,
   SecurityGroup,
-  Schedule
+  Schedule,
 } from "terraconstructs/lib/aws/compute";
+import { Queue } from "terraconstructs/lib/aws/notify";
+import { SqsSubscription } from "terraconstructs/lib/aws/notify/subscriptions";
 import {
-  Queue,
+  Rule,
+  IRuleTarget,
+  Topic,
 } from "terraconstructs/lib/aws/notify";
-import { SqsSubscription } from 'terraconstructs/lib/aws/notify/subscriptions';
-import { Rule, IRuleTarget, Topic } from 'terraconstructs/lib/aws/notify';
-import { Bucket, BucketEncryption } from 'terraconstructs/lib/aws/storage';
+import {
+  Bucket,
+  BucketEncryption,
+} from "terraconstructs/lib/aws/storage";
 
 export class CdkWorkshopStack extends AwsStack {
   constructor(scope: Construct, id: string, props: AwsStackProps) {
     super(scope, id, props);
+
     const vpc = new Vpc(this, "VPC");
 
     const lambda = new LambdaFunction(this, "LambdaFunction", {
@@ -44,9 +50,15 @@ export class CdkWorkshopStack extends AwsStack {
     };
 
     // Event bridge schedule and rule for SGX AR report processor lambda execution
-    new Rule(this, 'Rule', {
+    new Rule(this, "Rule", {
       ruleName: `schedule-rule`,
-      schedule: Schedule.cron({ minute: '10/30', hour: '*', day: '*', month: '*', year: '*' }),
+      schedule: Schedule.cron({
+        minute: "10/30",
+        hour: "*",
+        day: "*",
+        month: "*",
+        year: "*",
+      }),
       targets: [lambdaTarget],
     });
 
@@ -58,7 +70,7 @@ export class CdkWorkshopStack extends AwsStack {
       vpc,
       instanceType: InstanceType.of(
         InstanceClass.T3,
-        InstanceSize.NANO,
+        InstanceSize.NANO
       ),
       machineImage: new AmazonLinuxImage({
         generation: AmazonLinuxGeneration.AMAZON_LINUX_2,
@@ -67,11 +79,18 @@ export class CdkWorkshopStack extends AwsStack {
       instanceInitiatedShutdownBehavior:
         InstanceInitiatedShutdownBehavior.TERMINATE,
     });
-    queue.grantConsumeMessages(instance)
+    queue.grantConsumeMessages(instance);
 
-    const rdsDbSecurityGroupId = SecurityGroup.fromSecurityGroupId(this, 'RdsSecurityGroupId', "sg-0123456789abcdef0")
-
-    rdsDbSecurityGroupId.connections.allowFrom(instance, Port.tcp(1433), 'Allow MySQL access from EC2 instance');
+    const rdsDbSecurityGroupId = SecurityGroup.fromSecurityGroupId(
+      this,
+      "RdsSecurityGroupId",
+      "sg-0123456789abcdef0"
+    );
+    rdsDbSecurityGroupId.connections.allowFrom(
+      instance,
+      Port.MSSQL,
+      "Allow MySQL access from EC2 instance"
+    );
 
     const bucket = new Bucket(this, "Bucket", {
       encryption: BucketEncryption.S3_MANAGED,

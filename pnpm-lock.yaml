@@ -64,6 +64,49 @@ importers:
         specifier: ^5.0.0
         version: 5.4.19(@types/node@22.18.3)
 
+  demos/community-day:
+    dependencies:
+      '@cdktf/provider-cloudinit':
+        specifier: ^11.0.0
+        version: 11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      '@tcons/provider-tconsaws':
+        specifier: 0.0.1
+        version: 0.0.1(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+      cdktf:
+        specifier: ^0.21.0
+        version: 0.21.0(constructs@10.4.2)
+      constructs:
+        specifier: ^10.4.2
+        version: 10.4.2
+      terraconstructs:
+        specifier: ^0.1.3
+        version: 0.1.3(@cdktf/provider-archive@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-aws@20.1.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-cloudinit@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-docker@12.0.2(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-time@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(@cdktf/provider-tls@11.0.0(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2))(cdktf@0.21.0(constructs@10.4.2))(constructs@10.4.2)
+    devDependencies:
+      '@swc/core':
+        specifier: ^1.10.12
+        version: 1.13.5
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
+      '@types/node':
+        specifier: ^24.0.14
+        version: 24.3.0
+      jest:
+        specifier: ^30.0.4
+        version: 30.1.1(@types/node@24.3.0)(ts-node@10.9.2(@swc/core@1.13.5)(@types/node@24.3.0)(typescript@5.9.2))
+      prettier:
+        specifier: ^3.4.2
+        version: 3.6.2
+      ts-jest:
+        specifier: ^29.4.0
+        version: 29.4.1(@babel/core@7.28.3)(@jest/transform@30.1.1)(@jest/types@30.0.5)(babel-jest@30.1.1(@babel/core@7.28.3))(jest-util@30.0.5)(jest@30.1.1(@types/node@24.3.0)(ts-node@10.9.2(@swc/core@1.13.5)(@types/node@24.3.0)(typescript@5.9.2)))(typescript@5.9.2)
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@swc/core@1.13.5)(@types/node@24.3.0)(typescript@5.9.2)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.2
+
   demos/function-url:
     dependencies:
       '@tcons/cdk-dynamo-table-viewer':
