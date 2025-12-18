@@ -18,7 +18,7 @@
 
 ```bash
 # Check database path and daemon status
-bd info --json
+bd info
 
 # Example output:
 # {
@@ -33,14 +33,14 @@ bd info --json
 
 ```bash
 # Find ready work (no blockers)
-bd ready --json
-bd ready --label "spec:feature-name" --json  # Filter by feature
+bd ready
+bd ready --label "spec:feature-name"  # Filter by feature
 
 
 # Find stale issues (not updated recently)
-bd stale --days 30 --json                    # Default: 30 days
-bd stale --days 90 --status in_progress --json  # Filter by status
-bd stale --limit 20 --json                   # Limit results
+bd stale --days 30                    # Default: 30 days
+bd stale --days 90 --status in_progress  # Filter by status
+bd stale --limit 20                   # Limit results
 ```
 
 ## Issue Management
@@ -50,7 +50,7 @@ bd stale --limit 20 --json                   # Limit results
 ```bash
 # Basic creation
 # IMPORTANT: Always quote titles and descriptions with double quotes
-bd create "Issue title" -t bug|feature|task -p 0-4 -d "Description" --json
+bd create "Issue title" -t bug|feature|task -p 0-4 -d "Description"
 
 ## Create with detailed design or acceptance criteria
 bd create "Issue Title" --design "Design notes"
@@ -58,38 +58,38 @@ bd create "Issue Title" --acceptance "Definition of done"
 bd create "Issue Title" --assignee alice
 
 ### Add detailed design or accpentance criteria to existing issue
-bd update <id> --design "Updated design notes" --json
+bd update <id> --design "Updated design notes"
 
 # Create with explicit ID (for parallel workers)
-bd create "Issue title" --id worker1-100 -p 1 --json
+bd create "Issue title" --id worker1-100 -p 1
 
 # Create with labels (--labels or --label work)
-bd create "Issue title" -t bug -p 1 -l bug,critical --json
-bd create "Issue title" -t bug -p 1 --label bug,critical --json
+bd create "Issue title" -t bug -p 1 -l bug,critical
+bd create "Issue title" -t bug -p 1 --label bug,critical
 
 # Examples with special characters (all require quoting):
-bd create "Fix: auth doesn't validate tokens" -t bug -p 1 --json
-bd create "Add support for OAuth 2.0" -d "Implement RFC 6749 (OAuth 2.0 spec)" --json
+bd create "Fix: auth doesn't validate tokens" -t bug -p 1
+bd create "Add support for OAuth 2.0" -d "Implement RFC 6749 (OAuth 2.0 spec)"
 
 # Create multiple issues from markdown file
-bd create -f feature-plan.md --json
+bd create -f feature-plan.md
 
 # Create epic with hierarchical child tasks
-bd create "Auth System" -t epic -p 1 --json         # Returns: bd-a3f8e9
-bd create "Login UI" -p 1 --json                     # Auto-assigned: bd-a3f8e9.1
-bd create "Backend validation" -p 1 --json           # Auto-assigned: bd-a3f8e9.2
-bd create "Tests" -p 1 --json                        # Auto-assigned: bd-a3f8e9.3
+bd create "Auth System" -t epic -p 1         # Returns: bd-a3f8e9
+bd create "Login UI" -p 1                     # Auto-assigned: bd-a3f8e9.1
+bd create "Backend validation" -p 1           # Auto-assigned: bd-a3f8e9.2
+bd create "Tests" -p 1                        # Auto-assigned: bd-a3f8e9.3
 
 # Create and link discovered work (one command)
-bd create "Found bug" -t bug -p 1 --deps discovered-from:<parent-id> --json
+bd create "Found bug" -t bug -p 1 --deps discovered-from:<parent-id>
 ```
 
 ### Update Issues
 
 ```bash
 # Update one or more issues
-bd update <id> [<id>...] --status in_progress --json
-bd update <id> [<id>...] --priority 1 --json
+bd update <id> [<id>...] --status in_progress
+bd update <id> [<id>...] --priority 1
 
 # Edit issue fields in $EDITOR (HUMANS ONLY - not for agents)
 # NOTE: This command is intentionally NOT exposed via the MCP server
@@ -105,10 +105,10 @@ bd edit <id> --acceptance       # Edit acceptance criteria
 
 ```bash
 # Complete work (supports multiple IDs)
-bd close <id> [<id>...] --reason "Done" --json
+bd close <id> [<id>...] --reason "Done"
 
 # Reopen closed issues (supports multiple IDs)
-bd reopen <id> [<id>...] --reason "Reopening" --json
+bd reopen <id> [<id>...] --reason "Reopening"
 ```
 
 ### View Issues
@@ -118,7 +118,7 @@ bd reopen <id> [<id>...] --reason "Reopening" --json
 bd dep tree <id>
 
 # Get issue details (supports multiple IDs)
-bd show <id> [<id>...] --json
+bd show <id> [<id>...]
 ```
 
 Shows: all fields, dependencies, dependents, audit history.
@@ -132,17 +132,17 @@ Shows: all fields, dependencies, dependents, audit history.
 bd dep add <discovered-id> <parent-id> --type discovered-from
 
 # Create and link in one command (new way - preferred)
-bd create "Issue title" -t bug -p 1 --deps discovered-from:<parent-id> --json
+bd create "Issue title" -t bug -p 1 --deps discovered-from:<parent-id>
 ```
 
 ### Labels
 
 ```bash
 # Label management (supports multiple IDs)
-bd label add <id> [<id>...] <label> --json
-bd label remove <id> [<id>...] <label> --json
-bd label list <id> --json
-bd label list-all --json
+bd label add <id> [<id>...] <label>
+bd label remove <id> [<id>...] <label>
+bd label list <id>
+bd label list-all
 ```
 
 ## Filtering & Search
@@ -151,68 +151,69 @@ bd label list-all --json
 
 ```bash
 # Filter by status, priority, type
-bd list --status open --priority 1 --json               # Status and priority
-bd list --assignee alice --json                         # By assignee
-bd list --type bug --json                               # By issue type
-bd list --id bd-123,bd-456 --json                       # Specific IDs
+bd search "foo: --limit 1
+bd list --status open --priority 1               # Status and priority
+bd list --assignee alice                         # By assignee
+bd list --type bug                               # By issue type
+bd list --id bd-123,bd-456                       # Specific IDs
 ```
 
 ### Label Filters
 
 ```bash
 # Labels (AND: must have ALL)
-bd list --label bug,critical --json
+bd list --label bug,critical
 
 # Labels (OR: has ANY)
-bd list --label-any frontend,backend --json
+bd list --label-any frontend,backend
 ```
 
 ### Text Search
 
 ```bash
 # Title search (substring)
-bd list --title "auth" --json
+bd list --title "auth"
 
 # Pattern matching (case-insensitive substring)
-bd list --title-contains "auth" --json                  # Search in title
-bd list --desc-contains "implement" --json              # Search in description
-bd list --notes-contains "TODO" --json                  # Search in notes
+bd list --title-contains "auth"                  # Search in title
+bd list --desc-contains "implement"              # Search in description
+bd list --notes-contains "TODO"                  # Search in notes
 ```
 
 ### Date Range Filters
 
 ```bash
 # Date range filters (YYYY-MM-DD or RFC3339)
-bd list --created-after 2024-01-01 --json               # Created after date
-bd list --created-before 2024-12-31 --json              # Created before date
-bd list --updated-after 2024-06-01 --json               # Updated after date
-bd list --updated-before 2024-12-31 --json              # Updated before date
-bd list --closed-after 2024-01-01 --json                # Closed after date
-bd list --closed-before 2024-12-31 --json               # Closed before date
+bd list --created-after 2024-01-01               # Created after date
+bd list --created-before 2024-12-31              # Created before date
+bd list --updated-after 2024-06-01               # Updated after date
+bd list --updated-before 2024-12-31              # Updated before date
+bd list --closed-after 2024-01-01                # Closed after date
+bd list --closed-before 2024-12-31               # Closed before date
 ```
 
 ### Empty/Null Checks
 
 ```bash
 # Empty/null checks
-bd list --empty-description --json                      # Issues with no description
-bd list --no-assignee --json                            # Unassigned issues
-bd list --no-labels --json                              # Issues with no labels
+bd list --empty-description                      # Issues with no description
+bd list --no-assignee                            # Unassigned issues
+bd list --no-labels                              # Issues with no labels
 ```
 
 ### Priority Ranges
 
 ```bash
 # Priority ranges
-bd list --priority-min 0 --priority-max 1 --json        # P0 and P1 only
-bd list --priority-min 2 --json                         # P2 and below
+bd list --priority-min 0 --priority-max 1        # P0 and P1 only
+bd list --priority-min 2                         # P2 and below
 ```
 
 ### Combine Filters
 
 ```bash
 # Combine multiple filters
-bd list --status open --priority 1 --label-any urgent,critical --no-assignee --json
+bd list --status open --priority 1 --label-any urgent,critical --no-assignee
 ```
 
 ## Global Flags
@@ -249,8 +250,8 @@ bd --no-daemon --no-auto-flush --no-auto-import <command>
 bd --allow-stale <command>
 
 # Example: access database even if out of sync with JSONL
-bd --allow-stale ready --json
-bd --allow-stale list --status open --json
+bd --allow-stale ready
+bd --allow-stale list --status open
 ```
 
 **Shows:** `⚠️  Staleness check skipped (--allow-stale), data may be out of sync`
@@ -298,10 +299,10 @@ bd --actor alice <command>
 
 ```bash
 # Clean up closed issues (bulk deletion)
-bd cleanup --force --json                                   # Delete ALL closed issues
-bd cleanup --older-than 30 --force --json                   # Delete closed >30 days ago
-bd cleanup --dry-run --json                                 # Preview what would be deleted
-bd cleanup --older-than 90 --cascade --force --json         # Delete old + dependents
+bd cleanup --force                                   # Delete ALL closed issues
+bd cleanup --older-than 30 --force                   # Delete closed >30 days ago
+bd cleanup --dry-run                                 # Preview what would be deleted
+bd cleanup --older-than 90 --cascade --force         # Delete old + dependents
 ```
 
 ### Duplicate Detection & Merging
@@ -313,7 +314,7 @@ bd duplicates --auto-merge                             # Automatically merge all
 bd duplicates --dry-run                                # Preview merge operations
 
 # Merge specific duplicate issues
-bd merge <source-id...> --into <target-id> --json      # Consolidate duplicates
+bd merge <source-id...> --into <target-id>      # Consolidate duplicates
 bd merge bd-42 bd-43 --into bd-41 --dry-run            # Preview merge
 ```
 
@@ -321,11 +322,11 @@ bd merge bd-42 bd-43 --into bd-41 --dry-run            # Preview merge
 
 ```bash
 # Agent-driven compaction
-bd compact --analyze --json                           # Get candidates for review
-bd compact --analyze --tier 1 --limit 10 --json       # Limited batch
-bd compact --apply --id bd-42 --summary summary.txt   # Apply compaction
+bd compact --analyze                                     # Get candidates for review
+bd compact --analyze --tier 1 --limit 10                 # Limited batch
+bd compact --apply --id bd-42 --summary summary.txt      # Apply compaction
 bd compact --apply --id bd-42 --summary - < summary.txt  # From stdin
-bd compact --stats --json                             # Show statistics
+bd compact --stats                                       # Show statistics
 
 # Legacy AI-powered compaction (requires ANTHROPIC_API_KEY)
 bd compact --auto --dry-run --all                     # Preview
@@ -340,7 +341,7 @@ bd restore <id>  # View full history at time of compaction
 ```bash
 # Rename issue prefix (e.g., from 'knowledge-work-' to 'kw-')
 bd rename-prefix kw- --dry-run  # Preview changes
-bd rename-prefix kw- --json     # Apply rename
+bd rename-prefix kw-            # Apply rename
 ```
 
 ## Database Management
@@ -388,8 +389,8 @@ bd migrate --dry-run                                   # Preview migration
 bd migrate --cleanup --yes                             # Migrate and remove old files
 
 # AI-supervised migration (check before running bd migrate)
-bd migrate --inspect --json                            # Show migration plan for AI agents
-bd info --schema --json                                # Get schema, tables, config, sample IDs
+bd migrate --inspect                            # Show migration plan for AI agents
+bd info --schema                                # Get schema, tables, config, sample IDs
 ```
 
 **Migration workflow for AI agents:**
@@ -414,22 +415,22 @@ See [docs/DAEMON.md](DAEMON.md) for complete daemon management reference.
 
 ```bash
 # List all running daemons
-bd daemons list --json
+bd daemons list
 
 # Check health (version mismatches, stale sockets)
-bd daemons health --json
+bd daemons health
 
 # Stop/restart specific daemon
-bd daemons stop /path/to/workspace --json
-bd daemons restart 12345 --json  # By PID
+bd daemons stop /path/to/workspace
+bd daemons restart 12345  # By PID
 
 # View daemon logs
 bd daemons logs /path/to/workspace -n 100
 bd daemons logs 12345 -f  # Follow mode
 
 # Stop all daemons
-bd daemons killall --json
-bd daemons killall --force --json  # Force kill if graceful fails
+bd daemons killall
+bd daemons killall --force  # Force kill if graceful fails
 ```
 
 ### Sync Operations
@@ -479,22 +480,22 @@ Only `blocks` dependencies affect the ready work queue.
 
 ### JSON Output (Recommended for Agents)
 
-Always use `--json` flag for programmatic use:
+Always use ` flag for programmatic use:
 
 ```bash
 # Single issue
-bd show bd-42 --json
+bd show bd-42
 
 # List of issues
-bd ready --json
+bd ready
 
 # Operation result
-bd create "Issue" -p 1 --json
+bd create "Issue" -p 1
 ```
 
 ### Human-Readable Output
 
-Default output without `--json`:
+Default output without `:
 
 ```bash
 bd ready
@@ -508,15 +509,15 @@ bd ready
 
 ```bash
 # 1. Find available work
-bd ready --json
+bd ready
 
 # 2. Claim issue
-bd update bd-42 --status in_progress --json
+bd update bd-42 --status in_progress
 
 # 3. Work on it...
 
 # 4. Close when done
-bd close bd-42 --reason "Implemented and tested" --json
+bd close bd-42 --reason "Implemented and tested"
 ```
 
 ### Discover and Link Work
@@ -525,35 +526,35 @@ bd close bd-42 --reason "Implemented and tested" --json
 # While working on bd-100, discover a bug
 
 # Old way (two commands):
-bd create "Found auth bug" -t bug -p 1 --json  # Returns bd-101
+bd create "Found auth bug" -t bug -p 1  # Returns bd-101
 bd dep add bd-101 bd-100 --type discovered-from
 
 # New way (one command):
-bd create "Found auth bug" -t bug -p 1 --deps discovered-from:bd-100 --json
+bd create "Found auth bug" -t bug -p 1 --deps discovered-from:bd-100
 ```
 
 ### Batch Operations
 
 ```bash
 # Update multiple issues at once
-bd update bd-41 bd-42 bd-43 --priority 0 --json
+bd update bd-41 bd-42 bd-43 --priority 0
 
 # Close multiple issues
-bd close bd-41 bd-42 bd-43 --reason "Batch completion" --json
+bd close bd-41 bd-42 bd-43 --reason "Batch completion"
 
 # Add label to multiple issues
-bd label add bd-41 bd-42 bd-43 urgent --json
+bd label add bd-41 bd-42 bd-43 urgent
 ```
 
 ### Session Workflow
 
 ```bash
 # Start of session
-bd ready --json  # Find work
+bd ready  # Find work
 
 # During session
-bd create "..." -p 1 --json
-bd update bd-42 --status in_progress --json
+bd create "..." -p 1
+bd update bd-42 --status in_progress
 # ... work ...
 
 # End of session (IMPORTANT!)

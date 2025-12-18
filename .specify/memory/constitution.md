@@ -1,23 +1,15 @@
 <!--
   Sync Impact Report
   ===================
-  Version change: 0.0.0 → 1.0.0 (MAJOR - initial ratification)
+  Version change: 1.0.0 → 1.1.0 (MINOR - blog subsystem constraints added)
 
-  Added Principles:
-  - I. Code Quality First
-  - II. Manual Testing Discipline
-  - III. User Experience Consistency
-  - IV. Search Engine Optimization
+  Modified Sections:
+  - Technical Constraints: Added Landing Page Isolation and Blog Subsystem rules
 
-  Added Sections:
-  - Technical Constraints
-  - Development Workflow
-  - Governance
+  Rationale: The static MDX blog feature requires React for MDX support, but this
+  heavy dependency must be isolated from the core landing page to preserve performance.
 
-  Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ (Constitution Check section compatible)
-  - .specify/templates/spec-template.md ✅ (Success Criteria align with principles)
-  - .specify/templates/tasks-template.md ✅ (Phase structure supports quality gates)
+  Templates requiring updates: None (no template changes needed)
 
   Follow-up TODOs: None
 -->
@@ -87,7 +79,12 @@ Technical SEO establishes baseline visibility that content can build upon.
 These constraints reflect the project's architecture and MUST NOT be violated without
 constitution amendment.
 
-- **Build System**: Vite with vanilla JavaScript modules. No React/Vue/Svelte frameworks
+- **Build System**: Vite with vanilla JavaScript modules for core landing page
+- **Landing Page Isolation**: The core landing page (`index.html`) MUST remain vanilla JS.
+  React and other heavy frameworks MUST NOT be loaded on the landing page
+- **Blog Subsystem**: The `/blog` routes MAY use React for MDX support, but this dependency
+  MUST be isolated to blog pages only via code splitting. Blog bundles MUST NOT affect
+  landing page load performance
 - **Styling**: Tailwind CSS via PostCSS. Custom CSS in `src/style.css` only
 - **Package Manager**: pnpm exclusively. Lock file MUST be committed
 - **Demo Architecture**: Real CDKTF projects in `demos/` with actual Terraform synthesis
@@ -121,4 +118,4 @@ website repository.
 - **Runtime Guidance**: Use CLAUDE.md for day-to-day development instructions that don't rise
   to constitutional level
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-18 | **Last Amended**: 2025-12-18
+**Version**: 1.1.0 | **Ratified**: 2025-12-18 | **Last Amended**: 2025-12-18

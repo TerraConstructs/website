@@ -220,6 +220,7 @@ All bd commands support `--json` flag for structured output when needed for prog
 bd ready
 bd ready --json              # For structured output
 bd ready --priority 0        # Filter by priority
+bd ready --label "key:value" # Filter by label
 bd ready --assignee alice    # Filter by assignee
 ```
 

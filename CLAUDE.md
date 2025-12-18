@@ -19,6 +19,7 @@ This is a neobrutalist landing page for TerraConstructs, a CDKTF L2 Constructs l
 bd list  # Lists ALL issues with full descriptions
 
 # ✅ SAFE: Always use specific filters
+bd search --limit 10
 bd list --status open --priority 1 --limit 5
 
 # ✅ BETTER: Use targeted queries
@@ -143,3 +144,10 @@ pnpm add -D husky lint-staged
 - Add `pnpm run format:check` to CI pipeline
 - Prevents commits with inconsistent formatting
 - Maintains code quality across team contributions
+
+## Active Technologies
+- TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins (001-static-mdx-blog)
+- N/A (static files - MDX content in `/blog` directory) (001-static-mdx-blog)
+
+## Recent Changes
+- 001-static-mdx-blog: Added TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins
