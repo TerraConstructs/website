@@ -96,6 +96,8 @@ A content author creates a new blog post by adding a file to the repository.
 1. **Given** an author creates a new markdown file with valid frontmatter, **When** the site builds, **Then** a new page is generated at `/blog/<slug>`.
 2. **Given** an author specifies title, date, tags, and excerpt in frontmatter, **When** the post renders, **Then** all metadata displays correctly.
 3. **Given** an author includes images in the post directory, **When** referenced in markdown, **Then** images render correctly in the built page.
+4. **Given** an author is editing a blog post, **When** they run `pnpm run dev` and navigate to `/blog/<slug>`, **Then** they see a live preview of the post with full formatting and syntax highlighting.
+5. **Given** an author modifies MDX content while dev server is running, **When** they save the file, **Then** the browser updates without full page refresh (HMR).
 
 ---
 
@@ -147,6 +149,8 @@ A visitor reading part of a series wants to navigate to other parts without retu
 - **FR-014**: System MUST preserve responsive design patterns from the landing page (310px-1920px)
 - **FR-015**: System MUST display author name as plain text byline on blog posts
 - **FR-016**: System MUST provide a `<SeriesNav>` component for linking related posts in a multi-part series
+- **FR-017**: System MUST serve blog posts at `/blog/<slug>` during development (`pnpm run dev`) with live preview
+- **FR-018**: System MUST support hot module replacement for MDX file changes in development mode
 
 ### Content Directory Structure
 

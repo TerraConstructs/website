@@ -35,3 +35,11 @@ mockups/
 .vscode/
 .DS_Store
 *.log
+
+# Tooling and workflow directories
+.beads/
+.claude/
+.gemini/
+.perles/
+.specify/
+specs/**

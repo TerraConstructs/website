@@ -28,12 +28,14 @@ bd show website-xxxx  # CLI: View one issue
 ```
 
 ### Workflow Pattern
+
 1. Create issue: `bd create` with full description
 2. Update progress: `bd comments add`
 3. Update status: `bd update` for status/priority changes
 4. Close issue: `bd close` with reason
 
 ### Common Commands
+
 ```bash
 bd show website-xxxx && bd comments website-xxxx # View issue details + comments
 bd ready --limit 5                         # Find issues ready to work on
@@ -146,8 +148,10 @@ pnpm add -D husky lint-staged
 - Maintains code quality across team contributions
 
 ## Active Technologies
+
 - TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins (001-static-mdx-blog)
 - N/A (static files - MDX content in `/blog` directory) (001-static-mdx-blog)
 
 ## Recent Changes
+
 - 001-static-mdx-blog: Added TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins

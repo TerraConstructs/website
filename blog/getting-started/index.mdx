@@ -1,0 +1,67 @@
+---
+title: "Getting Started with TerraConstructs"
+date: 2025-01-15
+author: "TerraConstructs Team"
+tags:
+  - aws
+  - tutorial
+  - beginner
+excerpt: "Learn how to set up your first infrastructure project using TerraConstructs L2 Constructs for AWS with CDK for Terraform."
+---
+
+## Introduction
+
+TerraConstructs provides high-level L2 Constructs for AWS infrastructure, built on top of CDK for Terraform (CDKTF). This guide will walk you through creating your first project.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- Node.js 18 or later installed
+- AWS CLI configured with credentials
+- Basic familiarity with TypeScript
+
+## Installation
+
+Install the required dependencies:
+
+```bash
+npm install cdktf constructs terraconstructs @cdktf/provider-aws
+```
+
+## Your First Stack
+
+Create a simple S3 bucket with TerraConstructs:
+
+```typescript {5-8}
+import { App, TerraformStack } from "cdktf";
+import { AwsProvider } from "@cdktf/provider-aws";
+import { S3Bucket } from "terraconstructs/aws";
+
+const app = new App();
+const stack = new TerraformStack(app, "my-stack");
+
+new AwsProvider(stack, "aws", { region: "us-east-1" });
+
+const bucket = new S3Bucket(stack, "bucket", {
+  bucket: "my-demo-bucket",
+  versioning: { enabled: true },
+  encryption: {
+    algorithm: "AES256",
+  },
+});
+
+app.synth();
+```
+
+## Next Steps
+
+Now that you have a basic stack, you can:
+
+- Explore more AWS constructs in the documentation
+- Add additional resources to your stack
+- Deploy your infrastructure with `cdktf deploy`
+
+## Conclusion
+
+You've successfully created your first TerraConstructs project. Check out our other tutorials for more advanced patterns and best practices.

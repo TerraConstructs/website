@@ -11,6 +11,14 @@ This index does **not contain tasks directly**—those are fully managed through
 * **Planning Details**: `specs/001-static-mdx-blog/plan.md`
 * **Data Model**: `specs/001-static-mdx-blog/data-model.md`
 
+YOU MUST FIRST RUN THIS BEADS QUERY
+
+look at the full implementation task tree:
+
+```bash
+bd dep tree --reverse website-86d
+```
+
 ## Beads Query Hints
 
 Use the `bd` CLI to query and manipulate the issue graph:
@@ -319,7 +327,6 @@ Status is tracked only in Beads:
 ```bash
 bd ready --label 'spec:001-static-mdx-blog' --limit 5   # Ready to work
 bd list --label 'spec:001-static-mdx-blog' --status 'in progress'  # In progress
-bd stats --label 'spec:001-static-mdx-blog'              # Overall progress
 ```
 
 ---

@@ -356,6 +356,12 @@
               >
                 Community
               </a>
+              <a
+                href="/blog"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                Blog
+              </a>
             </nav>
           </div>
 
@@ -492,6 +498,11 @@
             class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
             href="#faq"
             >FAQ</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="/blog"
+            >Blog</a
           >
 
           <!-- Mobile Actions -->
@@ -1331,7 +1342,7 @@
                 <p
                   class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
                 >
-                  The 
+                  The
                   <code
                     class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
                     >terraform-provider-aws</code
@@ -1359,9 +1370,11 @@
                 aria-controls="faq-10"
               >
                 <span class="font-semibold text-lg pr-4"
-                  >How does TerraConstructs compare to <code
+                  >How does TerraConstructs compare to
+                  <code
                     class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
-                    >cdktf-aws-cdk</code>?</span
+                    >cdktf-aws-cdk</code
+                  >?</span
                 >
                 <i
                   data-lucide="chevron-down"
@@ -1386,9 +1399,9 @@
                   API concepts inside a single resource, while Terraform models
                   them as <strong>separate resources</strong> with distinct
                   lifecycles and dependencies. The result can be incomplete
-                  mappings, unstable plans, and missing features (such as the asset pipeline).
-                  TerraConstructs re-implements the AWS CDK
-                  L2 behaviors on top of
+                  mappings, unstable plans, and missing features (such as the
+                  asset pipeline). TerraConstructs re-implements the AWS CDK L2
+                  behaviors on top of
                   <code
                     class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
                     >provider-aws</code

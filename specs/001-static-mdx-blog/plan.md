@@ -163,3 +163,43 @@ dist/
 | Image Optimization | ✅ RESOLVED | **Both plugins** - `vite-plugin-image-optimizer` for global compression + `vite-plugin-imagetools` for responsive srcset. Complementary, not competing. |
 | Reading Time Calculation | ✅ RESOLVED | **remark-reading-time** - Hooks into MDX pipeline, no redundant parsing, exports `minutesToRead` via frontmatter. |
 | React Version | ✅ RESOLVED | **React 19** - Latest stable (Dec 2025), performance improvements, backward compatible. |
+| Dev Server Routing | 🔶 OPEN | How should `/blog/*` routes be served during `pnpm run dev`? See [research.md](./research.md) Question 5. |
+
+## Development Mode Architecture
+
+**Requirements**: FR-017 (dev mode routing), FR-018 (HMR for MDX)
+
+### Problem Statement
+
+The landing page uses `index.html` as its entry point. When running `pnpm run dev`, Vite serves this file for `/`. However, blog routes (`/blog/*`) need to render the React blog application, not the landing page.
+
+### Architecture Options
+
+| Option | Description | Pros | Cons |
+|--------|-------------|------|------|
+| **A. Custom middleware** | Vite plugin intercepts `/blog/*` and serves `blog-dev.html` | Works immediately; dev-only code | Not standard Vite pattern; extra file to maintain |
+| **B. Vite MPA config** | Add `blog/index.html` to rollupOptions.input | Standard Vite multi-page approach | Requires physical HTML file per entry; doesn't handle `/blog/<slug>` dynamically |
+| **C. Vite appType: 'spa' + historyApiFallback** | Configure fallback for `/blog/*` to blog entry | Standard SPA pattern | Conflicts with landing page; would need separate configs |
+| **D. Dev-time prerender** | Generate HTML files on MDX change during dev | Matches production exactly | Slow iteration; defeats HMR purpose |
+
+**Decision**: 🔶 PENDING - See [research.md](./research.md) Question 5
+
+### HMR Behavior
+
+**Requirement**: FR-018 - MDX changes trigger hot reload without full page refresh.
+
+**Implementation**:
+- `@mdx-js/rollup` provides HMR support for MDX files
+- Vite's `server.watch` configured to include `blog/` directory
+- React Fast Refresh handles component updates
+
+**Status**: Partially implemented via vite.config.mjs `server.watch.ignored` pattern.
+
+### Production vs Development
+
+| Aspect | Development (`pnpm run dev`) | Production (`pnpm run build`) |
+|--------|------------------------------|-------------------------------|
+| Routing | Vite dev server + middleware/config | Static HTML files from prerender |
+| MDX Compilation | On-demand via @mdx-js/rollup | Build-time via prerender script |
+| React Hydration | Full client-side render | SSG HTML + client hydration |
+| Assets | Vite dev server serves from source | Optimized, hashed, in dist/ |
