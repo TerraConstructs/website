@@ -875,3 +875,37 @@ code {
     transition: none !important;
   }
 }
+
+/* ============================================
+   Blog: Shiki Dual-Theme Support
+   ============================================ */
+
+/* Light mode - use --shiki-light colors */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+/* Dark mode - use --shiki-dark colors */
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+/* ============================================
+   Blog: Prose Typography Customizations
+   ============================================ */
+
+/* Ensure code blocks in prose have proper spacing */
+.prose pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* Inline code styling */
+.prose code {
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+}

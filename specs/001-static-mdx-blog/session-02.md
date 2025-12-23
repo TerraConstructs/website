@@ -100,36 +100,43 @@ bd ready --label 'spec:001-static-mdx-blog' --priority 1 --limit 10
 4. Doesn't emphasize validating existing work before adding new code
 5. Doesn't warn about the gap between "task closed" and "task validated"
 
-## Open Questions (Moved to research.md)
+## Open Questions (Resolved in this session)
 
-The following questions were identified and added to `specs/001-static-mdx-blog/research.md`:
+The following questions were identified, moved to `specs/001-static-mdx-blog/research.md`, and **resolved**:
 
-- **Question 5**: Development Server Routing - How should `/blog/*` be served in dev?
-- **Question 6**: Prerender Script Implementation - Current script doesn't match design
-- **Question 7**: Missing MDX Pipeline Configuration - Plugins not installed/configured
-- **Question 8**: Header/Footer Consistency - Should blog match landing page exactly?
+- **Question 5**: Development Server Routing (Resolved) -> **Refined Custom Middleware** (`website-ck4.1`)
+- **Question 6**: Prerender Script Implementation (Resolved) -> **Rewrite for True SSG** (`website-xvr`, `website-ck4.2`)
+- **Question 7**: Missing MDX Pipeline Configuration (Resolved) -> **Installed & Configured** (`website-2np`)
+- **Question 8**: Header/Footer Consistency (Resolved) -> **Visual Match Only** (`website-a9c`)
 
-## Current State
+See `specs/001-static-mdx-blog/research.md` for full decision records.
 
-### What's Broken
-- Blog posts don't load in dev mode
-- Build process incomplete
-- Several files modified but not validated
+## Current State (End of Session)
 
-### What's Working
-- Landing page still functional
-- Blog link added to navigation
-- Basic component structure in place
+### What Was Broken (Now Fixed)
+- **Dev Server Routing**: Fixed via `website-ck4.1` (refined middleware).
+- **MDX Configuration**: Fixed via `website-2np` (installed plugins).
+- **Prerender Script**: In progress (`website-xvr` reopened, SSR entry point `website-ck4.2` created).
+
+### What's Still In Progress
+- **Prerender Script Rewrite**: `website-xvr` needs to be implemented using the new SSR entry point.
+- **Component Hydration**: `PostPage` and `BlogIndex` need to be updated to support the new data flow.
 
 ### Git Status
-Multiple uncommitted changes. User controls git and will decide what to keep/revert.
+Multiple uncommitted changes including:
+- `vite.config.mjs` (MDX plugins)
+- `plugins/blog-dev-server.js` (Refined middleware)
+- `src/blog/entry-server.tsx` (New SSR entry point)
+- `package.json` (New dependencies)
 
-## Beads Updates Needed
+## Beads Updates Completed
 
-Add comments to these issues documenting the research gap:
-- `website-86d` - Epic-level note about Session 2 findings
-- `website-2np` - Note that remark-reading-time was not actually installed
-- `website-9gz` - Note that rehype-extract-toc was not configured
+All research gaps identified above have been documented in Beads:
+- **website-86d**: Epic updated with Session 2 gap analysis.
+- **website-2np**: Reopened, commented on missing install, then closed after fix.
+- **website-9gz**: Reopened and updated with refined Vite config requirements.
+- **Tasks Reopened for Validation**: `website-xvr`, `website-mfq`, `website-a9c`, `website-fvc`, `website-abj` were reopened to ensure they align with new decisions.
+- **New Foundation Tasks**: Created `website-ck4.1` (Dev Server) and `website-ck4.2` (SSR Entry) to bridge the architectural gaps.
 
 ---
 
@@ -166,8 +173,9 @@ Before making ANY code changes:
 ## CURRENT STATUS
 
 - **Last Session**: session-02 (2025-12-19)
-- **Phase**: Research revisit - open questions in research.md
-- **Blockers**: Questions 5-8 need decisions before continuing
+- **Phase**: Foundational (Phases 1-2 completion)
+- **Completed**: MDX pipeline fix, Dev Server routing refinement, SSR Entry Point implementation.
+- **Ready to Work**: Rewrite prerender script (`website-xvr`) for true SSG.
 
 ## WHAT TO DO
 
@@ -189,9 +197,9 @@ Before making ANY code changes:
 
 ## Session Statistics
 
-- **Duration**: ~2 hours
-- **Issues Identified**: 4 open questions added to research.md
-- **Files Created**: 5 new files (some may need removal)
-- **Files Modified**: 5 existing files (some changes may need revert)
-- **Root Cause Found**: Missing MDX plugin configuration
-- **Outcome**: Returned to research phase for decision-making
+- **Duration**: ~3.5 hours (including research revisit and foundation fixes)
+- **Issues Identified**: 4 open questions resolved in research.md
+- **Files Created**: `src/blog/entry-server.tsx` (SSR entry point)
+- **Files Modified**: `vite.config.mjs`, `plugins/blog-dev-server.js`, `package.json`, `tasks.md`
+- **Root Cause Found**: Missing MDX plugin configuration & architectural gap in SSG strategy
+- **Outcome**: Foundation strengthened; dev server fixed; SSR path established. Ready for SSG implementation.

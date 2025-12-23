@@ -58,7 +58,7 @@ This feature follows Beads' 2-level graph structure:
   * Phase 7: US6 - Series Navigation (`website-k32`) - P2
   * Phase 8: US4 - Browse All Posts (`website-3xm`) - P3
   * Phase 9: Polish (`website-2nm`) - P3
-* **Tasks**: 45 issues of type `task`, children of each feature
+* **Tasks**: 47 issues of type `task`, children of each feature (including new tasks for refined dev server and SSR entry point)
 
 ## Convention Summary
 

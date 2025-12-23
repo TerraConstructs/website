@@ -2,54 +2,110 @@
  * Blog entry point - React application for /blog/* routes.
  * This is code-split from the main landing page bundle.
  */
-import { StrictMode } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { MDXProvider } from "@mdx-js/react";
 import { BlogLayout } from "./components/BlogLayout";
+import { BlogIndex } from "./components/BlogIndex";
+import { PostPage, mdxComponents } from "./components/PostPage";
 import { initTheme } from "./utils/theme";
 
 // Initialize theme before rendering
 initTheme();
 
+// Pre-load all MDX files using Vite's glob import
+const posts = import.meta.glob("../../blog/*/index.mdx", { eager: false });
+
 /**
  * Main blog app component.
- * Routes are handled by prerendered HTML pages.
- * This provides client-side interactivity for static pages.
+ * Routes are handled by prerendered HTML pages in production.
+ * In development, dynamically loads MDX files.
  */
 function App() {
+  const [post, setPost] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   // Check current path to determine what to render
   const path = window.location.pathname;
 
+  useEffect(() => {
+    async function loadPost() {
+      // Extract slug from path (e.g., /blog/getting-started -> getting-started)
+      const match = path.match(/^\/blog\/([^/]+)\/?$/);
+      if (!match) {
+        setLoading(false);
+        return;
+      }
+
+      const slug = match[1];
+      const postPath = `../../blog/${slug}/index.mdx`;
+
+      try {
+        // Check if the post exists in our glob
+        if (!(postPath in posts)) {
+          throw new Error(`Post not found: ${slug}`);
+        }
+
+        // Dynamically import MDX file
+        const module = await posts[postPath]();
+        setPost(module);
+        setError(null);
+      } catch (err) {
+        console.error(`Failed to load blog post: ${slug}`, err);
+        setError(`Failed to load blog post: ${slug}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadPost();
+  }, [path]);
+
   if (path === "/blog" || path === "/blog/") {
-    // Blog index page
+    // Blog index page - render post list
+    return <BlogIndex />;
+  }
+
+  // Individual post page
+  if (loading) {
     return (
       <BlogLayout>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">
-            Blog
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Technical articles about infrastructure as code, CDKTF, and cloud
-            development.
-          </p>
-          {/* Blog post list will be rendered here once we implement US4 */}
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </BlogLayout>
     );
   }
 
-  // Individual post pages will be handled by separate builds
-  // This is a fallback for development
+  if (error || !post) {
+    return (
+      <BlogLayout>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">
+            Post Not Found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {error || "The blog post you're looking for doesn't exist."}
+          </p>
+        </div>
+      </BlogLayout>
+    );
+  }
+
+  // Render post with MDX content
+  const { default: Content, frontmatter, toc, readingTime } = post;
+
   return (
-    <BlogLayout>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8">
-          Blog Post
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Post content will load here.
-        </p>
-      </div>
-    </BlogLayout>
+    <MDXProvider components={mdxComponents}>
+      <PostPage
+        frontmatter={frontmatter}
+        toc={toc || []}
+        readingTime={readingTime}
+      >
+        <Content />
+      </PostPage>
+    </MDXProvider>
   );
 }
 

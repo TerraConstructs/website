@@ -7,9 +7,13 @@ import react from '@vitejs/plugin-react';
 import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+import remarkReadingTime from 'remark-reading-time';
+import remarkReadingTimeMdx from 'remark-reading-time/mdx';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeShiki from '@shikijs/rehype';
+import rehypeExtractToc from '@stefanprobst/rehype-extract-toc';
+import rehypeExtractTocMdx from '@stefanprobst/rehype-extract-toc/mdx';
 import { transformerNotationHighlight } from '@shikijs/transformers';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { imagetools } from 'vite-imagetools';
@@ -130,11 +134,15 @@ export default defineConfig({
     mdx({
       remarkPlugins: [
         remarkFrontmatter,
+        remarkReadingTime,
+        remarkReadingTimeMdx, // Export reading time for MDX
         [remarkMdxFrontmatter, { name: 'frontmatter' }],
       ],
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+        rehypeExtractToc,
+        [rehypeExtractTocMdx, { name: 'toc' }], // Export TOC as 'toc' (default is 'tableOfContents')
         [
           rehypeShiki,
           {
@@ -152,6 +160,7 @@ export default defineConfig({
                 )
               ),
             },
+            defaultColor: false,
             transformers: [transformerNotationHighlight()],
           },
         ],

@@ -100,9 +100,9 @@ export function CodeBlock({
           isCollapsed ? "max-h-64 overflow-y-hidden" : ""
         }`}
       >
-        <pre className="p-4 bg-white dark:bg-gray-900 text-sm font-mono leading-relaxed">
+        <div className="p-4 text-sm">
           {children}
-        </pre>
+        </div>
       </div>
 
       {/* Expand hint for collapsed blocks */}

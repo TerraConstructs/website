@@ -24,16 +24,16 @@ export function TOC({ entries, activeId }: TOCProps) {
     const hasChildren = entry.children && entry.children.length > 0;
 
     return (
-      <li key={entry.id} className="mb-2">
+      <li key={entry.id || entry.value} className="mb-2">
         <button
-          onClick={() => scrollToHeading(entry.id)}
+          onClick={() => entry.id && scrollToHeading(entry.id)}
           className={`text-left w-full text-sm transition-colors ${
             isActive
               ? "text-purple-600 dark:text-purple-400 font-semibold"
               : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-          } ${entry.level === 2 ? "" : "pl-4"}`}
+          } ${entry.depth === 2 ? "" : "pl-4"}`}
         >
-          {entry.text}
+          {entry.value}
         </button>
         {hasChildren && (
           <ul className="mt-1 space-y-1">
