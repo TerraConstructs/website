@@ -25,10 +25,10 @@ export function PostCard({ post }: PostCardProps) {
         </h2>
         <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 mb-4">
           <time dateTime={date}>{formattedDate}</time>
-          {readingTime && (
+          {readingTime > 0 && (
             <>
               <span>•</span>
-              <span>{Math.ceil(readingTime.minutes)} min read</span>
+              <span>{Math.ceil(readingTime)} min read</span>
             </>
           )}
         </div>
@@ -38,12 +38,16 @@ export function PostCard({ post }: PostCardProps) {
         {tags && tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <span
+              <a
                 key={tag}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300"
+                href={`/blog#tag=${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
               >
                 {tag}
-              </span>
+              </a>
             ))}
           </div>
         )}

@@ -1,28 +1,33 @@
 /**
  * BlogIndex - Main blog index page at /blog.
- * Displays all posts in a sorted list.
+ * Displays all posts with tag filtering support.
  */
 import { useEffect, useState } from 'react';
 import { BlogLayout } from './BlogLayout';
 import { PostList } from './PostList';
-import type { PostCard } from '../types';
+import { TagFilter } from './TagFilter';
+import type { PostCard, Tag } from '../types';
 
 // Pre-load all MDX files using Vite's glob import
-const postModules = import.meta.glob('../../blog/*/index.mdx', {
+const postModules = import.meta.glob('../../../blog/*/index.mdx', {
   eager: false,
 });
 
 export function BlogIndex() {
   const [posts, setPosts] = useState<PostCard[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Load posts and tags on mount
   useEffect(() => {
-    async function loadPosts() {
+    async function loadData() {
       const loadedPosts: PostCard[] = [];
 
+      // Load posts
       for (const path in postModules) {
         try {
-          // Extract slug from path: ../../blog/getting-started/index.mdx -> getting-started
+          // Extract slug from path: ../../../blog/getting-started/index.mdx -> getting-started
           const match = path.match(/\/blog\/([^/]+)\/index\.mdx$/);
           if (!match) continue;
 
@@ -39,7 +44,7 @@ export function BlogIndex() {
               excerpt: module.frontmatter.excerpt || '',
               tags: module.frontmatter.tags || [],
               author: module.frontmatter.author,
-              readingTime: module.frontmatter.readingTime,
+              readingTime: module.readingTime?.minutes || 0,
             });
           }
         } catch (err) {
@@ -48,11 +53,84 @@ export function BlogIndex() {
       }
 
       setPosts(loadedPosts);
+
+      // Try to load tags from generated tags.json (production)
+      // If it fails (dev mode), compute tags from loaded posts
+      try {
+        const response = await fetch('/blog/tags.json');
+        if (response.ok && response.headers.get('content-type')?.includes('json')) {
+          const tagsData = await response.json();
+          setTags(tagsData);
+        } else {
+          // Dev mode: compute tags from posts
+          computeTagsFromPosts(loadedPosts);
+        }
+      } catch (err) {
+        // Dev mode: compute tags from posts
+        computeTagsFromPosts(loadedPosts);
+      }
+
       setLoading(false);
     }
 
-    loadPosts();
+    // Helper function to compute tags from posts (dev mode fallback)
+    function computeTagsFromPosts(posts: PostCard[]) {
+      const tagMap = new Map<string, number>();
+
+      for (const post of posts) {
+        const postTags = post.tags || [];
+        for (const tag of postTags) {
+          tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+        }
+      }
+
+      const computedTags: Tag[] = Array.from(tagMap.entries())
+        .map(([name, count]) => ({
+          name,
+          slug: name.toLowerCase().replace(/\s+/g, '-'),
+          count,
+        }))
+        .sort((a, b) => b.count - a.count); // Sort by count descending
+
+      setTags(computedTags);
+    }
+
+    loadData();
   }, []);
+
+  // Sync active tag with URL hash
+  useEffect(() => {
+    function handleHashChange() {
+      const hash = window.location.hash.slice(1); // Remove #
+      const tagMatch = hash.match(/tag=([^&]+)/);
+      setActiveTag(tagMatch ? tagMatch[1] : null);
+    }
+
+    // Set initial tag from URL
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Handle tag selection
+  function handleTagSelect(tagSlug: string | null) {
+    if (tagSlug === null) {
+      // Clear filter
+      window.location.hash = '';
+    } else {
+      // Set filter
+      window.location.hash = `tag=${tagSlug}`;
+    }
+  }
+
+  // Filter posts by active tag
+  const filteredPosts = activeTag
+    ? posts.filter((post) =>
+        post.tags.some((tag) => tag.toLowerCase().replace(/\s+/g, '-') === activeTag)
+      )
+    : posts;
 
   return (
     <BlogLayout>
@@ -74,7 +152,34 @@ export function BlogIndex() {
             </p>
           </div>
         ) : (
-          <PostList posts={posts} />
+          <>
+            {/* Tag filter */}
+            {tags.length > 0 && (
+              <TagFilter
+                tags={tags}
+                activeTag={activeTag}
+                onTagSelect={handleTagSelect}
+              />
+            )}
+
+            {/* Post list */}
+            <PostList posts={filteredPosts} />
+
+            {/* No results message */}
+            {filteredPosts.length === 0 && posts.length > 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-600 dark:text-gray-400">
+                  No posts found with the selected tag.
+                </p>
+                <button
+                  onClick={() => handleTagSelect(null)}
+                  className="mt-4 text-purple-600 dark:text-purple-400 hover:underline"
+                >
+                  Clear filter
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </BlogLayout>

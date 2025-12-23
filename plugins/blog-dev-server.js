@@ -16,8 +16,10 @@ export default function blogDevServer() {
         }
 
         // Skip asset requests (anything with a file extension)
-        // This allows /blog/my-post/image.png to pass through to Vite's asset server
-        if (/\.\w+$/.test(req.url)) {
+        // This allows /blog/my-post/image.png and MDX modules to pass through to Vite
+        // Parse URL to remove query string before checking extension
+        const urlPath = req.url.split('?')[0];
+        if (/\.\w+$/.test(urlPath)) {
           return next();
         }
 
