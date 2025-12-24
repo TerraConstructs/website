@@ -90,6 +90,41 @@ function generateExcerpt(content) {
 }
 
 /**
+ * Extract plain text from MDX content for search indexing.
+ * Strips markdown formatting and limits length to keep index size reasonable.
+ */
+function extractPlainText(content) {
+  // Remove frontmatter
+  let text = content.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+
+  // Remove code blocks
+  text = text.replace(/```[\s\S]*?```/g, '');
+  text = text.replace(/`[^`]+`/g, '');
+
+  // Remove headings markers but keep text
+  text = text.replace(/^#+\s+/gm, '');
+
+  // Convert links to text
+  text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+
+  // Remove emphasis markers
+  text = text.replace(/[*_~]/g, '');
+
+  // Remove JSX components (like <SeriesNav />)
+  text = text.replace(/<[^>]+>/g, '');
+
+  // Normalize whitespace
+  text = text.replace(/\s+/g, ' ').trim();
+
+  // Limit to 1000 characters to keep index size reasonable
+  if (text.length > 1000) {
+    text = text.slice(0, 1000);
+  }
+
+  return text;
+}
+
+/**
  * Find client bundle filenames from dist directory.
  */
 function findBundles() {
@@ -245,6 +280,7 @@ async function prerender() {
       slug,
       frontmatter,
       filePath: file,
+      content, // Store raw content for search index generation
     };
 
     posts.push(post);
@@ -300,7 +336,26 @@ async function prerender() {
   writeFileSync(tagsFile, JSON.stringify(aggregatedTags, null, 2));
   console.log(`✅ Generated: blog/tags.json`);
 
-  // Step 8: Generate blog index page
+  // Step 8: Generate search index
+  console.log('\n🔍 Generating search index...');
+  const searchIndex = posts.map((post) => ({
+    slug: post.slug,
+    title: post.frontmatter.title,
+    excerpt: post.frontmatter.excerpt || '',
+    tags: post.frontmatter.tags || [],
+    content: extractPlainText(post.content),
+    date: post.frontmatter.date,
+    author: post.frontmatter.author,
+  }));
+
+  const searchIndexFile = join(rootDir, 'dist', 'blog', 'search-index.json');
+  const searchIndexJSON = JSON.stringify(searchIndex, null, 2);
+  writeFileSync(searchIndexFile, searchIndexJSON);
+
+  const searchIndexSize = (searchIndexJSON.length / 1024).toFixed(2);
+  console.log(`✅ Generated: blog/search-index.json (${searchIndexSize} KB, ${searchIndex.length} posts)`);
+
+  // Step 9: Generate blog index page
   console.log('\n📄 Generating blog index...');
   const indexHTML = renderIndex();
   const completeIndexHTML = generateIndexHTML(indexHTML, bundles);
@@ -313,7 +368,7 @@ async function prerender() {
     `✅ Generated: blog/index.html (${indexHTML.length} bytes prerendered)`
   );
 
-  // Step 9: Close Vite server
+  // Step 10: Close Vite server
   await vite.close();
 
   console.log(

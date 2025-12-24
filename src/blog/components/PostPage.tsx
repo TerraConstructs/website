@@ -6,7 +6,7 @@ import { ReactNode, useState } from "react";
 import { BlogLayout } from "./BlogLayout";
 import { TOC } from "./TOC";
 import { TOCDrawer } from "./TOCDrawer";
-import { CodeBlock } from "./CodeBlock";
+import { SeriesNav } from "./SeriesNav";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 import type { TOCEntry, Frontmatter, ReadingTime } from "../types";
 
@@ -102,17 +102,8 @@ function flattenTOC(entries: TOCEntry[]): TOCEntry[] {
 
 /**
  * MDX component mappings for custom rendering.
+ * Note: Code blocks are handled by rehype-expressive-code (no custom component needed).
  */
 export const mdxComponents = {
-  pre: (props: any) => {
-    const codeProps = props.children?.props || {};
-    return (
-      <CodeBlock
-        className={codeProps.className || ""}
-        collapsed={codeProps.collapsed}
-      >
-        {props.children}
-      </CodeBlock>
-    );
-  },
+  SeriesNav, // Make SeriesNav available in MDX without imports
 };

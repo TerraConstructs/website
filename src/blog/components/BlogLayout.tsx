@@ -3,6 +3,7 @@
  * Includes header navigation, theme toggle, and footer.
  */
 import { ReactNode, useEffect, useState } from "react";
+import { Github, BookOpen, Menu, X, Sun, Moon } from "lucide-react";
 import { getTheme, toggleTheme, initTheme } from "../utils/theme";
 
 interface BlogLayoutProps {
@@ -11,6 +12,7 @@ interface BlogLayoutProps {
 
 export function BlogLayout({ children }: BlogLayoutProps) {
   const [isDark, setIsDark] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     initTheme();
@@ -20,6 +22,10 @@ export function BlogLayout({ children }: BlogLayoutProps) {
   const handleToggleTheme = () => {
     toggleTheme();
     setIsDark(getTheme() === "dark");
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -58,44 +64,131 @@ export function BlogLayout({ children }: BlogLayoutProps) {
               </nav>
             </div>
 
-            {/* Theme toggle */}
-            <button
-              onClick={handleToggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              aria-label="Toggle theme"
-              aria-pressed={isDark}
-            >
-              {isDark ? (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            <div className="flex items-center space-x-4">
+              {/* Desktop actions */}
+              <div className="hidden lg:flex items-center space-x-4">
+                <button
+                  onClick={handleToggleTheme}
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-label="Toggle theme"
+                  aria-pressed={isDark}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  {isDark ? (
+                    <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  )}
+                </button>
+
+                <a
+                  href="https://github.com/terraconstructs/base"
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-label="GitHub repository"
+                  target="_blank"
+                  rel="noopener"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                  />
-                </svg>
-              )}
-            </button>
+                  <Github className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                </a>
+
+                <a
+                  href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-label="Documentation"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <BookOpen className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                </a>
+
+                <a
+                  href="https://aws-workshop.terraconstructs.dev"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Workshops
+                </a>
+              </div>
+
+              {/* Mobile actions */}
+              <div className="lg:hidden flex items-center space-x-2">
+                <button
+                  onClick={handleToggleTheme}
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-label="Toggle theme"
+                  aria-pressed={isDark}
+                >
+                  {isDark ? (
+                    <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  )}
+                </button>
+
+                <button
+                  onClick={toggleMobileMenu}
+                  className="inline-flex items-center justify-center w-10 h-10 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  aria-expanded={mobileMenuOpen}
+                  aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  ) : (
+                    <Menu className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        <div
+          className={`lg:hidden absolute left-0 right-0 top-full z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 transition-all duration-300 ${
+            mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
+        >
+          <nav
+            aria-label="Mobile navigation"
+            className="flex flex-col p-3 sm:p-4 gap-2"
+          >
+            <a
+              href="/"
+              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            >
+              Home
+            </a>
+            <a
+              href="/blog"
+              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            >
+              Blog
+            </a>
+            <a
+              href="https://github.com/terraconstructs/base"
+              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+              target="_blank"
+              rel="noopener"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+              target="_blank"
+              rel="noopener"
+            >
+              Reference
+            </a>
+            <a
+              href="https://aws-workshop.terraconstructs.dev"
+              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+              target="_blank"
+              rel="noopener"
+            >
+              Workshops
+            </a>
+          </nav>
         </div>
       </header>
 

@@ -119,24 +119,79 @@ import { SeriesNav } from '../src/blog/components/SeriesNav';
 
 ### Code Block Features
 
+Powered by [Expressive Code](https://expressive-code.com/), code blocks support advanced features including syntax highlighting, line highlights, diff markers, file titles, terminal frames, and copy buttons.
+
+#### Basic Code Block
+
+````mdx
+```typescript
+import { App } from 'cdktf';
+const app = new App();
+```
+````
+
+#### With Title
+
+````mdx
+```typescript title="app.ts"
+import { App } from 'cdktf';
+const app = new App();
+```
+````
+
 #### Line Highlighting
 
 ````mdx
 ```typescript {3-5}
 const app = new App();
 const stack = new TerraformStack(app, 'demo');
-// These lines are highlighted
+// Lines 3-5 are highlighted
 new AwsProvider(stack, 'aws', { region: 'us-east-1' });
 new S3Bucket(stack, 'bucket', { bucket: 'my-bucket' });
 ```
 ````
 
-#### Expandable Long Code
+#### Diff Highlighting (Insert/Delete)
 
 ````mdx
-```typescript collapsed
-// Long code block that starts collapsed
-// Click to expand...
+```typescript ins={2} del={1}
+const region = 'us-west-1'; // Old - shown in red
+const region = 'us-east-1'; // New - shown in green
+```
+````
+
+#### Mark Important Lines
+
+````mdx
+```typescript mark={3}
+const app = new App();
+const stack = new TerraformStack(app, 'demo');
+// This line is marked/highlighted
+new Bucket(stack, 'bucket');
+```
+````
+
+#### Terminal Window Frame
+
+````mdx
+```bash frame="terminal"
+npm install cdktf constructs
+```
+````
+
+#### Multiple Features Combined
+
+````mdx
+```typescript title="stack.ts" {5-7} mark={9}
+import { App, TerraformStack } from 'cdktf';
+import { AwsProvider } from '@cdktf/provider-aws';
+
+const app = new App();
+// Lines 5-7 highlighted
+const stack = new TerraformStack(app, 'demo');
+new AwsProvider(stack, 'aws', { region: 'us-east-1' });
+
+new S3Bucket(stack, 'bucket', { bucket: 'my-bucket' }); // Marked
 ```
 ````
 

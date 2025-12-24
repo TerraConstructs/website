@@ -19,8 +19,10 @@
     "@mdx-js/react": "^3.1.1",
     "fuse.js": "^7.1.0",
     "lucide": "^0.542.0",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "rehype-expressive-code": "^0.41.5"
   },
   "devDependencies": {
     "@cdktf/provider-aws": "^20.1.0",

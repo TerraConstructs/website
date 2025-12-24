@@ -11,10 +11,9 @@ import remarkReadingTime from 'remark-reading-time';
 import remarkReadingTimeMdx from 'remark-reading-time/mdx';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeShiki from '@shikijs/rehype';
+import rehypeExpressiveCode from 'rehype-expressive-code';
 import rehypeExtractToc from '@stefanprobst/rehype-extract-toc';
 import rehypeExtractTocMdx from '@stefanprobst/rehype-extract-toc/mdx';
-import { transformerNotationHighlight } from '@shikijs/transformers';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import { imagetools } from 'vite-imagetools';
 import cspHashPlugin from './plugins/csp-hash.js';
@@ -132,6 +131,7 @@ export default defineConfig({
     react(),
     // MDX compilation with remark/rehype plugins
     mdx({
+      providerImportSource: "@mdx-js/react",
       remarkPlugins: [
         remarkFrontmatter,
         remarkReadingTime,
@@ -141,29 +141,48 @@ export default defineConfig({
       rehypePlugins: [
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeExtractToc,
-        [rehypeExtractTocMdx, { name: 'toc' }], // Export TOC as 'toc' (default is 'tableOfContents')
         [
-          rehypeShiki,
+          rehypeExpressiveCode,
           {
-            themes: {
-              light: JSON.parse(
+            themes: [
+              JSON.parse(
                 readFileSync(
                   join(__dirname, 'src/blog/shiki-theme-light.json'),
                   'utf-8'
                 )
               ),
-              dark: JSON.parse(
+              JSON.parse(
                 readFileSync(
                   join(__dirname, 'src/blog/shiki-theme-dark.json'),
                   'utf-8'
                 )
               ),
+            ],
+            themeCssSelector: (theme) => {
+              // Use the theme name from our JSON files to determine light/dark
+              // Our light theme should be default, dark theme when .dark class is present
+              if (theme.name && theme.name.toLowerCase().includes('dark')) {
+                return '.dark';
+              }
+              return ':root:not(.dark)';
             },
-            defaultColor: false,
-            transformers: [transformerNotationHighlight()],
+            defaultProps: {
+              wrap: true,
+              preserveIndent: true,
+            },
+            styleOverrides: {
+              borderRadius: '0.5rem',
+              frames: {
+                editorTabBarBackground: 'var(--tw-prose-pre-bg)',
+                editorActiveTabBackground: 'var(--tw-prose-pre-bg)',
+                editorActiveTabForeground: 'var(--tw-prose-body)',
+                terminalTitlebarBackground: 'var(--tw-prose-pre-bg)',
+              },
+            },
           },
         ],
+        rehypeExtractToc,
+        [rehypeExtractTocMdx, { name: 'toc' }], // Export TOC as 'toc' (default is 'tableOfContents')
       ],
     }),
     // Image optimization for blog assets

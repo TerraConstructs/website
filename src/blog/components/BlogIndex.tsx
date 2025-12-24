@@ -1,11 +1,12 @@
 /**
  * BlogIndex - Main blog index page at /blog.
- * Displays all posts with tag filtering support.
+ * Displays all posts with tag filtering and search support.
  */
 import { useEffect, useState } from 'react';
 import { BlogLayout } from './BlogLayout';
 import { PostList } from './PostList';
 import { TagFilter } from './TagFilter';
+import { SearchBar } from './SearchBar';
 import type { PostCard, Tag } from '../types';
 
 // Pre-load all MDX files using Vite's glob import
@@ -153,6 +154,9 @@ export function BlogIndex() {
           </div>
         ) : (
           <>
+            {/* Search bar */}
+            <SearchBar />
+
             {/* Tag filter */}
             {tags.length > 0 && (
               <TagFilter
