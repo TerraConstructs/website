@@ -35,23 +35,16 @@ export default defineConfig({
     },
   },
 
-  // Preview server (serves dist/ with CSP headers for local validation)
+  // Preview server (serves dist/ with path-based CSP headers for local validation)
   preview: {
     port: 4173,
     strictPort: true,
     headers: {
-      'Content-Security-Policy': (() => {
-        try {
-          const { csp } = JSON.parse(readFileSync('infra/csp.json', 'utf8'))
-          return csp
-        } catch {
-          return "default-src 'self'"
-        }
-      })(),
+      // Base headers applied to all responses (CSP set via middleware for path-based rules)
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Resource-Policy': 'same-origin',
-      'X-Content-Type-Options': 'nosniff'
-    }
+      'X-Content-Type-Options': 'nosniff',
+    },
   },
 
   // Build configuration
@@ -91,23 +84,22 @@ export default defineConfig({
       },
       // Generate & inline Critical CSS for the built HTML
       // TODO: Re-enable - temporarily due to Puppeteer dependency issues in current sandbox
-      // plugins: [
-      //   PluginCritical({
-      //     criticalBase: 'dist',
-      //     criticalUrl: 'dist/',
-      //     criticalPages: [
-      //       { uri: 'index.html', template: 'index' },
-      //     ],
-      //     criticalConfig: {
-      //       inline: true,
-      //       extract: false,
-      //       width: 1200,
-      //       height: 900,
-      //       penthouse: { blockJSRequests: false },
-      //     },
-      //   }),
-      // ],
-      plugins: [],
+      plugins: [
+        PluginCritical({
+          criticalBase: 'dist',
+          criticalUrl: 'dist/',
+          criticalPages: [
+            { uri: 'index.html', template: 'index' },
+          ],
+          criticalConfig: {
+            inline: true,
+            extract: false,
+            width: 1200,
+            height: 900,
+            penthouse: { blockJSRequests: false },
+          },
+        }),
+      ],
     }
   },
 
@@ -125,6 +117,55 @@ export default defineConfig({
 
   // Plugin configuration for additional features
   plugins: [
+    // Path-based CSP headers for preview server (mirrors CloudFront behavior)
+    {
+      name: 'preview-csp-headers',
+      configurePreviewServer(server) {
+        server.middlewares.use((req, res, next) => {
+          try {
+            const { csp } = JSON.parse(readFileSync('infra/csp.json', 'utf8'));
+            const isBlogPath = req.url?.startsWith('/blog');
+
+            // Blog paths get relaxed CSP (unsafe-inline for expressive-code)
+            // Note: 'unsafe-inline' is ignored when hashes are present, so we must remove hashes
+            const effectiveCsp = isBlogPath
+              ? csp
+                  .replace(
+                    /style-src[^;]+;/,
+                    "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';"
+                  )
+                  .replace(
+                    /script-src[^;]+;/,
+                    "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline';"
+                  )
+                  .replace(
+                    /script-src-attr[^;]+;/,
+                    "script-src-attr 'unsafe-inline';"
+                  )
+              : csp;
+
+            res.setHeader('Content-Security-Policy', effectiveCsp);
+          } catch {
+            res.setHeader('Content-Security-Policy', "default-src 'self'");
+          }
+          next();
+        });
+      },
+    },
+    // Handle directory index requests in preview server (/blog → /blog/index.html)
+    {
+      name: 'directory-index',
+      configurePreviewServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url && !req.url.includes('.') && !req.url.endsWith('/')) {
+            req.url += '/index.html';
+          } else if (req.url && req.url.endsWith('/')) {
+            req.url += 'index.html';
+          }
+          next();
+        });
+      },
+    },
     // Blog development server (handle /blog/* routes)
     blogDevServer(),
     // React support for blog subsystem

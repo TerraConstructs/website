@@ -229,7 +229,7 @@ async function prerender() {
   await build({
     build: {
       ssr: 'src/blog/entry-server.tsx',
-      outDir: 'dist/ssr',
+      outDir: '.temp-ssr',
       emptyOutDir: true,
       rollupOptions: {
         output: {

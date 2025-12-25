@@ -56,7 +56,7 @@ export function BlogLayout({ children }: BlogLayoutProps) {
                   Home
                 </a>
                 <a
-                  href="/blog"
+                  href="/blog/"
                   className="text-purple-600 dark:text-purple-400 font-semibold"
                 >
                   Blog
@@ -159,35 +159,43 @@ export function BlogLayout({ children }: BlogLayoutProps) {
               Home
             </a>
             <a
-              href="/blog"
+              href="/blog/"
               className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
             >
               Blog
             </a>
-            <a
-              href="https://github.com/terraconstructs/base"
-              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
-              target="_blank"
-              rel="noopener"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
-              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
-              target="_blank"
-              rel="noopener"
-            >
-              Reference
-            </a>
-            <a
-              href="https://aws-workshop.terraconstructs.dev"
-              className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
-              target="_blank"
-              rel="noopener"
-            >
-              Workshops
-            </a>
+
+            {/* Mobile Actions */}
+            <div className="flex items-center space-x-2 pt-3 mt-3 border-t border-gray-200 dark:border-gray-700">
+              <a
+                href="https://github.com/terraconstructs/base"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="GitHub repository"
+                target="_blank"
+                rel="noopener"
+              >
+                <Github className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              </a>
+
+              <a
+                href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="Documentation"
+                target="_blank"
+                rel="noopener"
+              >
+                <BookOpen className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              </a>
+
+              <a
+                href="https://aws-workshop.terraconstructs.dev"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ml-auto"
+                target="_blank"
+                rel="noopener"
+              >
+                Workshops
+              </a>
+            </div>
           </nav>
         </div>
       </header>
@@ -230,7 +238,7 @@ export function BlogLayout({ children }: BlogLayoutProps) {
                 </li>
                 <li>
                   <a
-                    href="/blog"
+                    href="/blog/"
                     className="hover:text-gray-900 dark:hover:text-white transition-colors"
                   >
                     Blog

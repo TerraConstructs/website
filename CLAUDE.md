@@ -48,6 +48,7 @@ bd ready --limit 5                         # Find issues ready to work on
 pnpm install                # Install dependencies
 pnpm run dev                # Start Vite dev server on localhost:8080 (auto-opens)
 pnpm run build              # Build production bundle to dist/
+pnpm run build:critical     # Build with critical CSS (requires Chrome)
 pnpm run preview            # Preview production build locally
 pnpm run clean              # Clean dist/ directory
 
@@ -60,6 +61,49 @@ pnpm run format:staged      # Format specific files (used with git hooks)
 cd demos/workshop && npm install && npx cdktf synth     # Generate workshop demo Terraform
 cd demos/function-url && npm install && npx cdktf synth # Generate function-url demo Terraform
 ```
+
+## Critical CSS Generation
+
+The build process generates and inlines critical CSS for faster initial page loads. This requires Chrome/Chromium to be installed.
+
+**Default Build** (`pnpm run build`):
+- Assumes puppeteer installed Chrome/Chromium works
+
+### Chrome Installation Options
+
+**Option 1: Global Puppeteer** (Recommended)
+```bash
+npm install -g puppeteer
+```
+- Automatically downloads Chrome to `~/.cache/puppeteer/chrome/`
+- Use: `pnpm run build:critical`
+
+**Option 2: System Chrome**
+```bash
+# Ubuntu/Debian
+sudo apt install chromium-browser
+
+# macOS
+brew install chromium
+```
+- After installing, edit the `build:critical` script in `package.json`
+- Update `PUPPETEER_EXECUTABLE_PATH` to point to your system Chrome
+
+**Option 3: Shell Script** (Auto-detection)
+```bash
+./scripts/build-with-critical.sh
+```
+- Assumes pre-installed global chrome and
+- Automatically finds Chrome in common locations
+- Provides clear error messages if Chrome not found
+- More flexible than hardcoded package.json script
+
+### Troubleshooting
+
+If `build:critical` fails with "Browser is not downloaded":
+1. Verify Chrome installation: `ls ~/.cache/puppeteer/chrome/`
+2. Or install globally: `npm install -g puppeteer`
+3. Or use the shell script: `./scripts/build-with-critical.sh`
 
 ## Architecture
 

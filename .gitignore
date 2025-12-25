@@ -13,5 +13,6 @@ dist
 
 # Build artifacts
 .vite/
+.temp-ssr/
 *.tmp
 *.swp
