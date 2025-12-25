@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, readdirSync, statSync } from "fs";
 import { join } from "path";
 
 /**
@@ -6,10 +6,12 @@ import { join } from "path";
  * - Updates lastmod dates to current build date
  * - Validates sections exist in HTML
  * - Removes non-existent sections
+ * - Discovers and includes blog posts
  */
 export default function sitemapGenerator(options = {}) {
   const {
     baseUrl = "https://terraconstructs.dev",
+    blogDir = "blog",
     routes = [
       { path: "/", priority: 1.0, changefreq: "weekly" },
       { path: "/#features", priority: 0.8, changefreq: "weekly" },
@@ -61,15 +63,21 @@ export default function sitemapGenerator(options = {}) {
           return exists;
         });
 
+        // Discover blog posts
+        const blogRoutes = discoverBlogPosts(rootPath, blogDir);
+
         // Generate current date in YYYY-MM-DD format
         const currentDate = new Date().toISOString().split("T")[0];
 
+        // Combine all routes
+        const allRoutes = [
+          ...validRoutes,
+          { path: "/blog/", priority: 0.9, changefreq: "weekly" },
+          ...blogRoutes,
+        ];
+
         // Generate sitemap XML
-        const sitemapXml = generateSitemapXml(
-          baseUrl,
-          validRoutes,
-          currentDate
-        );
+        const sitemapXml = generateSitemapXml(baseUrl, allRoutes, currentDate);
 
         // Add sitemap to bundle
         this.emitFile({
@@ -79,7 +87,7 @@ export default function sitemapGenerator(options = {}) {
         });
 
         console.log(
-          `✓ Generated sitemap.xml with ${validRoutes.length} URLs (last modified: ${currentDate})`
+          `✓ Generated sitemap.xml with ${allRoutes.length} URLs (${blogRoutes.length} blog posts, last modified: ${currentDate})`
         );
       } catch (error) {
         console.error("Failed to generate sitemap:", error);
@@ -93,7 +101,7 @@ function generateSitemapXml(baseUrl, routes, lastmod) {
     .map(
       route => `  <url>
     <loc>${baseUrl}${route.path}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${route.lastmod || lastmod}</lastmod>
     <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority}</priority>
   </url>`
@@ -106,4 +114,43 @@ function generateSitemapXml(baseUrl, routes, lastmod) {
 ${urls}
 </urlset>
 `;
+}
+
+/**
+ * Discover blog posts from the blog directory.
+ * Each subdirectory with a date prefix is considered a blog post.
+ */
+function discoverBlogPosts(rootPath, blogDir) {
+  const blogPath = join(rootPath, blogDir);
+  const routes = [];
+
+  try {
+    const entries = readdirSync(blogPath);
+
+    for (const entry of entries) {
+      const entryPath = join(blogPath, entry);
+      const stat = statSync(entryPath);
+
+      // Only include directories that match date pattern (YYYY-MM-DD-*)
+      if (stat.isDirectory() && /^\d{4}-\d{2}-\d{2}/.test(entry)) {
+        // Extract date from directory name for lastmod
+        const dateMatch = entry.match(/^(\d{4}-\d{2}-\d{2})/);
+        const lastmod = dateMatch ? dateMatch[1] : undefined;
+
+        routes.push({
+          path: `/blog/${entry}/`,
+          priority: 0.6,
+          changefreq: "monthly",
+          lastmod,
+        });
+      }
+    }
+
+    // Sort by date descending (newest first)
+    routes.sort((a, b) => b.path.localeCompare(a.path));
+  } catch (error) {
+    console.warn(`Sitemap: Could not read blog directory: ${error.message}`);
+  }
+
+  return routes;
 }

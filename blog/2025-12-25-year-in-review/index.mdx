@@ -1,0 +1,127 @@
+---
+title: "2025 Year In Review"
+date: 2025-12-25
+author: "Vincent De Smet"
+tags:
+  - milestones
+  - workshops
+excerpt: "As 2025 comes to an end, I pause to summarize the major TerraConstruct milestones of the year."
+---
+
+## TerraConstructs Launch
+
+TODO: Add milestones react component
+
+Q1 2025 launched [the first iteration](https://web.archive.org/web/20250219185446/https://terraconstructs.dev/) of the TerraConstructs website, and so much has happened since! The project continues to grow and gained it's first community contributions.
+
+Having managed AWS Resources with raw Terraform since 2016, as well as explored popular tooling such as terragrunt for several large scale AWS based deployments, I am extremely excited to have the AWSCDK Developer Experience for myself and the product teams I work with cleanly living side-by-side with all existing Terraform automation, linting and collaboration set up.
+
+Q3 2025 envisioned [the second iteration](https://web.archive.org/web/20250917110535/https://terraconstructs.dev/) with a much clearer project overview and mission statement. In this iteration I had my first taste of building more advanced UX with LLMs (mostly codex CLI at the time). As someone who hasn't done modern FrontEnd web development, being able to create the [live step-through](https://terraconstructs.dev/#demo) was very empowering!
+
+The main purpose of the Landing page as it stands is to provide a visual overview of what it feels like to define your infrastructure using this library of L2 Constructs as well as show how much actual Terraform configuration that takes care of!
+
+## Public Speaking
+
+### DevOps Days Singapore
+
+In May, [Charles Martinot](https://www.macty.now/) and I presented an LLM Driven workflow to automatically port AWSCDK L2 constructs on top of CDKTF at [DevOps Days Singapore](https://devopsdays.org/events/2025-singapore/program/bridging-aws-cdk-and-terraform/). The presentation was divided into 2 parts:
+
+1. Highlighting the importance of Higher Level programming languages in Infrastructure as Code.
+
+   In this part we wanted to showcase the difference in Developer Experience between classic Terraform Modules and the expressiveness and convenience of the powerful [L2 Constructs](https://docs.aws.amazon.com/prescriptive-guidance/latest/aws-cdk-layers/layer-2.html) within the AWSCDK library.
+
+1. Sharing the different steps involved in Retrieval Augmented Generation for porting those powerful AWSCDK L2 Constructs to CDKTF. 
+
+   In this part we broke down how we built a custom workflow to craft the LLM context and prompts using at that time State Of The Art LLMs such as Gemini 2.5 Pro (and its 1 Million Token context window).
+   
+   This work involved:
+
+     1. Initial Exploration of [relevant reference data](https://github.com/TerraConstructs/TerraTitan/tree/80c314baddfe3b51ed00733521595daf35c22338/data) and LLM Provider APIs such as [OpenAI](https://github.com/TerraConstructs/TerraTitan/tree/80c314baddfe3b51ed00733521595daf35c22338/data/scripts/openai-cli), Anthropic and Google Gemini
+     1. [Chunking strategies](https://github.com/TerraConstructs/TerraTitan/tree/80c314baddfe3b51ed00733521595daf35c22338/apps/core/src/mastra/rag) for embedding and querying Terraform Provider AWS Resources using Vector stores
+     1. Human in the loop and Deterministic workflows built on top of [Mastra AI](https://mastra.ai)
+     1. The role of Judges and Evals in validating the LLM Responses as well as preparing sample data sets and human judge benchmarks.
+     1. Troubleshooting and Observability of LLM workflows using a local Signoz Stack.
+   
+    The framework presented is available open source at [TerraTitan](https://github.com/terraconstructs/terratitan) and a crucial part in accelerating the development of the TerraConstructs library.
+
+### Test Automation Summit - Singapore
+
+Following DevOps Days, still in May, I also presented at [Test Automation Summit - Singapore](https://www.testingmind.com/event/test-automation-summit-singapore-2025/) to share [a practical journey through infrastructure testing strategies](https://gamma.app/docs/Evolving-IaC-Testing-From-Terraform-Basics-to-Terratest-and-Beyon-o969zcd4ejhfi8s?mode=doc).
+
+This presentation focused on:
+
+1. Introduction to the concepts of IaC / Terraform to an Audience focused on Test Automation
+1. Introduction to the concept of Trunk Based development and feature flags applied to TF Modules
+1. Overview of Terraform's innate Test commands
+1. Overview and comparison to the TerraTest golang testing framework
+1. Highlight of TerraConstructs usage of Snapshot and Unit Testing as made possible by tooling in the CDK Ecosystem
+
+### AWS Community Day Singapore
+
+In June, [Maksim Skutin](https://cv.skut.in/) and I presented at [AWS Community Day Singapore](https://www.awsugsg.dev/) about "Next-Gen Infrastructure as Code: Scaling Smart with Pulumi & CDK". We shared how each of us approached Infrastructure as Code using higher level programming languages (Typescript, Golang, ...) and what the framework of our choice gave us.
+
+Maksim shared how his team scaled Pulumi to manage thousands of resources with speed and compliance. I shared how we evolved a 3 year footprint of Terraform Modules and HCL into a higher level and product engineer friendly framework leveraging CDKTF and TerraConstructs.
+
+Both of us shared practical ways to transition our AWS IaC smoothly with lots of Day 2 tips and tricks.
+
+### AWS Community Day Kuala Lumpur
+
+In September, [Zack Hee](https://www.linkedin.com/in/zhiyang-zack112) and I presented at [AWS Community Day Kuala Lumpur](https://awsug.my/acd-2025.html) a more deep dive on exactly how we at [handshakes.ai](https://handshakes.ai) leveraged CDKTF and TerraConstructs. This was an expanded presentation focused on:
+
+1. Why frameworks in the CDK Ecosystem make the most sense to use to manage IaC
+1. Using the newly launched TerraConstructs website for a customized and live step through demo on what writing IaC using TerraConstructs looks like for a very visual insights into the benefits compared to the raw Terraform approached
+1. How we structure out `git` repositories and AWS Environments to ensure our Product Engineers can use AWS as an extension of their workstation and iterate quickly on the configuration of their cloud resources
+1. How we promote features and fixes from dev, across staging to prod environments leveraging well understood and best in class software delivery mechanisms such as:
+  1. Monorepo projects using [pnpm workspaces](https://pnpm.io/workspaces) and [TurboRepo](https://turborepo.com/)
+  1. NPMJS Private registry hosted in [AWS CodeArtifact](https://aws.amazon.com/codeartifact/)
+  1. Change and Release management using [ChangeSets]() for automated version bumping and Changelog generation. 
+  1. NPMJS Private registry hosted in [AWS CodeArtifact](https://aws.amazon.com/codeartifact/)
+  1. [Atlantis](https://runatlantis.io) with pre-workflow hooks to manage raw HCL and CDKTF side by side with Pull Request Automation.
+
+### Brownbags
+
+Shorter sharing sessions at CodeLeap office and for the Vietnam Open Infra - HCMC community, re-iterated on the concepts of RAG and practical steps involved in building TerraTitan.
+
+- Vietnam Open Infra - [AI Applied: Porting (IaC) libraries with RAG](https://gamma.app/docs/AI-Applied-Porting-IaC-libraries-with-RAG-9rof61grtigbgvl)
+- Code Leap Brownbag - [AI Applied: Porting libraries with RAG](https://gamma.app/docs/AI-Applied-Porting-libraries-with-RAG-l4khbikxmv3phrx)
+
+## Workshops
+
+### The AWS CDK Workshop in Terraform
+
+By July, I leveraged [TerraTitan](https://github.com/terraconstructs/terratitan) as well as spent a lot of time manually tuning Unit Tests and Integration Tests to ensure full coverage of AWS SNS, DynamoDb, Code Asset Bundling, ... 
+
+This culminated in the release of the [TerraConstructs AWS CDK Workshop](https://aws-workshop.terraconstructs.dev). This workshop is the full original [CDK Workshop](https://cdkworkshop.com). Fully working on top of Terraform provider AWS using CDKTF.
+
+I delivered this workshop internally at [handshakes.ai](https://handshakes.ai) and will be expanding more in 2026 as I take on a more prominent role maintaining and advocating for the CDKTF since [Hashicorp/IBM Sunset](https://terraconstructs.dev/blog/2025-12-12-cdktf-future) the project.
+
+## Pod Casts
+
+For the last few months of 2025, I have been catching up with [Kai Hendry](https://www.linkedin.com/in/kaihendry/) about events happening in the space of IaC and LLMs.
+
+- [Terralith: the Future of Terraform Automation and Collaboration?](https://youtu.be/UXIJe2moZ-I)
+- [What is Spec-Driven Development](https://youtu.be/q2KOAAtT-Qw)
+- [Infrastructure as Code & Platform teams](https://youtu.be/gkoxHncYCTk)
+- [Who is Vincent De Smet & What is the Grid](https://youtu.be/OacVAuGFSHg)
+- [Trunk based infrastructure with feature flags](https://youtu.be/z6V8fgm7xYY)
+- [AI for Infrastructure Engineers](https://youtu.be/54Z4HlO_sW8)
+- [AI Acceleration with Anthropic and Beads](https://youtu.be/lst5spLZo-U)
+- [AI Infrastructure addicts](https://youtu.be/I4pmTz8EKag)
+- [Adopting AI with steveyegge/beads](https://youtu.be/eSEg3wKBs-8)
+- [Beads, SpecKit, Perles, Opus, Agents, oh my!](https://youtu.be/yokbTRUvxQU)
+- [CDK for Terraform and two pizza teams](https://youtu.be/rM2pj0JKc0g)
+- [Why do we need the Cloud Development Kit?](https://youtu.be/NfzsrgTmBtY)
+- [SpecKit vs Conductor, Kiro Next?](https://youtu.be/gvgK2wp_-UQ)
+
+## Looking forward
+
+Going into 2026, a lot has changed, however my primary focus remains the same
+
+> Bringing a better Developer Experience for managing Infrastructure as code
+
+My milestones to achieve this are:
+
+1. As a core maintainer of Terraform for CDK: Update the CDKTF core from it's current Terraform 1.6 pin to the latest Terraform and OpenTofu versions
+1. Quickly ramp up the AWSCDK coverage in TerraConstructs by updating TerraTitan with the latest advances in Agentic programming.
+1. TerraConstructs target other Terraform Providers to manage everything that currently falls outside of the AWSCDK tooling
+1. Continue to run community workshops and share how to truly treat Infrastructure as Code (and not just config).

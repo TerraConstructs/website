@@ -2,9 +2,44 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Note**: This project uses [bd (beads)](https://github.com/steveyegge/beads) for issue tracking. Use `bd` commands instead of markdown TODOs. See AGENTS.md for workflow details.
+
 ## Project Overview
 
 This is a neobrutalist landing page for TerraConstructs, a CDKTF L2 Constructs library. The page showcases TypeScript, Go, and Python code examples with interactive syntax highlighting and live Terraform synthesis demos.
+
+## Beads (Issue Tracking) Best Practices
+
+### ⚠️ CRITICAL: Avoid Context Exhaustion with bd list
+
+**NEVER run `bd list` without rigorous filtering or limits!** This will kill your context:
+
+```bash
+# ❌ DANGER: Even CLI can consume 5k-15k tokens without filters
+bd list  # Lists ALL issues with full descriptions
+
+# ✅ SAFE: Always use specific filters
+bd search --limit 10
+bd list --status open --priority 1 --limit 5
+
+# ✅ BETTER: Use targeted queries
+bd ready --limit 5 # CLI: Find unblocked issues
+bd show website-xxxx  # CLI: View one issue
+```
+
+### Workflow Pattern
+
+1. Create issue: `bd create` with full description
+2. Update progress: `bd comments add`
+3. Update status: `bd update` for status/priority changes
+4. Close issue: `bd close` with reason
+
+### Common Commands
+
+```bash
+bd show website-xxxx && bd comments website-xxxx # View issue details + comments
+bd ready --limit 5                         # Find issues ready to work on
+```
 
 ## Development Commands
 
@@ -13,6 +48,7 @@ This is a neobrutalist landing page for TerraConstructs, a CDKTF L2 Constructs l
 pnpm install                # Install dependencies
 pnpm run dev                # Start Vite dev server on localhost:8080 (auto-opens)
 pnpm run build              # Build production bundle to dist/
+pnpm run build:critical     # Build with critical CSS (requires Chrome)
 pnpm run preview            # Preview production build locally
 pnpm run clean              # Clean dist/ directory
 
@@ -25,6 +61,49 @@ pnpm run format:staged      # Format specific files (used with git hooks)
 cd demos/workshop && npm install && npx cdktf synth     # Generate workshop demo Terraform
 cd demos/function-url && npm install && npx cdktf synth # Generate function-url demo Terraform
 ```
+
+## Critical CSS Generation
+
+The build process generates and inlines critical CSS for faster initial page loads. This requires Chrome/Chromium to be installed.
+
+**Default Build** (`pnpm run build`):
+- Assumes puppeteer installed Chrome/Chromium works
+
+### Chrome Installation Options
+
+**Option 1: Global Puppeteer** (Recommended)
+```bash
+npm install -g puppeteer
+```
+- Automatically downloads Chrome to `~/.cache/puppeteer/chrome/`
+- Use: `pnpm run build:critical`
+
+**Option 2: System Chrome**
+```bash
+# Ubuntu/Debian
+sudo apt install chromium-browser
+
+# macOS
+brew install chromium
+```
+- After installing, edit the `build:critical` script in `package.json`
+- Update `PUPPETEER_EXECUTABLE_PATH` to point to your system Chrome
+
+**Option 3: Shell Script** (Auto-detection)
+```bash
+./scripts/build-with-critical.sh
+```
+- Assumes pre-installed global chrome and
+- Automatically finds Chrome in common locations
+- Provides clear error messages if Chrome not found
+- More flexible than hardcoded package.json script
+
+### Troubleshooting
+
+If `build:critical` fails with "Browser is not downloaded":
+1. Verify Chrome installation: `ls ~/.cache/puppeteer/chrome/`
+2. Or install globally: `npm install -g puppeteer`
+3. Or use the shell script: `./scripts/build-with-critical.sh`
 
 ## Architecture
 
@@ -111,3 +190,12 @@ pnpm add -D husky lint-staged
 - Add `pnpm run format:check` to CI pipeline
 - Prevents commits with inconsistent formatting
 - Maintains code quality across team contributions
+
+## Active Technologies
+
+- TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins (001-static-mdx-blog)
+- N/A (static files - MDX content in `/blog` directory) (001-static-mdx-blog)
+
+## Recent Changes
+
+- 001-static-mdx-blog: Added TypeScript/JavaScript (ES2022), React 19, Node.js 18+ + React 19, @mdx-js/rollup, Shiki, Fuse.js, rehype/remark plugins

@@ -1,0 +1,80 @@
+---
+title: "TerraConstructs Overview"
+date: 2025-10-01
+author: "Vincent De Smet"
+tags:
+  - workshops
+  - typescript
+excerpt: "Learn how to set up your first infrastructure project using TerraConstructs L2 Constructs for AWS with CDK for Terraform."
+---
+
+## Introduction
+
+TerraConstructs provides high-level L2 Constructs for AWS infrastructure, built on top of CDK for Terraform (CDKTF). This guide will walk you through creating your first project.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- Node.js 20 or later installed
+- AWS CLI configured with credentials
+- Terraform CLI
+- Basic familiarity with TypeScript
+
+## Installation
+
+Init your NodeJS project:
+
+```bash
+npm init
+```
+
+Install the required dependencies:
+
+```bash
+npm install cdktf constructs terraconstructs @cdktf/provider-aws
+```
+
+## Your First Stack
+
+Create a simple S3 bucket with TerraConstructs:
+
+```typescript {12-14} title="index.ts"
+import { App } from "cdktf";
+import { AwsStack } from "terraconstructs/lib/aws";
+import { Bucket } from "terraconstructs/lib/aws/storage";
+
+const app = new App();
+const stack = new AwsStack(app, "my-stack",{
+  providerConfig: {
+    region: "ap-southeast-1",
+  },
+});
+
+new Bucket(stack, "bucket", {
+  bucketName: "my-demo-bucket",
+});
+
+app.synth();
+```
+
+## Generating Terraform Configuration
+
+```bash
+npx -y tsx index.ts
+```
+
+This will generate your Terraform configuration at `cdktf.out/stacks/my-stack`.
+
+## Next Steps
+
+Now that you have a basic stack, you can:
+
+- Explore more AWS constructs in the TerraConstructs [Reference Docs](https://constructs.dev/packages/terraconstructs)
+- Add additional resources to your stack
+- Deploy your infrastructure with `opentofu` or `terraform` directly from the output directory (or using the CDKTF CLI wrappers)
+- Go through the full [AWS CDK Workshop](https://aws-workshop.terraconstructs.dev)
+
+## Conclusion
+
+You've successfully created your first TerraConstructs - Typescript project. Check out our other tutorials for more advanced patterns and best practices.

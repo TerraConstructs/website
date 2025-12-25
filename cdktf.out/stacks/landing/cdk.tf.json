@@ -183,13 +183,31 @@
             "HEAD"
           ],
           "compress": true,
-          "response_headers_policy_id": "${aws_cloudfront_response_headers_policy.SiteHeaders_DBBF4967.id}",
+          "response_headers_policy_id": "${aws_cloudfront_response_headers_policy.LandingHeaders_1D4F15C0.id}",
           "target_origin_id": "origin-0",
           "viewer_protocol_policy": "redirect-to-https"
         },
         "default_root_object": "index.html",
         "enabled": true,
         "http_version": "http2",
+        "ordered_cache_behavior": [
+          {
+            "allowed_methods": [
+              "GET",
+              "HEAD"
+            ],
+            "cache_policy_id": "${data.aws_cloudfront_cache_policy.Cdn_Managed-CachingOptimized_58CFD2BA.id}",
+            "cached_methods": [
+              "GET",
+              "HEAD"
+            ],
+            "compress": true,
+            "path_pattern": "/blog/*",
+            "response_headers_policy_id": "${aws_cloudfront_response_headers_policy.BlogHeaders_E73C0F4D.id}",
+            "target_origin_id": "origin-0",
+            "viewer_protocol_policy": "redirect-to-https"
+          }
+        ],
         "origin": [
           {
             "domain_name": "${aws_s3_bucket.Source_71E471F1.bucket_regional_domain_name}",
@@ -217,6 +235,21 @@
         }
       }
     },
+    "aws_cloudfront_function": {
+      "IndexRewrite_0A63A7CD": {
+        "//": {
+          "metadata": {
+            "path": "landing/IndexRewrite/Resource",
+            "uniqueId": "IndexRewrite_0A63A7CD"
+          }
+        },
+        "code": "function handler(event){var request=event.request;var uri=request.uri;if(uri.endsWith(\"/\")){request.uri+=\"index.html\"}else if(!uri.includes(\".\")&&!uri.includes(\"?\")){request.uri+=\"/index.html\"}return request}",
+        "comment": "website-indexRewrite",
+        "name": "website-indexRewrite",
+        "publish": true,
+        "runtime": "cloudfront-js-1.0"
+      }
+    },
     "aws_cloudfront_origin_access_identity": {
       "Source_OriginAccessIdentity_47D1410C": {
         "//": {
@@ -229,17 +262,53 @@
       }
     },
     "aws_cloudfront_response_headers_policy": {
-      "SiteHeaders_DBBF4967": {
+      "BlogHeaders_E73C0F4D": {
         "//": {
           "metadata": {
-            "path": "landing/SiteHeaders/Resource",
-            "uniqueId": "SiteHeaders_DBBF4967"
+            "path": "landing/BlogHeaders/Resource",
+            "uniqueId": "BlogHeaders_E73C0F4D"
           }
         },
-        "name": "websitelandingSiteHeaders187DCAE1",
+        "name": "websitelandingBlogHeaders92E74FF2",
         "security_headers_config": {
           "content_security_policy": {
-            "content_security_policy": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'sha256-K/MCOmi4SqIBNCIEyLpmQjxU+zKKZeaoAj2xa9AfLRw='; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'sha256-jnEt9Md5pLcENwSMy3G9IhF0gOxG24PL72VOggWkOiE=' 'sha256-m7Q+SBP3IQL7b+182BHrX+sR+EqDcn2RJ9q4cmD9oek=' 'sha256-FVvkp9qdgdiHP6lWvMZQu3aM9lMJ9yMnslALvw+XH4c=' 'sha256-8x1WwuIMPQHDJV/akUEWAL1+O6gHk1nLU/lvNtpw+14='; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; frame-ancestors 'none'; script-src-attr 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';",
+            "content_security_policy": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline'; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; frame-ancestors 'none'; script-src-attr 'unsafe-inline';",
+            "override": true
+          },
+          "content_type_options": {
+            "override": true
+          },
+          "frame_options": {
+            "frame_option": "DENY",
+            "override": true
+          },
+          "referrer_policy": {
+            "override": true,
+            "referrer_policy": "strict-origin-when-cross-origin"
+          },
+          "strict_transport_security": {
+            "access_control_max_age_sec": 31536000,
+            "include_subdomains": true,
+            "override": true
+          },
+          "xss_protection": {
+            "mode_block": true,
+            "override": true,
+            "protection": true
+          }
+        }
+      },
+      "LandingHeaders_1D4F15C0": {
+        "//": {
+          "metadata": {
+            "path": "landing/LandingHeaders/Resource",
+            "uniqueId": "LandingHeaders_1D4F15C0"
+          }
+        },
+        "name": "websitelandingLandingHeadersD926E20C",
+        "security_headers_config": {
+          "content_security_policy": {
+            "content_security_policy": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'sha256-5KmQf9kIBuOfKOGhVahdcCVk/8bs7YVEFvFXXRCxhwM='; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'sha256-jnEt9Md5pLcENwSMy3G9IhF0gOxG24PL72VOggWkOiE=' 'sha256-m7Q+SBP3IQL7b+182BHrX+sR+EqDcn2RJ9q4cmD9oek=' 'sha256-FVvkp9qdgdiHP6lWvMZQu3aM9lMJ9yMnslALvw+XH4c=' 'sha256-8x1WwuIMPQHDJV/akUEWAL1+O6gHk1nLU/lvNtpw+14='; connect-src 'self' https://www.google-analytics.com; base-uri 'self'; frame-ancestors 'none'; script-src-attr 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';",
             "override": true
           },
           "content_type_options": {
@@ -329,54 +398,468 @@
       }
     },
     "aws_s3_object": {
-      "Source_source-0_File--assets--css--mainaqId7WDfcss_3F6AB003": {
+      "Source_source-0_File--assets--css--mainMrkB3i5ocss_4BC63406": {
         "//": {
           "metadata": {
-            "path": "landing/Source/source-0/File--assets--css--main.aqId7WDf.css",
-            "uniqueId": "Source_source-0_File--assets--css--mainaqId7WDfcss_3F6AB003"
+            "path": "landing/Source/source-0/File--assets--css--main.MrkB3i5o.css",
+            "uniqueId": "Source_source-0_File--assets--css--mainMrkB3i5ocss_4BC63406"
           }
         },
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "text/css; charset=utf-8",
-        "key": "/assets/css/main.aqId7WDf.css",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/css/main.aqId7WDf.css",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/css/main.aqId7WDf.css\")}",
+        "key": "/assets/css/main.MrkB3i5o.css",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/css/main.MrkB3i5o.css",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/css/main.MrkB3i5o.css\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
           "grid:UUID": "website"
         }
       },
-      "Source_source-0_File--assets--js--mainC5oBdO1Ajs_BD6285C8": {
+      "Source_source-0_File--assets--js--blogCHSDPaEsjs_63EE24BE": {
         "//": {
           "metadata": {
-            "path": "landing/Source/source-0/File--assets--js--main.C5oBdO1A.js",
-            "uniqueId": "Source_source-0_File--assets--js--mainC5oBdO1Ajs_BD6285C8"
+            "path": "landing/Source/source-0/File--assets--js--blog.CHSDPaEs.js",
+            "uniqueId": "Source_source-0_File--assets--js--blogCHSDPaEsjs_63EE24BE"
           }
         },
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "application/javascript; charset=utf-8",
-        "key": "/assets/js/main.C5oBdO1A.js",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/js/main.C5oBdO1A.js",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/js/main.C5oBdO1A.js\")}",
+        "key": "/assets/js/blog.CHSDPaEs.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/blog.CHSDPaEs.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/blog.CHSDPaEs.js\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
           "grid:UUID": "website"
         }
       },
-      "Source_source-0_File--assets--js--mainC5oBdO1Ajsmap_DF1252C8": {
+      "Source_source-0_File--assets--js--blogCHSDPaEsjsmap_CFA6C040": {
         "//": {
           "metadata": {
-            "path": "landing/Source/source-0/File--assets--js--main.C5oBdO1A.js.map",
-            "uniqueId": "Source_source-0_File--assets--js--mainC5oBdO1Ajsmap_DF1252C8"
+            "path": "landing/Source/source-0/File--assets--js--blog.CHSDPaEs.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--blogCHSDPaEsjsmap_CFA6C040"
           }
         },
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "application/json; charset=utf-8",
-        "key": "/assets/js/main.C5oBdO1A.js.map",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/js/main.C5oBdO1A.js.map",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/assets/js/main.C5oBdO1A.js.map\")}",
+        "key": "/assets/js/blog.CHSDPaEs.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/blog.CHSDPaEs.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/blog.CHSDPaEs.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexBK54LHkcjs_10168D4F": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.BK54LHkc.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexBK54LHkcjs_10168D4F"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.BK54LHkc.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.BK54LHkc.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.BK54LHkc.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexBK54LHkcjsmap_01461497": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.BK54LHkc.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexBK54LHkcjsmap_01461497"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.BK54LHkc.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.BK54LHkc.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.BK54LHkc.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexC-WjftePjs_AE92E19A": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.C-WjfteP.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexC-WjftePjs_AE92E19A"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.C-WjfteP.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.C-WjfteP.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.C-WjfteP.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexC-WjftePjsmap_6F93A80C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.C-WjfteP.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexC-WjftePjsmap_6F93A80C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.C-WjfteP.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.C-WjfteP.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.C-WjfteP.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexCXp0aEMTjs_3E102607": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.CXp0aEMT.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexCXp0aEMTjs_3E102607"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.CXp0aEMT.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.CXp0aEMT.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.CXp0aEMT.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexCXp0aEMTjsmap_88028CD9": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.CXp0aEMT.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexCXp0aEMTjsmap_88028CD9"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.CXp0aEMT.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.CXp0aEMT.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.CXp0aEMT.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexEj6jGzAijs_9DF3A49B": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.Ej6jGzAi.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexEj6jGzAijs_9DF3A49B"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.Ej6jGzAi.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.Ej6jGzAi.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.Ej6jGzAi.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexEj6jGzAijsmap_9884D400": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.Ej6jGzAi.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexEj6jGzAijsmap_9884D400"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.Ej6jGzAi.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.Ej6jGzAi.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.Ej6jGzAi.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexgLfimJH-js_8F4B739C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.gLfimJH-.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexgLfimJH-js_8F4B739C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.gLfimJH-.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.gLfimJH-.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.gLfimJH-.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexgLfimJH-jsmap_C4F570B9": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.gLfimJH-.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexgLfimJH-jsmap_C4F570B9"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.gLfimJH-.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.gLfimJH-.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.gLfimJH-.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexmFVb-Veojs_46314FA1": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.mFVb-Veo.js",
+            "uniqueId": "Source_source-0_File--assets--js--indexmFVb-Veojs_46314FA1"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/index.mFVb-Veo.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.mFVb-Veo.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.mFVb-Veo.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--indexmFVb-Veojsmap_C926953E": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--index.mFVb-Veo.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--indexmFVb-Veojsmap_C926953E"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/index.mFVb-Veo.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.mFVb-Veo.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/index.mFVb-Veo.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--main5V7osE5mjs_727FB8EB": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--main.5V7osE5m.js",
+            "uniqueId": "Source_source-0_File--assets--js--main5V7osE5mjs_727FB8EB"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/javascript; charset=utf-8",
+        "key": "/assets/js/main.5V7osE5m.js",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/main.5V7osE5m.js",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/main.5V7osE5m.js\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--assets--js--main5V7osE5mjsmap_08DC2739": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--assets--js--main.5V7osE5m.js.map",
+            "uniqueId": "Source_source-0_File--assets--js--main5V7osE5mjsmap_08DC2739"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/assets/js/main.5V7osE5m.js.map",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/main.5V7osE5m.js.map",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/assets/js/main.5V7osE5m.js.map\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-10-01-terraconstructs-overview--indexhtml_9BCC254C": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-10-01-terraconstructs-overview--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-10-01-terraconstructs-overview--indexhtml_9BCC254C"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-10-01-terraconstructs-overview/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-10-01-terraconstructs-overview/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-10-01-terraconstructs-overview/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-11-01-1-1-the-problem--indexhtml_8ACF4272": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-11-01-1-1-the-problem--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-11-01-1-1-the-problem--indexhtml_8ACF4272"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-11-01-1-1-the-problem/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-01-1-1-the-problem/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-01-1-1-the-problem/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-11-10-1-2-ai-impact-iac--indexhtml_BC39C019": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-11-10-1-2-ai-impact-iac--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-11-10-1-2-ai-impact-iac--indexhtml_BC39C019"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-11-10-1-2-ai-impact-iac/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-10-1-2-ai-impact-iac/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-10-1-2-ai-impact-iac/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-11-25-1-3-grid-introduction--indexhtml_E3A1CF82": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-11-25-1-3-grid-introduction--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-11-25-1-3-grid-introduction--indexhtml_E3A1CF82"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-11-25-1-3-grid-introduction/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-25-1-3-grid-introduction/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-11-25-1-3-grid-introduction/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-12-12-cdktf-future--indexhtml_101E7E1E": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-12-12-cdktf-future--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-12-12-cdktf-future--indexhtml_101E7E1E"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-12-12-cdktf-future/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-12-12-cdktf-future/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-12-12-cdktf-future/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--2025-12-25-year-in-review--indexhtml_F5F1C0C6": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--2025-12-25-year-in-review--index.html",
+            "uniqueId": "Source_source-0_File--blog--2025-12-25-year-in-review--indexhtml_F5F1C0C6"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/2025-12-25-year-in-review/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-12-25-year-in-review/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/2025-12-25-year-in-review/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--indexhtml_4CCF2204": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--index.html",
+            "uniqueId": "Source_source-0_File--blog--indexhtml_4CCF2204"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "text/html; charset=utf-8",
+        "key": "/blog/index.html",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/index.html\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--search-indexjson_D19836AC": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--search-index.json",
+            "uniqueId": "Source_source-0_File--blog--search-indexjson_D19836AC"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/blog/search-index.json",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/search-index.json",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/search-index.json\")}",
+        "tags": {
+          "Name": "prod-Source",
+          "grid:EnvironmentName": "prod",
+          "grid:UUID": "website"
+        }
+      },
+      "Source_source-0_File--blog--tagsjson_AE245CE7": {
+        "//": {
+          "metadata": {
+            "path": "landing/Source/source-0/File--blog--tags.json",
+            "uniqueId": "Source_source-0_File--blog--tagsjson_AE245CE7"
+          }
+        },
+        "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
+        "content_type": "application/json; charset=utf-8",
+        "key": "/blog/tags.json",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/tags.json",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/blog/tags.json\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -393,8 +876,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "text/html; charset=utf-8",
         "key": "/index.html",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/index.html",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/index.html\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/index.html",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/index.html\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -410,8 +893,8 @@
         },
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "key": "/logos/LICENSE-LOGOS",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/LICENSE-LOGOS",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/LICENSE-LOGOS\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/LICENSE-LOGOS",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/LICENSE-LOGOS\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -428,8 +911,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_dark_1261x256.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_1261x256.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_1261x256.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_1261x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_1261x256.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -446,8 +929,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_dark_2522x512.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_2522x512.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_2522x512.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_2522x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_2522x512.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -464,8 +947,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_dark_630x128.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_630x128.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark_630x128.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_630x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark_630x128.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -482,8 +965,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/svg+xml",
         "key": "/logos/terraconstructs_horizontal_dark.svg",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark.svg",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_dark.svg\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_dark.svg\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -500,8 +983,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_light_1261x256.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_1261x256.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_1261x256.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_1261x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_1261x256.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -518,8 +1001,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_light_2522x512.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_2522x512.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_2522x512.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_2522x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_2522x512.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -536,8 +1019,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_horizontal_light_630x128.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_630x128.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light_630x128.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_630x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light_630x128.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -554,8 +1037,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/svg+xml",
         "key": "/logos/terraconstructs_horizontal_light.svg",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light.svg",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_horizontal_light.svg\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_horizontal_light.svg\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -572,8 +1055,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_128x128.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_128x128.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_128x128.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_128x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_128x128.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -590,8 +1073,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_16x16.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_16x16.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_16x16.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_16x16.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_16x16.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -608,8 +1091,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_256x256.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_256x256.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_256x256.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_256x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_256x256.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -626,8 +1109,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_32x32.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_32x32.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_32x32.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_32x32.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_32x32.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -644,8 +1127,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_512x512.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_512x512.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_512x512.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_512x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_512x512.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -662,8 +1145,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_logo_64x64.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_64x64.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_logo_64x64.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_64x64.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_logo_64x64.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -680,8 +1163,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/svg+xml",
         "key": "/logos/terraconstructs_triangle_logo.svg",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_triangle_logo.svg",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_triangle_logo.svg\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_triangle_logo.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_triangle_logo.svg\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -698,8 +1181,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_dark_115x128.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_115x128.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_115x128.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_115x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_115x128.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -716,8 +1199,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_dark_229x256.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_229x256.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_229x256.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_229x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_229x256.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -734,8 +1217,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_dark_458x512.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_458x512.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark_458x512.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_458x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark_458x512.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -752,8 +1235,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/svg+xml",
         "key": "/logos/terraconstructs_vertical_dark.svg",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark.svg",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_dark.svg\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_dark.svg\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -770,8 +1253,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_light_115x128.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_115x128.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_115x128.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_115x128.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_115x128.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -788,8 +1271,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_light_229x256.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_229x256.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_229x256.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_229x256.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_229x256.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -806,8 +1289,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/png",
         "key": "/logos/terraconstructs_vertical_light_458x512.png",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_458x512.png",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light_458x512.png\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_458x512.png",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light_458x512.png\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -824,8 +1307,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "image/svg+xml",
         "key": "/logos/terraconstructs_vertical_light.svg",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light.svg",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/logos/terraconstructs_vertical_light.svg\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light.svg",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/logos/terraconstructs_vertical_light.svg\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -842,8 +1325,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "text/plain; charset=utf-8",
         "key": "/robots.txt",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/robots.txt",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/robots.txt\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/robots.txt",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/robots.txt\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",
@@ -860,8 +1343,8 @@
         "bucket": "${aws_s3_bucket.Source_71E471F1.bucket}",
         "content_type": "application/xml",
         "key": "/sitemap.xml",
-        "source": "assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/sitemap.xml",
-        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/38782E528E75EAFA471C33F8EB63BF0A/sitemap.xml\")}",
+        "source": "assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/sitemap.xml",
+        "source_hash": "${filemd5(\"assets/Source_source-0_PathAsset_FD59E05B/A5C309C485139E858AA73D811AADBC00/sitemap.xml\")}",
         "tags": {
           "Name": "prod-Source",
           "grid:EnvironmentName": "prod",

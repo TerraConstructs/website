@@ -1,0 +1,64 @@
+/**
+ * PostCard - Post preview card for blog listings.
+ * Displays title, date, excerpt, tags, and reading time.
+ */
+import type { PostCard as PostCardType } from '../types';
+
+interface PostCardProps {
+  post: PostCardType;
+}
+
+export function PostCard({ post }: PostCardProps) {
+  const { slug, title, date, excerpt, tags, readingTime } = post;
+
+  const formattedDate = new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const handleCardClick = (e: React.MouseEvent<HTMLElement>) => {
+    // Don't navigate if clicking on a tag link
+    if ((e.target as HTMLElement).closest('a[href^="/blog#tag="]')) {
+      return;
+    }
+    window.location.href = `/blog/${slug}`;
+  };
+
+  return (
+    <article
+      className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:border-purple-500 dark:hover:border-purple-400 transition-colors cursor-pointer"
+      onClick={handleCardClick}
+    >
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+        {title}
+      </h2>
+      <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <time dateTime={date}>{formattedDate}</time>
+        {readingTime > 0 && (
+          <>
+            <span>•</span>
+            <span>{Math.ceil(readingTime)} min read</span>
+          </>
+        )}
+      </div>
+      <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
+        {excerpt}
+      </p>
+      {tags && tags.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <a
+              key={tag}
+              href={`/blog#tag=${tag.toLowerCase().replace(/\s+/g, '-')}`}
+              className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors relative z-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </article>
+  );
+}

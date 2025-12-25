@@ -1,0 +1,42 @@
+[
+  {
+    "name": "series",
+    "slug": "series",
+    "count": 3
+  },
+  {
+    "name": "workshops",
+    "slug": "workshops",
+    "count": 2
+  },
+  {
+    "name": "grid",
+    "slug": "grid",
+    "count": 2
+  },
+  {
+    "name": "llm",
+    "slug": "llm",
+    "count": 2
+  },
+  {
+    "name": "milestones",
+    "slug": "milestones",
+    "count": 1
+  },
+  {
+    "name": "ocf",
+    "slug": "ocf",
+    "count": 1
+  },
+  {
+    "name": "opinion",
+    "slug": "opinion",
+    "count": 1
+  },
+  {
+    "name": "typescript",
+    "slug": "typescript",
+    "count": 1
+  }
+]

@@ -1,2 +1,18 @@
 node_modules
 dist
+
+# Environment and secrets
+.env*
+!.env.example
+
+# IDE and system files
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Build artifacts
+.vite/
+.temp-ssr/
+*.tmp
+*.swp

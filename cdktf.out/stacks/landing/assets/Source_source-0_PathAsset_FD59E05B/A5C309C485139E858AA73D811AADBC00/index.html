@@ -1,0 +1,1617 @@
+<!doctype html>
+
+<html lang="en" class="h-full scroll-smooth">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TerraConstructs — IaC Library for CDKTF L2 Constructs</title>
+    <meta name="description" content="TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation.">
+    <meta name="keywords" content="CDKTF, Terraform, OpenTofu, AWS CDK, L2 Constructs, Infrastructure as Code, IaC, DevOps, SRE, Platform Engineering, AWS Lambda, API Gateway, Terraform modules alternative, CDK for Terraform, AWS infrastructure, cloud infrastructure, declarative infrastructure, terraform cdk, cdktf constructs">
+    <meta name="author" content="TerraConstructs">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://terraconstructs.dev/">
+    <meta name="theme-color" content="#111111">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="logos/terraconstructs_logo_16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logos/terraconstructs_logo_32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="logos/terraconstructs_logo_64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="logos/terraconstructs_logo_128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="logos/terraconstructs_logo_256x256.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="logos/terraconstructs_logo_512x512.png">
+
+    <!-- Open Graph -->
+
+    <meta property="og:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu">
+    <meta property="og:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="TerraConstructs">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform">
+    <meta property="og:url" content="https://terraconstructs.dev/">
+    <meta property="article:author" content="TerraConstructs">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Infrastructure as Code">
+    <meta property="article:tag" content="AWS">
+    <meta property="article:tag" content="Terraform">
+    <meta property="article:tag" content="DevOps">
+
+    <!-- Twitter -->
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu">
+    <meta name="twitter:description" content="Deterministic IaC. AWS CDK-style developer experience. Terraform/OpenTofu compatible.">
+    <meta name="twitter:image" content="https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png">
+    <meta name="twitter:image:alt" content="TerraConstructs Logo - CDKTF L2 Constructs for Terraform">
+
+    <!-- Fonts - Optimized for performance -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//github.com">
+    <link rel="dns-prefetch" href="//constructs.dev">
+    <link rel="dns-prefetch" href="//discord.gg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+    <!-- Non-blocking font load with fallback -->
+    <style>*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:after,:before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Inter,system-ui,sans-serif;font-feature-settings:normal;font-variation-settings:normal}body{margin:0;line-height:inherit}h1{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}strong{font-weight:bolder}code{font-family:JetBrains Mono,ui-monospace,SFMono-Regular,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}button{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button{text-transform:none}button{-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}h1,p{margin:0}img{display:block;vertical-align:middle}img{max-width:100%;height:auto}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.invisible{visibility:hidden}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{top:0;right:0;bottom:0;left:0}.left-0{left:0}.left-3{left:.75rem}.right-0{right:0}.top-0{top:0}.top-3{top:.75rem}.top-full{top:100%}.z-50{z-index:50}.z-\[60\]{z-index:60}.mx-auto{margin-left:auto;margin-right:auto}.mb-12{margin-bottom:3rem}.mb-16{margin-bottom:4rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-auto{margin-left:auto}.mr-2{margin-right:.5rem}.mt-3{margin-top:.75rem}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.hidden{display:none}.h-10{height:2.5rem}.h-16{height:4rem}.h-2{height:.5rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.w-10{width:2.5rem}.w-2{width:.5rem}.w-5{width:1.25rem}.w-8{width:2rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:.5rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-x-2>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.5rem * var(--tw-space-x-reverse));margin-left:calc(.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-4>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.overflow-hidden{overflow:hidden}.scroll-smooth{scroll-behavior:smooth}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity,1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity,1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity,1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity,1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity,1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity,1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247 / var(--tw-bg-opacity,1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity,1))}.bg-white\/80{background-color:#fffc}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity,1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-purple-50{--tw-gradient-from:#faf5ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(250 245 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-purple-600{--tw-gradient-from:#9333ea var(--tw-gradient-from-position);--tw-gradient-to:rgb(147 51 234 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.to-purple-800{--tw-gradient-to:#6b21a8 var(--tw-gradient-to-position)}.to-white{--tw-gradient-to:#fff var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-2{padding:.5rem}.p-3{padding:.75rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-4{padding-bottom:1rem}.pt-16{padding-top:4rem}.pt-3{padding-top:.75rem}.pt-4{padding-top:1rem}.text-center{text-align:center}.font-mono{font-family:JetBrains Mono,ui-monospace,SFMono-Regular,monospace}.font-sans{font-family:Inter,system-ui,sans-serif}.text-5xl{font-size:3rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-relaxed{line-height:1.625}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity,1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity,1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity,1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168 / var(--tw-text-opacity,1))}.text-transparent{color:transparent}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity,1))}.opacity-0{opacity:0}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}:root{color-scheme:light dark;--code-line-h:1.35rem;--editor-gutter:calc(2ch + .5rem)}body,html{height:100%}header{isolation:isolate}#mobileMenu{max-height:calc(100vh - 4rem);overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom,0)}@supports (height:100dvh){#mobileMenu{max-height:calc(100dvh - 4rem)}}#mobileMenuButton .icon-close,#mobileMenuButton .icon-menu{display:inline-flex;line-height:1}#mobileMenuButton .icon-close{display:none}@media (prefers-reduced-motion:reduce){*{animation-duration:NaNs!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}code{font-family:JetBrains Mono,ui-monospace,SFMono-Regular,monospace}.faq-panel{max-height:0;overflow:hidden;opacity:0}.container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}@media (min-width:640px){.container{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:1024px){.container{padding-left:2rem;padding-right:2rem}}:root{--hljs-fg:#1f2937;--hljs-comment:#6b7280;--hljs-keyword:#7c3aed;--hljs-type:#2563eb;--hljs-function:#4f46e5;--hljs-string:#16a34a;--hljs-number:#db2777;--hljs-literal:#d97706;--hljs-attr:#9333ea;--hljs-variable:#0d9488;--hljs-meta:#6b7280;--hljs-link:#2563eb}.dark{--hljs-fg:#e5e7eb;--hljs-comment:#9ca3af;--hljs-keyword:#a78bfa;--hljs-type:#93c5fd;--hljs-function:#c4b5fd;--hljs-string:#86efac;--hljs-number:#f472b6;--hljs-literal:#fbbf24;--hljs-attr:#c084fc;--hljs-variable:#5eead4;--hljs-meta:#9ca3af;--hljs-link:#93c5fd}#mobileMenuButton span{display:block;line-height:1}.dark\:inline:is(.dark *){display:inline}.dark\:hidden:is(.dark *){display:none}.dark\:border-gray-700:is(.dark *){--tw-border-opacity:1;border-color:rgb(55 65 81 / var(--tw-border-opacity,1))}.dark\:border-gray-800:is(.dark *){--tw-border-opacity:1;border-color:rgb(31 41 55 / var(--tw-border-opacity,1))}.dark\:bg-gray-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity,1))}.dark\:bg-gray-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity,1))}.dark\:bg-gray-900\/80:is(.dark *){background-color:#111827cc}.dark\:bg-purple-900\/30:is(.dark *){background-color:#581c874d}.dark\:from-purple-400:is(.dark *){--tw-gradient-from:#c084fc var(--tw-gradient-from-position);--tw-gradient-to:rgb(192 132 252 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.dark\:from-purple-900\/10:is(.dark *){--tw-gradient-from:rgb(88 28 135 / .1) var(--tw-gradient-from-position);--tw-gradient-to:rgb(88 28 135 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.dark\:to-gray-900:is(.dark *){--tw-gradient-to:#111827 var(--tw-gradient-to-position)}.dark\:to-purple-600:is(.dark *){--tw-gradient-to:#9333ea var(--tw-gradient-to-position)}.dark\:text-gray-100:is(.dark *){--tw-text-opacity:1;color:rgb(243 244 246 / var(--tw-text-opacity,1))}.dark\:text-gray-300:is(.dark *){--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity,1))}.dark\:text-gray-400:is(.dark *){--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity,1))}.dark\:text-purple-300:is(.dark *){--tw-text-opacity:1;color:rgb(216 180 254 / var(--tw-text-opacity,1))}.dark\:text-white:is(.dark *){--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:flex-row{flex-direction:row}.sm\:p-4{padding:1rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}}@media (min-width:768px){.md\:h-10{height:2.5rem}.md\:w-10{width:2.5rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:flex{display:flex}.lg\:hidden{display:none}.lg\:gap-8{gap:2rem}.lg\:px-8{padding-left:2rem;padding-right:2rem}.lg\:py-32{padding-top:8rem;padding-bottom:8rem}.lg\:text-7xl{font-size:4.5rem;line-height:1}}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"></noscript>
+
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-202ZG9CZKL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-202ZG9CZKL");
+    </script>
+
+    <!-- JSON-LD: SoftwareApplication + SoftwareSourceCode -->
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://terraconstructs.dev/#organization",
+            "name": "TerraConstructs",
+            "url": "https://terraconstructs.dev/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://terraconstructs.dev/logos/terraconstructs_logo_512x512.png",
+              "width": 512,
+              "height": 512
+            },
+            "sameAs": [
+              "https://github.com/terraconstructs/base",
+              "https://discord.gg/gEu3D8hJGz"
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://terraconstructs.dev/#webpage",
+            "url": "https://terraconstructs.dev/",
+            "name": "TerraConstructs — CDKTF L2 Constructs for Terraform/OpenTofu",
+            "description": "TerraConstructs is a production-grade, Apache 2.0 IaC library of CDKTF Level 2 Constructs for AWS. Deterministic synthesis to Terraform/OpenTofu with asset pipeline, IAM grants, and late binding power—without CloudFormation.",
+            "inLanguage": "en-US",
+            "isPartOf": {
+              "@type": "WebSite",
+              "@id": "https://terraconstructs.dev/#website",
+              "name": "TerraConstructs",
+              "url": "https://terraconstructs.dev/"
+            },
+            "about": {
+              "@id": "https://terraconstructs.dev/#software"
+            },
+            "audience": {
+              "@type": "Audience",
+              "audienceType": [
+                "DevOps Engineers",
+                "SRE Teams",
+                "Platform Engineers",
+                "AWS CDK Developers",
+                "Terraform Users"
+              ]
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://terraconstructs.dev/#software",
+            "name": "TerraConstructs",
+            "description": "CDKTF Level 2 Constructs library providing AWS CDK-style developer experience for Terraform and OpenTofu with deterministic synthesis and advanced asset pipeline",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Infrastructure as Code",
+            "operatingSystem": "Any",
+            "url": "https://terraconstructs.dev/",
+            "downloadUrl": "https://www.npmjs.com/package/terraconstructs",
+            "softwareVersion": "0.1.2",
+            "license": "https://www.apache.org/licenses/LICENSE-2.0",
+            "programmingLanguage": ["TypeScript", "JavaScript"],
+            "runtimePlatform": ["CDKTF", "Terraform", "OpenTofu"],
+            "targetProduct": ["AWS"],
+            "featureList": [
+              "CDKTF L2 Constructs for AWS services",
+              "Deterministic Terraform config generation",
+              "Asset pipeline with S3/ECR support",
+              "IAM grants and permissions model",
+              "Late binding and Aspects support",
+              "Cross-language JSII support"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
+            },
+            "author": {
+              "@id": "https://terraconstructs.dev/#organization"
+            },
+            "publisher": {
+              "@id": "https://terraconstructs.dev/#organization"
+            },
+            "sameAs": [
+              "https://github.com/terraconstructs/base",
+              "https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript",
+              "https://www.npmjs.com/package/terraconstructs"
+            ]
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://terraconstructs.dev/#sourcecode",
+            "name": "TerraConstructs",
+            "description": "Open source CDKTF L2 Constructs library for AWS infrastructure",
+            "programmingLanguage": ["TypeScript", "Go", "Python"],
+            "codeRepository": "https://github.com/terraconstructs/base",
+            "runtimePlatform": "CDKTF",
+            "version": "0.1.2",
+            "license": "https://www.apache.org/licenses/LICENSE-2.0",
+            "keywords": [
+              "IaC",
+              "CDKTF",
+              "Terraform",
+              "OpenTofu",
+              "AWS",
+              "L2 Constructs",
+              "DevOps",
+              "SRE",
+              "Platform Engineering"
+            ],
+            "author": {
+              "@id": "https://github.com/terraconstructs"
+            },
+            "targetProduct": "AWS Cloud Infrastructure"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://terraconstructs.dev/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Features",
+                "item": "https://terraconstructs.dev/#features"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Interactive Demo",
+                "item": "https://terraconstructs.dev/#demo"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script type="module" crossorigin="" src="/assets/js/main.5V7osE5m.js"></script>
+    <link rel="stylesheet" crossorigin="" href="/assets/css/main.MrkB3i5o.css" media="print" onload="this.media='all'">
+  </head>
+
+  <body
+    class="h-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-sans"
+  >
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only fixed left-3 top-3 z-[60] bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-3 py-2 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >Skip to content</a
+    >
+
+    <!-- Header / Nav -->
+
+    <header
+      class="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4 lg:gap-8">
+            <div class="flex items-center space-x-2">
+              <button
+                id="logoButton"
+                class="flex items-center space-x-2 hover:opacity-75 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded-lg"
+                aria-label="Scroll to top"
+              >
+                <img
+                  src="/logos/terraconstructs_logo_64x64.png"
+                  srcset="/logos/terraconstructs_logo_32x32.png 1x, /logos/terraconstructs_logo_64x64.png 2x, /logos/terraconstructs_logo_128x128.png 4x"
+                  alt="TerraConstructs logo"
+                  class="block w-8 h-8 md:w-10 md:h-10"
+                  width="40"
+                  height="40"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+                <span class="text-lg md:text-xl font-bold whitespace-nowrap"
+                  >TerraConstructs</span
+                >
+              </button>
+            </div>
+
+            <nav aria-label="Primary" class="hidden lg:flex items-center gap-6">
+              <a
+                href="#demo"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                Demo
+              </a>
+              <a
+                href="#features"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                Features
+              </a>
+              <a
+                href="#faq"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                FAQ
+              </a>
+              <a
+                href="#community"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                Community
+              </a>
+              <a
+                href="/blog/"
+                class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+              >
+                Blog
+              </a>
+            </nav>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <!-- Desktop actions -->
+            <div class="hidden lg:flex items-center space-x-4">
+              <button
+                id="themeToggle"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-pressed="false"
+                aria-label="Toggle theme"
+              >
+                <span class="hidden dark:inline"
+                  ><i
+                    data-lucide="sun"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+                <span class="dark:hidden inline"
+                  ><i
+                    data-lucide="moon"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+              </button>
+
+              <a
+                href="https://github.com/terraconstructs/base"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="GitHub repository"
+                target="_blank"
+                rel="noopener"
+              >
+                <i
+                  data-lucide="github"
+                  class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                ></i>
+              </a>
+
+              <a
+                href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="Documentation"
+                target="_blank"
+                rel="noopener"
+              >
+                <i
+                  data-lucide="book-open"
+                  class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                ></i>
+              </a>
+
+              <a
+                href="https://aws-workshop.terraconstructs.dev"
+                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                target="_blank"
+                rel="noopener"
+              >
+                Workshops
+              </a>
+            </div>
+
+            <!-- Mobile actions -->
+            <div class="lg:hidden flex items-center space-x-2">
+              <button
+                id="themeToggleMobile"
+                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-pressed="false"
+                aria-label="Toggle theme"
+              >
+                <span class="hidden dark:inline"
+                  ><i
+                    data-lucide="sun"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+                <span class="dark:hidden inline"
+                  ><i
+                    data-lucide="moon"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+              </button>
+
+              <button
+                id="mobileMenuButton"
+                class="inline-flex items-center justify-center w-10 h-10 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
+                aria-expanded="false"
+                aria-label="Open menu"
+              >
+                <span class="icon-menu"
+                  ><i
+                    data-lucide="menu"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+                <span class="icon-close hidden"
+                  ><i
+                    data-lucide="x"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-300"
+                  ></i
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div
+        id="mobileMenu"
+        class="lg:hidden absolute left-0 right-0 top-full z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-300"
+      >
+        <nav
+          aria-label="Mobile navigation"
+          class="flex flex-col p-3 sm:p-4 gap-2"
+        >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="#demo"
+            >Demo</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="#features"
+            >Features</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="#community"
+            >Community</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="#faq"
+            >FAQ</a
+          >
+          <a
+            class="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium py-1.5"
+            href="/blog/"
+            >Blog</a
+          >
+
+          <!-- Mobile Actions -->
+          <div
+            class="flex items-center space-x-2 pt-3 mt-3 border-t border-gray-200 dark:border-gray-700"
+          >
+            <a
+              href="https://github.com/terraconstructs/base"
+              class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              aria-label="GitHub repository"
+              target="_blank"
+              rel="noopener"
+            >
+              <i
+                data-lucide="github"
+                class="w-5 h-5 text-gray-600 dark:text-gray-300"
+              ></i>
+            </a>
+
+            <a
+              href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+              class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              aria-label="Documentation"
+              target="_blank"
+              rel="noopener"
+            >
+              <i
+                data-lucide="book-open"
+                class="w-5 h-5 text-gray-600 dark:text-gray-300"
+              ></i>
+            </a>
+
+            <a
+              href="https://aws-workshop.terraconstructs.dev"
+              class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ml-auto"
+              target="_blank"
+              rel="noopener"
+            >
+              Workshops
+            </a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="pt-16">
+      <!-- SECTION: Hero -->
+      <section class="relative py-20 lg:py-32 overflow-hidden">
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/10 dark:to-gray-900"
+        ></div>
+
+        <div class="relative container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="max-w-4xl mx-auto text-center">
+            <div
+              class="inline-flex items-center px-4 py-2 bg-purple-100 dark:bg-purple-900/30 rounded-full text-sm font-medium text-purple-800 dark:text-purple-300 mb-8"
+            >
+              <span class="w-2 h-2 bg-purple-600 rounded-full mr-2"></span>
+              Level 2 CDKTF Constructs
+            </div>
+
+            <h1 class="text-5xl lg:text-7xl font-bold mb-6">
+              Build Reliable Infrastructure with
+              <br />
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-800 dark:from-purple-400 dark:to-purple-600"
+              >
+                Confidence
+              </span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p
+              class="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
+            >
+              Enable the <strong>Architectural Depth</strong> platform engineers
+              need while maintaining the
+              <strong>Developer Experience</strong> product teams demand.
+            </p>
+
+            <!-- Key benefits -->
+            <div
+              class="flex flex-wrap items-center justify-center gap-8 mb-12 text-sm text-gray-500 dark:text-gray-400"
+            >
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Deterministic &amp; Type Safe</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span>OpenTofu &amp; Terraform Ready</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span>Apache 2.0 Licensed</span>
+              </div>
+            </div>
+
+            <div
+              class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            >
+              <button
+                id="heroTourButton"
+                class="group bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold flex items-center space-x-2 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              >
+                <i data-lucide="play" class="w-5 h-5"></i>
+                <span>Start Interactive Tour</span>
+              </button>
+
+              <a
+                href="https://github.com/terraconstructs/base"
+                class="group border border-gray-300 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 px-8 py-4 rounded-lg font-semibold flex items-center space-x-2 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                target="_blank"
+                rel="noopener"
+              >
+                <i data-lucide="github" class="w-5 h-5"></i>
+                <span>View on GitHub</span>
+              </a>
+            </div>
+
+            <!-- TODO: Quick start hint -->
+            <!--
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 max-w-2xl mx-auto">
+              <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 text-center">
+                Quick Start:
+              </p>
+              <code class="block bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-6 py-4 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+                npx projen new --from @tcons/aws-app-ts
+              </code>
+            </div>
+            -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: Interactive Demo -->
+      <section id="demo" class="py-20 bg-gray-50 dark:bg-gray-800/50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+              See TerraConstructs in Action
+            </h2>
+            <p
+              class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
+            >
+              Step through TypeScript code samples and their generated Terraform
+              configurations. Click "Start Tour" for guided walkthroughs.
+            </p>
+          </div>
+
+          <!-- Demo Selection -->
+          <div class="mb-6">
+            <div class="flex items-center gap-4 justify-between flex-wrap">
+              <div class="relative">
+                <button
+                  id="demoDropdownButton"
+                  type="button"
+                  class="px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium relative inline-flex items-center justify-between gap-x-2 hover:border-purple-500 dark:hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors duration-200 min-w-[240px]"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  aria-labelledby="demoDropdownLabel"
+                >
+                  <span id="demoDropdownText" class="pointer-events-none"
+                    >Serverless Sample</span
+                  >
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 pointer-events-none"
+                  ></i>
+                </button>
+
+                <ul
+                  id="demoDropdownMenu"
+                  class="opacity-0 invisible absolute top-full mt-1 z-30 transition-all duration-200 ease-in-out left-0 min-w-[240px] bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg py-2"
+                  role="listbox"
+                  aria-labelledby="demoDropdownLabel"
+                >
+                  <li class="relative">
+                    <button
+                      type="button"
+                      class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                      data-value="workshop"
+                      role="option"
+                    >
+                      Serverless Sample
+                    </button>
+                  </li>
+                  <!-- <li class="relative">
+                    <button
+                      type="button"
+                      class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                      data-value="function-url"
+                      role="option"
+                    >
+                      Lambda with Function URL
+                    </button>
+                  </li> -->
+                  <li class="relative">
+                    <button
+                      type="button"
+                      class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                      data-value="instance-signal"
+                      role="option"
+                    >
+                      EC2 Instance with CFN Signal
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <div id="tourButtonContainer" class="flex items-center gap-2">
+                <!-- Tour buttons populated by JavaScript -->
+              </div>
+
+              <noscript>
+                <div class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Interactive tour requires JavaScript
+                </div>
+              </noscript>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Editor -->
+            <div
+              class="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+            >
+              <div
+                class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 h-12"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 bg-purple-600 rounded-full"></div>
+                  <span
+                    id="editorTitle"
+                    class="font-mono text-sm text-gray-600 dark:text-gray-300"
+                    >main.ts</span
+                  >
+                </div>
+                <div class="flex items-center gap-3">
+                  <span
+                    id="editorStats"
+                    class="text-xs text-gray-500 dark:text-gray-400"
+                    >0 lines</span
+                  >
+                  <button
+                    id="runBtn"
+                    class="inline-flex items-center justify-center h-8 px-3 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  >
+                    Synth
+                  </button>
+                </div>
+              </div>
+              <div
+                id="editor"
+                aria-label="TypeScript editor"
+                class="code-renderer w-full p-4 font-mono text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white outline-none min-h-[400px]"
+                role="textbox"
+                aria-readonly="true"
+                tabindex="0"
+              >
+                Loading...
+              </div>
+            </div>
+
+            <!-- Output -->
+            <div
+              class="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+            >
+              <div
+                class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 h-12"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
+                  <span
+                    class="font-mono text-sm text-gray-600 dark:text-gray-300"
+                    >cdk.tf</span
+                  >
+                </div>
+                <div class="flex items-center gap-3">
+                  <span
+                    id="outputStats"
+                    class="text-xs text-gray-500 dark:text-gray-400"
+                    >0 lines</span
+                  >
+                  <span
+                    id="runStatus"
+                    class="text-xs text-gray-500 dark:text-gray-400"
+                    >Idle</span
+                  >
+                  <button
+                    id="copyOutputBtn"
+                    class="inline-flex items-center justify-center h-8 px-3 text-sm rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
+                    title="Copy output code"
+                    aria-label="Copy output code"
+                  >
+                    <i
+                      data-lucide="copy"
+                      class="w-4 h-4 text-gray-600 dark:text-gray-300"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                id="output"
+                class="code-renderer p-4 text-sm min-h-[400px]"
+                aria-live="polite"
+              >
+                {/* click Synth */}
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature badges -->
+          <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+            <span
+              id="demoBadge1"
+              class="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+              Extensive Unit &amp; E2E Testing
+            </span>
+            <span
+              id="demoBadge2"
+              class="inline-flex items-center px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+              AWS CDK inspired
+            </span>
+            <span
+              id="demoBadge3"
+              class="inline-flex items-center px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+              IAM that makes sense </span
+            ><span
+              id="demoBadge4"
+              class="inline-flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full"
+            >
+              <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              Powerful Asset Pipelines
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: Features -->
+      <section id="features" class="py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+              Why TerraConstructs?
+            </h2>
+            <p
+              class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
+            >
+              Bridge the gap between AWS CDK's developer experience and
+              Terraform's operational excellence with this comprehensive L2
+              construct library.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="code2"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">
+                Type-Safe Infrastructure
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Write infrastructure code with full TypeScript support,
+                IntelliSense, and compile-time error checking for reliable
+                deployments.
+              </p>
+            </div>
+
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="shield"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">
+                Battle-Tested Reliability
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Ported AWS CDK <strong>Unit Tests</strong> and extensive
+                end-to-end TerraTest <strong>Integration Tests</strong> ensure
+                your Terraform configurations work reliably.
+              </p>
+            </div>
+
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="circle-minus"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">Zero CloudFormation</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Pure Terraform output with no CloudFormation dependency. Perfect
+                for teams with a heavy OpenTofu or Terraform footprint.
+              </p>
+            </div>
+
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="rocket"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">Familiar Patterns</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Use the same AWS CDK patterns and constructs you know, but with
+                Terraform as the synthesis target for maximum compatibility.
+              </p>
+            </div>
+
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="check-circle"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">Platform Team Ready</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Designed for platform engineering teams who need consistent,
+                reusable infrastructure patterns across multiple environments.
+              </p>
+            </div>
+
+            <div
+              class="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <i
+                  data-lucide="boxes"
+                  class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                ></i>
+              </div>
+
+              <h3 class="text-xl font-semibold mb-3">Built on Constructs</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Compose like code: a hierarchical construct tree, late-bound
+                values, and Aspects for cross-cutting concerns deliver
+                flexibility modules can't.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-16 text-center">
+            <div
+              class="inline-flex items-center px-6 py-3 bg-purple-50 dark:bg-purple-900/20 rounded-full relative group cursor-help"
+              title='Powered by terraform-provider-aws, the longest-standing (since 2014) and most-used Terraform provider so existing scanners and cost tools "just work."'
+            >
+              <i
+                data-lucide="plug"
+                class="w-5 h-5 text-purple-600 dark:text-purple-400 mr-2"
+              ></i>
+              <span class="text-purple-800 dark:text-purple-300 font-medium">
+                Plug and Play: supports tflint, infracost, OPA, ...
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: FAQ -->
+      <section id="faq" class="py-20 bg-gray-50 dark:bg-gray-800/50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6">
+              Frequently Asked Questions
+            </h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300">
+              Everything you need to know about TerraConstructs
+            </p>
+          </div>
+
+          <div class="max-w-4xl mx-auto">
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-1"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >What is TerraConstructs and how is it different from AWS
+                  CDK?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-1"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs is a library of Level 2 CDKTF Constructs that
+                  are initially ported from AWS CDK L2 constructs. The key
+                  difference is that TerraConstructs synthesizes to pure
+                  Terraform/OpenTofu configurations instead of CloudFormation,
+                  allowing minimal effort adoption for teams with existing
+                  Terraform footprint while enabling the excellent developer
+                  experience AWS CDK is famous for.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-2"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >How is TerraConstructs different from CDK for Terraform
+                  (CDKTF)</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-2"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  CDKTF is a combination of a CLI, a core library and a
+                  collection of Level 1 Construct libraries auto generated from
+                  a select few terraform providers. This includes cloud
+                  providers such as AWS, but lacks any cloud specific
+                  functionality typically provided by L2 Constructs.
+                  <br /><br />
+                  Example L2 Constructs functionality available in AWSCDK but
+                  missing in CDKTF: Service Common Usage Patterns, Asset
+                  pipelines, Permission management, Service Config DSLs, etc.
+                  <br /><br />
+                  TerraConstructs is filling this gap by building the missing
+                  pieces available in AWS CDK on top of CDKTF.
+                  <br /><br />
+                  TerraConstructs is initially a ported version of AWS CDK L2
+                  constructs, but longer term aims to build L2 support for other
+                  cloud providers as well.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-3"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Can I use TerraConstructs with existing Terraform
+                  configurations?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-3"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Yes! TerraConstructs generates standard Terraform HCL
+                  configurations that can be integrated with existing Terraform
+                  code. You can gradually migrate to TerraConstructs or use it
+                  alongside your current infrastructure code.
+                  <br /><br />
+                  Join our Community for guidance on best practices for
+                  integrating TerraConstructs into your existing workflows.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-4"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >How reliable are the generated Terraform
+                  configurations?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-4"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Extremely reliable. All AWS CDK unit tests have been ported to
+                  ensure feature parity, and we maintain extensive end-to-end
+                  tests leveraging
+                  <a href="https://terratest.com">Terratest</a> that validate
+                  the generated Terraform configurations work in real AWS
+                  environments. The codebase is fully deterministic.
+                  <br /><br />
+                  If you encounter any issues, please report them via GitHub so
+                  we can address them promptly.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-5"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Does TerraConstructs support OpenTofu?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-5"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Yes! Since TerraConstructs generates standard Terraform HCL,
+                  it works seamlessly with both Terraform and OpenTofu. This
+                  gives you flexibility in your infrastructure toolchain without
+                  any vendor dependencies.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-6"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Does TerraConstructs support Azure/GCP?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-6"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Not at the moment. We are focused on delivering AWS support
+                  equivalent to AWS CDK for validation and buy in from the
+                  community. To build the level of quality and reliability for
+                  other Cloud Providers requires active community involvement
+                  and support from those providers.
+                  <br /><br />
+                  If you are interested in contributing to Azure or GCP support,
+                  please reach out to us via GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-7"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >What AWS services are currently supported?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-7"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs supports the most commonly used AWS services
+                  including VPC, EC2, S3, CloudFront, Route53, Lambda, and many
+                  more. We continuously add support for additional services
+                  based on community feedback and AWS CDK updates.
+                  <br /><br />
+                  If support for a specific service is missing for your use
+                  case, please let us know via GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-8"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Is TerraConstructs suitable for enterprise use?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+
+              <div
+                id="faq-8"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs is designed for production-scale deployments
+                  with platform teams in mind. It provides consistent patterns,
+                  comprehensive testing, and deterministic outputs that
+                  enterprises require for reliable infrastructure management.
+                  <br /><br />
+                  For dedicated enterprise support, please reach out to us via
+                  GitHub or our community channels.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-9"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Why use
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >terraform-provider-aws</code
+                  >
+                  instead of
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-9"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  The
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >terraform-provider-aws</code
+                  >
+                  is the de-facto standard: broadest resource coverage, long
+                  production history, and first-class support across the TF
+                  ecosystem (tflint, Infracost, Checkov/OPA, Trivy SAST, etc.).
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >
+                  only reached GA in mid 2024 and still lags in coverage; its
+                  schemas and resource names differ, which breaks or dilutes
+                  many existing rules, cost mappings, and scanners.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-10"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >How does TerraConstructs compare to
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >cdktf-aws-cdk</code
+                  >?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-10"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  The >AWS adapter (technical preview) maps
+                  <strong>final CloudFormation YAML</strong> into
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >awscc</code
+                  >
+                  resources. That loses important L2 synthesis logic and often
+                  can't represent the same graph: CFN sometimes nests multiple
+                  API concepts inside a single resource, while Terraform models
+                  them as <strong>separate resources</strong> with distinct
+                  lifecycles and dependencies. The result can be incomplete
+                  mappings, unstable plans, and missing features (such as the
+                  asset pipeline). TerraConstructs re-implements the AWS CDK L2
+                  behaviors on top of
+                  <code
+                    class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-mono text-sm px-2 py-1 rounded"
+                    >provider-aws</code
+                  >, preserving intent and producing Terraform resources that
+                  align with the provider and ecosystem tools.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-11"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >What about AI-generated IaC?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-11"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  TerraConstructs pairs perfectly with LLMs because its APIs are
+                  intent based. Clear class names, typed props, and enums give
+                  models the context they lack in raw HCL, while synth still
+                  produces deterministic, test-backed Terraform JSON.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mb-4 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+            >
+              <button
+                class="faq-toggle w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                aria-expanded="false"
+                aria-controls="faq-12"
+              >
+                <span class="font-semibold text-lg pr-4"
+                  >Why not just have my LLM write HCL directly?</span
+                >
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0"
+                ></i>
+              </button>
+              <div
+                id="faq-12"
+                class="faq-panel hidden px-6 pb-4 border-t border-gray-100 dark:border-gray-800"
+              >
+                <p
+                  class="text-gray-600 dark:text-gray-300 leading-relaxed pt-4"
+                >
+                  Raw HCL is verbose and context heavy. LLMs tend to hallucinate
+                  enum values, miss nested attributes, and mis-wire
+                  dependencies. TerraConstructs collapse that surface area into
+                  typed, higher-level calls, so models (and humans) make fewer
+                  mistakes and ship faster. Moreover, a shared community effort
+                  for a well tested and deterministic library is more efficient
+                  than each team building their own prompt engineering and
+                  validation layers.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="community" class="mt-20 text-center">
+            <div
+              class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-800 max-w-2xl mx-auto"
+            >
+              <h3 class="text-2xl font-bold mb-4">
+                Community &amp; Contributing
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 mb-6">
+                TerraConstructs is open source and welcomes contributions.
+                Whether you're fixing bugs, adding features, or improving
+                documentation, we'd love your help.
+              </p>
+
+              <div
+                class="flex flex-col sm:flex-row items-center justify-center gap-4"
+              >
+                <a
+                  href="https://discord.gg/gEu3D8hJGz"
+                  class="border border-gray-300 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center space-x-2"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i data-lucide="message-circle" class="w-5 h-5"></i>
+                  <span>Join Discord</span>
+                </a>
+                <!-- TODO: Add contribution guide -->
+                <!-- <a
+                  href="https://github.com/terraconstructs/base"
+                  class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center space-x-2"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                  <span>Start Contributing</span>
+                </a>
+                -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SECTION: Footer -->
+
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="md:col-span-2">
+            <div class="flex items-center space-x-2 mb-4">
+              <img
+                src="/logos/terraconstructs_logo_64x64.png"
+                srcset="/logos/terraconstructs_logo_32x32.png 1x, /logos/terraconstructs_logo_64x64.png 2x, /logos/terraconstructs_logo_128x128.png 4x"
+                alt="TerraConstructs logo"
+                class="block w-8 h-8"
+                width="32"
+                height="32"
+                decoding="async"
+              />
+              <span class="text-xl font-bold">TerraConstructs</span>
+            </div>
+            <p class="text-gray-400 mb-6 max-w-md">
+              A powerful, reliable L2 CDKTF Constructs library that ports proven
+              AWS CDK L2 constructs to Terraform/OpenTofu. Deterministic
+              codebase, built for serious platform teams.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold mb-4">Resources</h4>
+            <ul class="space-y-2 text-gray-400">
+              <li>
+                <a
+                  href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >Documentation</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/TerraConstructs/base/blob/main/integ/README.md"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >Examples</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >API Reference</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://aws-workshop.terraconstructs.dev/"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >Workshop</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://learn.terraconstructs.dev"
+                  class="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener"
+                  >Playground (Alpha)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-semibold mb-4">Connect</h4>
+            <div class="flex space-x-4">
+              <a
+                href="https://github.com/terraconstructs/base"
+                class="text-gray-400 hover:text-white transition-colors"
+                aria-label="GitHub"
+                target="_blank"
+                rel="noopener"
+              >
+                <i data-lucide="github" class="w-5 h-5"></i>
+              </a>
+              <a
+                href="https://constructs.dev/packages/terraconstructs/v/0.1.2?lang=typescript"
+                class="text-gray-400 hover:text-white transition-colors"
+                aria-label="Documentation"
+                target="_blank"
+                rel="noopener"
+              >
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+              </a>
+              <a
+                href="https://discord.gg/gEu3D8hJGz"
+                class="text-gray-400 hover:text-white transition-colors"
+                aria-label="Community"
+                target="_blank"
+                rel="noopener"
+              >
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between"
+        >
+          <p class="text-gray-400 text-sm">
+            © <span id="year"></span> TerraConstructs. Apache 2.0 License.
+          </p>
+          <div class="flex items-center space-x-6 mt-4 sm:mt-0">
+            <a
+              href="https://github.com/terraconstructs/base"
+              class="text-gray-400 hover:text-white text-sm transition-colors"
+              target="_blank"
+              rel="noopener"
+            >
+              Privacy
+            </a>
+            <a
+              href="https://github.com/terraconstructs/base"
+              class="text-gray-400 hover:text-white text-sm transition-colors"
+              target="_blank"
+              rel="noopener"
+            >
+              Terms
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Critical theme initialization - inline for immediate dark mode -->
+    <script>
+      (function () {
+        const theme = localStorage.getItem("tc-theme");
+        const isDark =
+          theme === "dark" ||
+          (theme == null &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", isDark);
+      })();
+    </script>
+
+    <!-- Main JavaScript - deferred to not block rendering -->
+
+    <!-- Load non-critical features after page load -->
+    <script>
+      window.addEventListener("load", function () {
+        // Show deferred content after main CSS loads
+        const deferredElements = document.querySelectorAll(".defer-render");
+        deferredElements.forEach(el => {
+          el.style.opacity = "1";
+          el.style.transition = "opacity 300ms ease-in";
+        });
+      });
+    </script>
+    <noscript><link rel="stylesheet" crossorigin="" href="/assets/css/main.MrkB3i5o.css"></noscript>
+  </body>
+</html>

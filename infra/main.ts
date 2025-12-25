@@ -18,6 +18,10 @@ import {
   ResponseHeadersPolicy,
   HeadersFrameOption,
   HeadersReferrerPolicy,
+  ResponseSecurityHeadersBehavior,
+  Function,
+  FunctionCode,
+  FunctionEventType,
 } from "terraconstructs/lib/aws/edge";
 import { Bucket } from "terraconstructs/lib/aws/storage";
 import { Duration } from "terraconstructs";
@@ -62,32 +66,72 @@ class LandingPageStack extends AwsStack {
       csp: string;
     };
 
-    const respHeaders = new ResponseHeadersPolicy(this, "SiteHeaders", {
+    // Common security headers (shared between policies)
+    const commonSecurityHeaders: Partial<ResponseSecurityHeadersBehavior> = {
+      frameOptions: {
+        frameOption: HeadersFrameOption.DENY,
+        override: true,
+      },
+      contentTypeOptions: { override: true },
+      xssProtection: {
+        protection: true,
+        modeBlock: true,
+        override: true,
+      },
+      referrerPolicy: {
+        referrerPolicy: HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+        override: true,
+      },
+      strictTransportSecurity: {
+        accessControlMaxAge: Duration.seconds(31536000),
+        includeSubdomains: true,
+        override: true,
+      },
+    };
+
+    // Strict CSP for landing page (hash-based)
+    const landingHeaders = new ResponseHeadersPolicy(this, "LandingHeaders", {
       securityHeadersBehavior: {
+        ...commonSecurityHeaders,
         contentSecurityPolicy: {
           contentSecurityPolicy: csp,
           override: true,
         },
-        frameOptions: {
-          frameOption: HeadersFrameOption.DENY,
-          override: true,
-        },
-        contentTypeOptions: { override: true },
-        xssProtection: {
-          protection: true,
-          modeBlock: true,
-          override: true,
-        },
-        referrerPolicy: {
-          referrerPolicy: HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
-          override: true,
-        },
-        strictTransportSecurity: {
-          accessControlMaxAge: Duration.seconds(31536000),
-          includeSubdomains: true,
+      },
+    });
+
+    // Relaxed CSP for blog (allows inline styles/scripts for syntax highlighting)
+    // Blog uses expressive-code/shiki which generates unique inline styles per code block
+    // Note: 'unsafe-inline' is ignored when hashes are present, so we must replace entire directive
+    const blogCsp = csp
+      .replace(
+        /style-src[^;]+;/,
+        "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';"
+      )
+      .replace(
+        /script-src[^;]+;/,
+        "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline';"
+      )
+      .replace(
+        /script-src-attr[^;]+;/,
+        "script-src-attr 'unsafe-inline';"
+      );
+
+    const blogHeaders = new ResponseHeadersPolicy(this, "BlogHeaders", {
+      securityHeadersBehavior: {
+        ...commonSecurityHeaders,
+        contentSecurityPolicy: {
+          contentSecurityPolicy: blogCsp,
           override: true,
         },
       },
+    });
+
+    const origin = new S3Origin(sourceBucket);
+
+    const indexRewrite = new Function(this, 'IndexRewrite', {
+      nameSuffix: "indexRewrite",
+      code: FunctionCode.fromInline(handler.toString()),
     });
 
     // TODO: fix permanent diff on viewer certificate (min protocol TSLv1 and ssl_support_method SNI-only)
@@ -95,9 +139,20 @@ class LandingPageStack extends AwsStack {
       ...(certificate ? { aliases: [domainName], certificate } : {}),
       priceClass: PriceClass.PRICE_CLASS_100,
       defaultBehavior: {
-        origin: new S3Origin(sourceBucket),
+        origin,
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        responseHeadersPolicy: respHeaders,
+        responseHeadersPolicy: landingHeaders,
+        functionAssociations: [{
+          function: indexRewrite,
+          eventType: FunctionEventType.VIEWER_REQUEST,
+        }],
+      },
+      additionalBehaviors: {
+        "/blog/*": {
+          origin,
+          viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          responseHeadersPolicy: blogHeaders,
+        },
       },
       defaultRootObject: "index.html",
       errorResponses: [404, 403].map(httpStatus => ({
@@ -135,3 +190,15 @@ new LocalBackend(stack, {
 });
 
 app.synth();
+
+// @ts-ignore 
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+  if (uri.endsWith('/')) {
+    request.uri += 'index.html';
+  } else if (!uri.includes('.') && !uri.includes('?')) {
+    request.uri += '/index.html';
+  }
+  return request;
+}
