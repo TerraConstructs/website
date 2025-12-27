@@ -355,6 +355,24 @@ async function prerender() {
   const searchIndexSize = (searchIndexJSON.length / 1024).toFixed(2);
   console.log(`✅ Generated: blog/search-index.json (${searchIndexSize} KB, ${searchIndex.length} posts)`);
 
+  // Step 8b: Generate posts metadata for blog index (lightweight)
+  console.log('\n📋 Generating posts metadata...');
+  const postsMetadata = posts.map((post) => ({
+    slug: post.slug,
+    title: post.frontmatter.title,
+    date: post.frontmatter.date,
+    excerpt: post.frontmatter.excerpt || '',
+    tags: post.frontmatter.tags || [],
+    author: post.frontmatter.author,
+  }));
+
+  const postsMetadataFile = join(rootDir, 'dist', 'blog', 'posts-metadata.json');
+  const postsMetadataJSON = JSON.stringify(postsMetadata, null, 2);
+  writeFileSync(postsMetadataFile, postsMetadataJSON);
+
+  const postsMetadataSize = (postsMetadataJSON.length / 1024).toFixed(2);
+  console.log(`✅ Generated: blog/posts-metadata.json (${postsMetadataSize} KB, ${postsMetadata.length} posts)`);
+
   // Step 9: Generate blog index page
   console.log('\n📄 Generating blog index...');
   const indexHTML = renderIndex();

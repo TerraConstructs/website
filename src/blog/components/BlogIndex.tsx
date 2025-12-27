@@ -9,7 +9,7 @@ import { TagFilter } from './TagFilter';
 import { SearchBar } from './SearchBar';
 import type { PostCard, Tag } from '../types';
 
-// Pre-load all MDX files using Vite's glob import
+// Pre-load all MDX files using Vite's glob import (for dev mode fallback only)
 const postModules = import.meta.glob('../../../blog/*/index.mdx', {
   eager: false,
 });
@@ -23,9 +23,59 @@ export function BlogIndex() {
   // Load posts and tags on mount
   useEffect(() => {
     async function loadData() {
+      let loadedPosts: PostCard[] = [];
+
+      // Try to load posts from pregenerated metadata (production) - OPTIMIZED
+      // This is much lighter than loading full MDX files (~1KB vs ~10-25KB each)
+      try {
+        const response = await fetch('/blog/posts-metadata.json');
+        if (response.ok && response.headers.get('content-type')?.includes('json')) {
+          const postsData = await response.json();
+          loadedPosts = postsData.map((post: any) => ({
+            slug: post.slug,
+            title: post.title,
+            date: post.date,
+            excerpt: post.excerpt,
+            tags: post.tags || [],
+            author: post.author,
+            readingTime: 0, // Reading time computed during prerender
+          }));
+          console.log('✅ Loaded posts from metadata (optimized)');
+        } else {
+          // Fallback to loading MDX files (dev mode)
+          loadedPosts = await loadPostsFromMDX();
+        }
+      } catch (err) {
+        // Dev mode fallback: load MDX files
+        console.log('⚠️ posts-metadata.json not found, loading MDX files (dev mode)');
+        loadedPosts = await loadPostsFromMDX();
+      }
+
+      setPosts(loadedPosts);
+
+      // Try to load tags from generated tags.json (production)
+      // If it fails (dev mode), compute tags from loaded posts
+      try {
+        const response = await fetch('/blog/tags.json');
+        if (response.ok && response.headers.get('content-type')?.includes('json')) {
+          const tagsData = await response.json();
+          setTags(tagsData);
+        } else {
+          // Dev mode: compute tags from posts
+          computeTagsFromPosts(loadedPosts);
+        }
+      } catch (err) {
+        // Dev mode: compute tags from posts
+        computeTagsFromPosts(loadedPosts);
+      }
+
+      setLoading(false);
+    }
+
+    // Helper function to load posts from MDX files (dev mode fallback)
+    async function loadPostsFromMDX(): Promise<PostCard[]> {
       const loadedPosts: PostCard[] = [];
 
-      // Load posts
       for (const path in postModules) {
         try {
           // Extract slug from path: ../../../blog/getting-started/index.mdx -> getting-started
@@ -53,25 +103,7 @@ export function BlogIndex() {
         }
       }
 
-      setPosts(loadedPosts);
-
-      // Try to load tags from generated tags.json (production)
-      // If it fails (dev mode), compute tags from loaded posts
-      try {
-        const response = await fetch('/blog/tags.json');
-        if (response.ok && response.headers.get('content-type')?.includes('json')) {
-          const tagsData = await response.json();
-          setTags(tagsData);
-        } else {
-          // Dev mode: compute tags from posts
-          computeTagsFromPosts(loadedPosts);
-        }
-      } catch (err) {
-        // Dev mode: compute tags from posts
-        computeTagsFromPosts(loadedPosts);
-      }
-
-      setLoading(false);
+      return loadedPosts;
     }
 
     // Helper function to compute tags from posts (dev mode fallback)

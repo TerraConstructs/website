@@ -19,7 +19,6 @@
     "@mdx-js/react": "^3.1.1",
     "fuse.js": "^7.1.0",
     "lucide": "^0.542.0",
-    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "rehype-expressive-code": "^0.41.5"
@@ -52,6 +51,7 @@
     "remark-mdx-frontmatter": "^5.2.0",
     "remark-reading-time": "^2.0.2",
     "rollup-plugin-critical": "^1.0.15",
+    "rollup-plugin-visualizer": "^6.0.5",
     "sharp": "^0.34.5",
     "shiki": "^3.20.0",
     "tailwindcss": "^3.4.0",

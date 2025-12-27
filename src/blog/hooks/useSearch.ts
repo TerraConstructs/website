@@ -2,13 +2,13 @@
  * useSearch Hook - Client-side fuzzy search with Fuse.js
  *
  * Provides lazy-loaded search functionality for blog posts with:
- * - On-demand loading of search index
+ * - On-demand loading of search index and Fuse.js library
  * - Debounced input (~150ms)
  * - Fuzzy matching with configurable weights
  * - Highlighted match snippets
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Fuse from 'fuse.js';
+import type Fuse from 'fuse.js';
 
 interface SearchIndexEntry {
   slug: string;
@@ -72,7 +72,7 @@ export function useSearch(debounceMs: number = 150): UseSearchReturn {
     };
   }, [query, debounceMs]);
 
-  // Lazy-load search index on first search
+  // Lazy-load search index and Fuse.js library on first search
   const loadSearchIndex = useCallback(async () => {
     if (indexLoadedRef.current) return;
 
@@ -80,6 +80,9 @@ export function useSearch(debounceMs: number = 150): UseSearchReturn {
     setError(null);
 
     try {
+      // Dynamically import Fuse.js only when search is used (saves ~26KB in main bundle)
+      const { default: Fuse } = await import('fuse.js');
+
       const response = await fetch('/blog/search-index.json');
 
       if (!response.ok) {
