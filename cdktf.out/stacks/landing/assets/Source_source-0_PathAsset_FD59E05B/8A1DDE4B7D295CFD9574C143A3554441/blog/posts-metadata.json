@@ -1,0 +1,75 @@
+[
+  {
+    "slug": "2025-12-25-year-in-review",
+    "title": "2025 Year In Review",
+    "date": "2025-12-25",
+    "excerpt": "As 2025 comes to an end, I pause to summarize the major TerraConstruct milestones of the year.",
+    "tags": [
+      "milestones",
+      "workshops"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": true
+  },
+  {
+    "slug": "2025-12-12-cdktf-future",
+    "title": "The future of CDKTF",
+    "date": "2025-12-12",
+    "excerpt": "An unexpected shockwave, but a clear path forward. Our continued investment into the CDK for Terraform (CDKTF) project.",
+    "tags": [
+      "ocf"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": false
+  },
+  {
+    "slug": "2025-11-25-1-3-grid-introduction",
+    "title": "Introducing: The Grid",
+    "date": "2025-11-25",
+    "excerpt": "The idea of a strongly typed State Backend for real product team support.",
+    "tags": [
+      "grid",
+      "series"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": false
+  },
+  {
+    "slug": "2025-11-10-1-2-ai-impact-iac",
+    "title": "SDD: A Practical Approach",
+    "date": "2025-11-10",
+    "excerpt": "Applying Spec Driven Develoment for more than toy projects.",
+    "tags": [
+      "llm",
+      "grid",
+      "series"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": false
+  },
+  {
+    "slug": "2025-11-01-1-1-the-problem",
+    "title": "Why Terraform still matters",
+    "date": "2025-11-01",
+    "excerpt": "Opinion piece on Terraform's ubiquity vs ecosystem pain points.",
+    "tags": [
+      "llm",
+      "opinion",
+      "series"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": false
+  },
+  {
+    "slug": "2025-10-01-terraconstructs-overview",
+    "title": "TerraConstructs Overview",
+    "date": "2025-10-01",
+    "excerpt": "Learn how to set up your first infrastructure project using TerraConstructs L2 Constructs for AWS with CDK for Terraform.",
+    "tags": [
+      "workshops",
+      "typescript"
+    ],
+    "author": "Vincent De Smet",
+    "hasAudio": false
+  }
+]
