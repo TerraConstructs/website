@@ -2,7 +2,7 @@
  * AudioPlayer - Floating audio player component.
  *
  * Features:
- * - Fixed position in bottom-right corner
+ * - Fixed position: bottom-left on mobile, bottom-right on desktop
  * - Minimized state: compact bubble with play/pause and time
  * - Expanded state: full controls (play, skip, progress)
  * - Playback position persistence (localStorage)
@@ -181,7 +181,7 @@ export function AudioPlayer({ audioUrl, slug }: AudioPlayerProps) {
   // Minimized floating bubble
   if (isMinimized) {
     return (
-      <div className="fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6">
+      <div className="fixed bottom-6 left-4 z-40 sm:left-auto sm:right-6">
         <audio
           ref={audioRef}
           src={audioUrl}
