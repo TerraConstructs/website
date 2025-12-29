@@ -13,6 +13,7 @@ import { pathToFileURL } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
+const CLOUDFRONT_DOMAIN = 'terraconstructs.dev';
 
 /**
  * Parse MDX frontmatter from a file.
@@ -34,6 +35,24 @@ function parseFrontmatter(content) {
 
     if (key === 'tags') {
       frontmatter[key] = [];
+      return;
+    }
+
+    // Handle nested audio config
+    if (key === 'audio') {
+      frontmatter.audio = {};
+      return;
+    }
+
+    // Handle audio sub-keys (indented lines under audio:)
+    if (line.startsWith('  ') && frontmatter.audio !== undefined) {
+      const subKey = key.trim();
+      const subValue = value.replace(/^['"]|['"]$/g, '');
+      if (subKey === 'enabled') {
+        frontmatter.audio[subKey] = subValue === 'true';
+      } else {
+        frontmatter.audio[subKey] = subValue;
+      }
       return;
     }
 
@@ -90,6 +109,70 @@ function generateExcerpt(content) {
 }
 
 /**
+ * Validate frontmatter according to data model requirements.
+ * Throws descriptive error on validation failure.
+ */
+function validateFrontmatter(frontmatter, filename, allSlugs = new Set()) {
+  const errors = [];
+
+  // 1. Validate required fields
+  if (!frontmatter.title || frontmatter.title.trim() === '') {
+    errors.push('Missing required field: title');
+  }
+  if (!frontmatter.date) {
+    errors.push('Missing required field: date');
+  }
+  if (!frontmatter.author || frontmatter.author.trim() === '') {
+    errors.push('Missing required field: author');
+  }
+
+  // 2. Validate date is valid ISO 8601 format (YYYY-MM-DD)
+  if (frontmatter.date) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(frontmatter.date)) {
+      errors.push(
+        `Invalid date format: "${frontmatter.date}". Expected ISO 8601 (YYYY-MM-DD)`
+      );
+    } else {
+      // Validate it's a real date
+      const date = new Date(frontmatter.date);
+      if (isNaN(date.getTime())) {
+        errors.push(`Invalid date: "${frontmatter.date}" is not a valid date`);
+      }
+    }
+  }
+
+  // 3. Validate tags format (lowercase alphanumeric with hyphens)
+  if (frontmatter.tags && Array.isArray(frontmatter.tags)) {
+    const tagRegex = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+    for (const tag of frontmatter.tags) {
+      if (!tagRegex.test(tag)) {
+        errors.push(
+          `Invalid tag format: "${tag}". Tags must be lowercase alphanumeric with hyphens (e.g., "my-tag")`
+        );
+      }
+    }
+  }
+
+  // 4. Check for duplicate slugs (slug derived from filename)
+  const slug = basename(dirname(filename));
+  if (allSlugs.has(slug)) {
+    errors.push(`Duplicate slug: "${slug}". Each blog post must have a unique directory name`);
+  }
+  allSlugs.add(slug);
+
+  // Throw error with all validation failures
+  if (errors.length > 0) {
+    const errorMessage = `
+❌ Frontmatter validation failed for: ${filename}
+
+${errors.map((err, i) => `  ${i + 1}. ${err}`).join('\n')}
+`;
+    throw new Error(errorMessage);
+  }
+}
+
+/**
  * Extract plain text from MDX content for search indexing.
  * Strips markdown formatting and limits length to keep index size reasonable.
  */
@@ -122,6 +205,24 @@ function extractPlainText(content) {
   }
 
   return text;
+}
+
+/**
+ * Check if audio exists on CloudFront CDN.
+ * Verifies content-type is audio/mpeg, not text/html (SPA fallback).
+ */
+async function checkAudioOnCDN(slug) {
+  const url = `https://${CLOUDFRONT_DOMAIN}/blog/${slug}/audio.mp3`;
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    if (!response.ok) return false;
+
+    // Check content-type to avoid SPA fallback false positives
+    const contentType = response.headers.get('content-type');
+    return contentType && contentType.includes('audio/');
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -263,12 +364,23 @@ async function prerender() {
   console.log(`📄 Found ${postFiles.length} blog posts\n`);
 
   const posts = [];
+  const allSlugs = new Set(); // Track slugs for duplicate detection
 
-  // Step 6: Process each post
+  // Step 6a: Collect all post metadata first (without rendering)
+  console.log('📋 Collecting post metadata...');
   for (const file of postFiles) {
     const fullPath = join(rootDir, file);
     const content = readFileSync(fullPath, 'utf-8');
     const frontmatter = parseFrontmatter(content);
+
+    // Validate frontmatter (throws on error)
+    try {
+      validateFrontmatter(frontmatter, file, allSlugs);
+    } catch (error) {
+      console.error(error.message);
+      await vite.close();
+      process.exit(1);
+    }
 
     // Auto-generate excerpt if not provided
     if (!frontmatter.excerpt) {
@@ -276,27 +388,44 @@ async function prerender() {
     }
 
     const slug = basename(dirname(fullPath));
-    const post = {
+    posts.push({
       slug,
       frontmatter,
       filePath: file,
       content, // Store raw content for search index generation
-    };
+    });
+  }
 
-    posts.push(post);
+  // Step 6b: Check audio availability on CDN in parallel (before rendering)
+  console.log('\n🎵 Checking audio availability on CDN...');
+  const audioChecks = await Promise.all(
+    posts.map(async (post) => {
+      // Only check CDN if audio is explicitly enabled in frontmatter
+      if (post.frontmatter.audio?.enabled !== true) {
+        return { slug: post.slug, hasAudio: false };
+      }
+      const hasAudio = await checkAudioOnCDN(post.slug);
+      if (hasAudio) {
+        console.log(`  ✅ ${post.slug}: Audio available`);
+      } else {
+        console.log(`  ⚠️  ${post.slug}: Audio enabled but not found on CDN`);
+      }
+      return { slug: post.slug, hasAudio };
+    })
+  );
+  const audioMap = new Map(audioChecks.map((a) => [a.slug, a.hasAudio]));
 
-    // Validate required fields
-    if (!frontmatter.title || !frontmatter.date || !frontmatter.author) {
-      console.error(`❌ Missing required frontmatter in ${file}`);
-      await vite.close();
-      process.exit(1);
-    }
+  // Step 6c: Render each post with audio info
+  console.log('\n📝 Rendering posts...');
+  for (const post of posts) {
+    const { slug, filePath } = post;
+    const hasAudio = audioMap.get(slug) || false;
 
     // Load MDX module using Vite SSR
-    const mdxModule = await vite.ssrLoadModule(`/${file}`);
+    const mdxModule = await vite.ssrLoadModule(`/${filePath}`);
 
-    // Render to HTML with SSR
-    const renderedHTML = renderPost(mdxModule);
+    // Render to HTML with SSR (pass hasAudio for AudioPlayer rendering)
+    const renderedHTML = renderPost(mdxModule, slug, hasAudio);
 
     // Generate complete HTML with hydration
     const html = generatePostHTML(post, renderedHTML, bundles);
@@ -306,7 +435,7 @@ async function prerender() {
     mkdirSync(outDir, { recursive: true });
     writeFileSync(outFile, html);
     console.log(
-      `✅ Generated: ${slug}/index.html (${renderedHTML.length} bytes prerendered)`
+      `✅ Generated: ${slug}/index.html (${renderedHTML.length} bytes prerendered${hasAudio ? ', with audio' : ''})`
     );
   }
 
@@ -356,7 +485,9 @@ async function prerender() {
   console.log(`✅ Generated: blog/search-index.json (${searchIndexSize} KB, ${searchIndex.length} posts)`);
 
   // Step 8b: Generate posts metadata for blog index (lightweight)
+  // Reuses audioMap from Step 6b for build-time audio detection
   console.log('\n📋 Generating posts metadata...');
+
   const postsMetadata = posts.map((post) => ({
     slug: post.slug,
     title: post.frontmatter.title,
@@ -364,6 +495,7 @@ async function prerender() {
     excerpt: post.frontmatter.excerpt || '',
     tags: post.frontmatter.tags || [],
     author: post.frontmatter.author,
+    hasAudio: audioMap.get(post.slug) || false,
   }));
 
   const postsMetadataFile = join(rootDir, 'dist', 'blog', 'posts-metadata.json');

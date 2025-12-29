@@ -10,8 +10,11 @@ import { BlogIndex } from './components/BlogIndex';
 
 /**
  * Render a blog post page to HTML string.
+ * @param mdxModule - The loaded MDX module with Content, frontmatter, toc, readingTime
+ * @param slug - The post slug (folder name)
+ * @param hasAudio - Whether audio is available on CDN (build-time detected)
  */
-export function renderPost(mdxModule: any) {
+export function renderPost(mdxModule: any, slug: string, hasAudio: boolean = false) {
   const { default: Content, frontmatter, toc, readingTime } = mdxModule;
 
   const html = ReactDOMServer.renderToString(
@@ -21,6 +24,8 @@ export function renderPost(mdxModule: any) {
           frontmatter={frontmatter}
           toc={toc || []}
           readingTime={readingTime}
+          slug={slug}
+          hasAudio={hasAudio}
         >
           <Content />
         </PostPage>
