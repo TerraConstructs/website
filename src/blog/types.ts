@@ -19,6 +19,16 @@ export interface TOCEntry {
 }
 
 /**
+ * Audio configuration for TTS generation.
+ */
+export interface AudioConfig {
+  /** Whether to generate audio for this post (default: true) */
+  enabled?: boolean;
+  /** ElevenLabs voice ID (default: Jay Wayne - 8Ln42OXYupYsag45MAUy) */
+  voice?: string;
+}
+
+/**
  * Frontmatter type for MDX imports.
  * These fields are author-provided in the MDX file.
  */
@@ -35,6 +45,8 @@ export interface Frontmatter {
   tags?: string[];
   /** Short description (optional, auto-generated if omitted) */
   excerpt?: string;
+  /** Audio TTS configuration (optional) */
+  audio?: AudioConfig;
 }
 
 /**
@@ -117,6 +129,8 @@ export interface PostCard {
   excerpt: string;
   tags: string[];
   readingTime: number;
+  /** Whether audio is available on CDN (build-time detected) */
+  hasAudio?: boolean;
 }
 
 /**

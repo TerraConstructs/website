@@ -1,0 +1,75 @@
+[
+  {
+    "slug": "2025-12-25-year-in-review",
+    "title": "2025 Year In Review",
+    "excerpt": "As 2025 comes to an end, I pause to summarize the major TerraConstruct milestones of the year.",
+    "tags": [
+      "milestones",
+      "workshops"
+    ],
+    "content": "TerraConstructs Milestones At the start of 2025, I launched the first iteration of the TerraConstructs website, and so much has happened since! The project continues to grow and gained its first community contributions. Having managed AWS resources with raw Terraform since 2016 and explored popular tooling such as Terragrunt for several large-scale AWS deployments, I am excited to have the AWS CDK developer experience for myself and the product teams I work with, living cleanly side-by-side with all existing Terraform automation, linting, and collaboration setups. For the second iteration, I incorporated feedback and focused on a much clearer project overview and mission statement. This iteration gave me my first taste of building more advanced UX with LLMs (mostly Codex CLI at the time). As someone who hasn't done modern frontend web development, being able to create the live step-through was very empowering! The main purpose of the landing page is to provide a visual overview of what",
+    "date": "2025-12-25",
+    "author": "Vincent De Smet"
+  },
+  {
+    "slug": "2025-12-12-cdktf-future",
+    "title": "The future of CDKTF",
+    "excerpt": "An unexpected shockwave, but a clear path forward. Our continued investment into the CDK for Terraform (CDKTF) project.",
+    "tags": [
+      "ocf"
+    ],
+    "content": "A. CDKTF Sunset & Community Fork - IBM/HashiCorp archived CDKTF org without notice - Community rallied via Open Constructs Foundation (OCF) - TerraConstructs initiated the fork, and helped gather contributors - Internal code bases suddenly surfaced with real TF-CDK usage - Conclusion: out of crisis comes community ownership What Happened While preparing for the 2025 year in review and rounding off a productive year for TerraConstructs, a significant event sent a shockwave through the CDK community. IBM, the company that acquired HashiCorp, announced its intention to sunset the CDK for Terraform (CDKTF) project. The announcement was abrupt. The README was updated to indicate a future shutdown date - which turned out to be the same day - and shortly thereafter the core repository, along with every pre-generated CDKTF provider bindings repository, was archived. For many teams, this was not an abstract decision. CDKTF underpins real production systems, internal platforms, and years of accu",
+    "date": "2025-12-12",
+    "author": "Vincent De Smet"
+  },
+  {
+    "slug": "2025-11-25-1-3-grid-introduction",
+    "title": "Introducing: The Grid",
+    "excerpt": "The idea of a strongly typed State Backend for real product team support.",
+    "tags": [
+      "grid",
+      "series"
+    ],
+    "content": "Focus - The motivation with real world problems - JSON Schema and typed outputs end-to-end - Cross-team access control down to team membership + state attributes - Easy admin CLI (not just directory-aware) - Go and TS SDKs for automation - fogg → gridops → Atlantis integration example - Screenshots, Atlantis pre-workflow hooks, marker files - Example state migration flows (S3 → Grid) - Security and LLM Driven security review mechanisms",
+    "date": "2025-11-25",
+    "author": "Vincent De Smet"
+  },
+  {
+    "slug": "2025-11-10-1-2-ai-impact-iac",
+    "title": "SDD: A Practical Approach",
+    "excerpt": "Applying Spec Driven Develoment for more than toy projects.",
+    "tags": [
+      "llm",
+      "grid",
+      "series"
+    ],
+    "content": "Focus - How you used Spec-Driven workflows with models like Sonnet, Opus, Gemini - Lessons learned: context windows/beads, test-first plans, acceptance criteria, automated refactoring - Advice for other teams adopting agent-centric coding - Industry direction (AWS Kiro, MS Spec Kit + Playwright, Google Gemini/Antigravity) Goal This is the piece that teaches other devs how you actually organized your work — not just that you used LLMs.",
+    "date": "2025-11-10",
+    "author": "Vincent De Smet"
+  },
+  {
+    "slug": "2025-11-01-1-1-the-problem",
+    "title": "Why Terraform still matters",
+    "excerpt": "Opinion piece on Terraform's ubiquity vs ecosystem pain points.",
+    "tags": [
+      "llm",
+      "opinion",
+      "series"
+    ],
+    "content": "Focus - Terraform's ubiquity vs ecosystem pain points - The reality that most teams still run TF everywhere - GoLand now shipping TF support by default - The long-standing state output schema issue (refer to HashiCorp #30579) - Motivating problems you've seen: silent downstream breaks, weak typing, operational friction",
+    "date": "2025-11-01",
+    "author": "Vincent De Smet"
+  },
+  {
+    "slug": "2025-10-01-terraconstructs-overview",
+    "title": "TerraConstructs Overview",
+    "excerpt": "Learn how to set up your first infrastructure project using TerraConstructs L2 Constructs for AWS with CDK for Terraform.",
+    "tags": [
+      "workshops",
+      "typescript"
+    ],
+    "content": "Introduction TerraConstructs provides high-level L2 Constructs for AWS infrastructure, built on top of CDK for Terraform (CDKTF). This guide will walk you through creating your first project. Prerequisites Before you begin, make sure you have: - Node.js 20 or later installed - AWS CLI configured with credentials - Terraform CLI - Basic familiarity with TypeScript Installation Init your NodeJS project: Install the required dependencies: Your First Stack Create a simple S3 bucket with TerraConstructs: Generating Terraform Configuration This will generate your Terraform configuration at . Next Steps Now that you have a basic stack, you can: - Explore more AWS constructs in the TerraConstructs Reference Docs - Add additional resources to your stack - Deploy your infrastructure with or directly from the output directory (or using the CDKTF CLI wrappers) - Go through the full AWS CDK Workshop Conclusion You've successfully created your first TerraConstructs - Typescript project. Check out ou",
+    "date": "2025-10-01",
+    "author": "Vincent De Smet"
+  }
+]

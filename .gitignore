@@ -4,6 +4,7 @@ dist
 # Environment and secrets
 .env*
 !.env.example
+elevenlabs-key
 
 # IDE and system files
 .DS_Store
@@ -16,3 +17,4 @@ dist
 .temp-ssr/
 *.tmp
 *.swp
+.audio-cache/

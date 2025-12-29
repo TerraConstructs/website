@@ -49,8 +49,15 @@ pnpm install                # Install dependencies
 pnpm run dev                # Start Vite dev server on localhost:8080 (auto-opens)
 pnpm run build              # Build production bundle to dist/
 pnpm run build:critical     # Build with critical CSS (requires Chrome)
+pnpm run build:full         # Build with critical CSS + TTS audio generation
 pnpm run preview            # Preview production build locally
 pnpm run clean              # Clean dist/ directory
+
+# Blog TTS Audio
+# See docs/blog-tts-setup.md for detailed guide
+node scripts/generate-blog-audio.mjs --slug <slug>        # Generate audio for one post
+node scripts/generate-blog-audio.mjs --slug <slug> --review  # Generate editable transcript
+node scripts/generate-blog-audio.mjs                      # Generate audio for all posts
 
 # Code Quality - Prettier
 pnpm run format             # Format all files with Prettier

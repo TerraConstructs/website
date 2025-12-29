@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import PluginCritical from 'rollup-plugin-critical';
+import { visualizer } from 'rollup-plugin-visualizer';
 import react from '@vitejs/plugin-react';
 import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -239,5 +240,13 @@ export default defineConfig({
     sitemapGenerator(),
     // Generate CSP hashes from built HTML (dist/index.html)
     cspHashPlugin({ distDir: 'dist', outDir: 'infra' }),
+    // Bundle analyzer - generates stats.html with interactive treemap
+    visualizer({
+      filename: 'dist/stats.html',
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+      template: 'treemap', // 'treemap', 'sunburst', 'network'
+    }),
   ],
 })

@@ -16,6 +16,33 @@ initTheme();
 // Pre-load all MDX files using Vite's glob import
 const posts = import.meta.glob("../../blog/*/index.mdx", { eager: false });
 
+// Cache for posts metadata (includes hasAudio)
+let postsMetadataCache: Map<string, { hasAudio: boolean }> | null = null;
+
+/**
+ * Fetch posts metadata to get hasAudio for each post.
+ * Cached after first fetch.
+ */
+async function getPostsMetadata(): Promise<Map<string, { hasAudio: boolean }>> {
+  if (postsMetadataCache) return postsMetadataCache;
+
+  try {
+    const response = await fetch('/blog/posts-metadata.json');
+    if (!response.ok) throw new Error('Failed to fetch posts metadata');
+    const data = await response.json();
+    postsMetadataCache = new Map(
+      data.map((post: { slug: string; hasAudio?: boolean }) => [
+        post.slug,
+        { hasAudio: post.hasAudio || false }
+      ])
+    );
+    return postsMetadataCache;
+  } catch (error) {
+    console.warn('Could not load posts metadata for audio detection:', error);
+    return new Map();
+  }
+}
+
 /**
  * Main blog app component.
  * Routes are handled by prerendered HTML pages in production.
@@ -23,6 +50,7 @@ const posts = import.meta.glob("../../blog/*/index.mdx", { eager: false });
  */
 function App() {
   const [post, setPost] = useState<any>(null);
+  const [hasAudio, setHasAudio] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,9 +75,14 @@ function App() {
           throw new Error(`Post not found: ${slug}`);
         }
 
-        // Dynamically import MDX file
-        const module = await posts[postPath]();
+        // Dynamically import MDX file and fetch metadata in parallel
+        const [module, metadata] = await Promise.all([
+          posts[postPath](),
+          getPostsMetadata()
+        ]);
+
         setPost(module);
+        setHasAudio(metadata.get(slug)?.hasAudio || false);
         setError(null);
       } catch (err) {
         console.error(`Failed to load blog post: ${slug}`, err);
@@ -96,12 +129,18 @@ function App() {
   // Render post with MDX content
   const { default: Content, frontmatter, toc, readingTime } = post;
 
+  // Extract slug from path for AudioPlayer
+  const slugMatch = path.match(/^\/blog\/([^/]+)\/?$/);
+  const slug = slugMatch ? slugMatch[1] : '';
+
   return (
     <MDXProvider components={mdxComponents}>
       <PostPage
         frontmatter={frontmatter}
         toc={toc || []}
         readingTime={readingTime}
+        slug={slug}
+        hasAudio={hasAudio}
       >
         <Content />
       </PostPage>

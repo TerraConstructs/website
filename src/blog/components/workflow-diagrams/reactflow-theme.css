@@ -1,0 +1,34 @@
+/**
+ * React Flow Dark Mode Theme
+ * Ensures workflow diagrams adapt to dark mode seamlessly
+ */
+
+/* Dark mode background */
+.dark .react-flow__background {
+  background-color: rgb(17 24 39); /* gray-900 */
+}
+
+.dark .react-flow__background-pattern {
+  stroke: rgb(55 65 81); /* gray-700 */
+}
+
+/* Dark mode edges */
+.dark .react-flow__edge-path {
+  stroke: rgb(107 114 128); /* gray-500 */
+}
+
+/* Dark mode edge labels */
+.dark .react-flow__edge-text {
+  fill: rgb(156 163 175); /* gray-400 */
+}
+
+/* Ensure handles don't show in read-only mode */
+.react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide attribution (also using proOptions) */
+.react-flow__attribution {
+  display: none;
+}

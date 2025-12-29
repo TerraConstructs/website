@@ -7,6 +7,12 @@ import { BlogLayout } from "./BlogLayout";
 import { TOC } from "./TOC";
 import { TOCDrawer } from "./TOCDrawer";
 import { SeriesNav } from "./SeriesNav";
+import { Milestones } from "./Milestones";
+import { Callout } from "./Callout";
+import { Stats } from "./Stats";
+import { WorkflowStepper } from "./WorkflowStepper";
+import { TerraTitanWorkflow } from "./TerraTitanWorkflow";
+import { AudioPlayer } from "./AudioPlayer";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 import type { TOCEntry, Frontmatter, ReadingTime } from "../types";
 
@@ -14,6 +20,9 @@ interface PostPageProps {
   frontmatter: Frontmatter;
   toc: TOCEntry[];
   readingTime?: ReadingTime;
+  slug: string;
+  /** Whether audio is available (build-time detected from CDN) */
+  hasAudio?: boolean;
   children: ReactNode;
 }
 
@@ -21,6 +30,8 @@ export function PostPage({
   frontmatter,
   toc,
   readingTime,
+  slug,
+  hasAudio = false,
   children,
 }: PostPageProps) {
   const [tocOpen, setTocOpen] = useState(false);
@@ -30,6 +41,11 @@ export function PostPage({
   const activeId = useScrollSpy(headingIds);
 
   const { title, date, author } = frontmatter;
+  const audioUrl = `/blog/${slug}/audio.mp3`;
+
+  // hasAudio is now determined at build-time via CDN check
+  // No runtime HEAD request needed
+
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -48,7 +64,7 @@ export function PostPage({
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                   {title}
                 </h1>
-                <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <span>By {author}</span>
                   <span>•</span>
                   <time dateTime={date}>{formattedDate}</time>
@@ -56,6 +72,15 @@ export function PostPage({
                     <>
                       <span>•</span>
                       <span>{Math.ceil(readingTime.minutes)} min read</span>
+                    </>
+                  )}
+                  {hasAudio && (
+                    <>
+                      <span>•</span>
+                      <span className="inline-flex items-center gap-1">
+                        <HeadphonesIcon className="w-4 h-4" />
+                        Audio available
+                      </span>
                     </>
                   )}
                 </div>
@@ -82,6 +107,9 @@ export function PostPage({
         isOpen={tocOpen}
         onToggle={() => setTocOpen(!tocOpen)}
       />
+
+      {/* Floating audio player */}
+      {hasAudio && <AudioPlayer audioUrl={audioUrl} slug={slug} />}
     </BlogLayout>
   );
 }
@@ -106,4 +134,26 @@ function flattenTOC(entries: TOCEntry[]): TOCEntry[] {
  */
 export const mdxComponents = {
   SeriesNav, // Make SeriesNav available in MDX without imports
+  Milestones, // Make Milestones available in MDX without imports
+  Callout, // Make Callout available in MDX without imports
+  Stats, // Make Stats available in MDX without imports
+  WorkflowStepper, // Make WorkflowStepper available in MDX without imports
+  TerraTitanWorkflow, // Pre-configured TerraTitan RAG workflow stepper
 };
+
+// Inline icon for header
+function HeadphonesIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
+    </svg>
+  );
+}
