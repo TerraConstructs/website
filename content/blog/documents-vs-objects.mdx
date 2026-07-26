@@ -45,7 +45,11 @@ module "worker" {
 
 ```typescript
 const bucket = new Bucket(this, "Storage");
-const worker = new LambdaFunction(this, "Worker", { /* … */ });
+const worker = new LambdaFunction(
+  this,
+  "Worker",
+  { /* … */ },
+);
 
 // the bucket writes its own policy,
 // for whatever this principal is

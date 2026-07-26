@@ -104,7 +104,10 @@ export function SiteNav() {
               </Link>
             ))}
             <div className="my-2 h-px bg-border" />
-            {EXTERNAL.concat([{ label: 'cdk.dev community', href: LINKS.cdkDev }]).map((item) => (
+            {[
+              ...EXTERNAL,
+              { label: 'cdk.dev community', href: LINKS.cdkDev },
+            ].map((item) => (
               <a
                 key={item.href}
                 href={item.href}

@@ -82,14 +82,13 @@ export function DocumentsVsObjects() {
                 </p>
                 <p>
                   In an object-oriented model, that wiring{' '}
-                  <em className="not-italic text-foreground">is</em> the object graph. A construct
-                  that implements a capability interface — TerraConstructs&apos; port of AWS
-                  CDK&apos;s{' '}
+                  <em className="italic text-foreground">is</em> the object graph. A construct that
+                  implements a capability interface — TerraConstructs&apos; port of AWS CDK&apos;s{' '}
                   <code className="font-mono text-[0.8125rem] text-brand">IConnectable</code>,{' '}
                   <code className="font-mono text-[0.8125rem] text-brand">IGrantable</code> and{' '}
-                  <code className="font-mono text-[0.8125rem] text-brand">IPrincipal</code> — can be
-                  handed to any other construct&apos;s connection or grant method, regardless of what
-                  either one actually is underneath.
+                  <code className="font-mono text-[0.8125rem] text-brand">IPrincipal</code>
+                  {' — '}can be handed to any other construct&apos;s connection or grant method,
+                  regardless of what either one actually is underneath.
                 </p>
                 <p className="text-foreground">
                   That&apos;s polymorphism, and a document has no place to put it.

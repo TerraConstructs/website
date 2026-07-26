@@ -1,7 +1,7 @@
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { cache } from 'react'
-import { createHighlighter, type Highlighter } from 'shiki'
+import { getSingletonHighlighter, type Highlighter } from 'shiki'
 
 /**
  * Guided tour demos are "pre-compiled": each folder under /demos holds the real
@@ -52,16 +52,19 @@ export type Demo = TourMeta & {
 const DEMOS_DIR = path.join(process.cwd(), 'demos')
 
 /**
- * Module-level singleton. React's `cache` is per-request, which would spin up a
- * fresh Shiki instance (and its WASM) on every render.
+ * Shiki's own singleton, kept on `globalThis` so dev-mode HMR module
+ * re-evaluation reuses one instance (and one WASM engine) instead of leaking a
+ * new highlighter per reload. React's `cache` is per-request and would not help.
  */
-let highlighterPromise: Promise<Highlighter> | null = null
+const HIGHLIGHTER_KEY = Symbol.for('terraconstructs.shiki')
+const globalCache = globalThis as { [HIGHLIGHTER_KEY]?: Promise<Highlighter> }
+
 function getHighlighter(): Promise<Highlighter> {
-  highlighterPromise ??= createHighlighter({
+  globalCache[HIGHLIGHTER_KEY] ??= getSingletonHighlighter({
     themes: ['github-light', 'vitesse-dark'],
     langs: ['typescript', 'hcl', 'json', 'bash', 'diff', 'yaml'],
   })
-  return highlighterPromise
+  return globalCache[HIGHLIGHTER_KEY]
 }
 
 const SUPPORTED_LANGS = new Set(['typescript', 'ts', 'hcl', 'tf', 'json', 'bash', 'sh', 'shell', 'diff', 'yaml', 'yml'])
