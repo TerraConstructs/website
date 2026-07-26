@@ -14,6 +14,7 @@ import { rehypeCodeMeta } from '@/lib/rehype-code-meta'
 import { mdxComponents } from '@/components/blog/mdx-components'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { WorkshopSidebar } from '@/components/workshop/workshop-sidebar'
+import { WorkshopNavDrawer } from '@/components/workshop/workshop-nav-drawer'
 import { PrevNext } from '@/components/workshop/prev-next'
 import { ChildrenList } from '@/components/workshop/children-list'
 import { WorkshopImage } from '@/components/workshop/workshop-image'
@@ -95,6 +96,9 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
           { title: page.title, href: page.href },
         ]}
       />
+      {/* the chapter tree is hidden below lg; this is how it is reached there */}
+      <WorkshopNavDrawer tree={tree} title={page.title} />
+
       <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[15rem_minmax(0,1fr)_14rem] xl:gap-12">
         <aside className="hidden lg:block">
           <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pb-8">
