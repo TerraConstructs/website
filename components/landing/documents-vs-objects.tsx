@@ -82,8 +82,9 @@ export function DocumentsVsObjects() {
                 </p>
                 <p>
                   In an object-oriented model, that wiring{' '}
-                  <em className="italic text-foreground">is</em> the object graph. A construct that
-                  implements a capability interface — TerraConstructs&apos; port of AWS CDK&apos;s{' '}
+                  <em className="italic text-foreground">is</em>
+                  {' the object graph. A construct that implements a capability interface — '}
+                  {'TerraConstructs’ port of AWS CDK’s '}
                   <code className="font-mono text-[0.8125rem] text-brand">IConnectable</code>,{' '}
                   <code className="font-mono text-[0.8125rem] text-brand">IGrantable</code> and{' '}
                   <code className="font-mono text-[0.8125rem] text-brand">IPrincipal</code>
