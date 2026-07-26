@@ -1,0 +1,84 @@
+{
+  "name": "Workshop — Lambda + API Gateway",
+  "description": "L2 constructs, the asset pipeline, and the IAM wiring the framework derives for you.",
+  "fileName": "src/main.ts",
+  "outputFileName": "cdktn.out/stacks/workshop/cdk.tf.hcl",
+  "tour": {
+    "inputSteps": [
+      {
+        "id": "imports",
+        "type": "line-range",
+        "startLine": 3,
+        "endLine": 8,
+        "title": "L2 construct imports",
+        "content": "The same L2 vocabulary as AWS CDK — typed classes with behaviour, not modules with variables.",
+        "highlight": "border"
+      },
+      {
+        "id": "stack-class",
+        "type": "line-range",
+        "startLine": 10,
+        "endLine": 12,
+        "title": "Extending AwsStack",
+        "content": "AwsStack owns the asset pipeline, the IAM model, and region/partition lookups. Anything constructed inside it reaches those services through the tree.",
+        "highlight": "border"
+      },
+      {
+        "id": "lambda-creation",
+        "type": "line-range",
+        "startLine": 14,
+        "endLine": 18,
+        "title": "A function, not a folder of variables",
+        "content": "Code.fromAsset() hands the bundle to the asset pipeline. The construct decides how it is hashed, packaged and referenced — you never write that plumbing.",
+        "highlight": "border"
+      },
+      {
+        "id": "api-gateway-creation",
+        "type": "line-range",
+        "startLine": 20,
+        "endLine": 24,
+        "title": "Passing an object, not a string",
+        "content": "handler: hello passes the function itself. LambdaRestApi asks it for an invoke ARN and grants itself permission. That handshake is why nothing outside these two constructs has to wire them together.",
+        "highlight": "border"
+      }
+    ],
+    "outputSteps": [
+      {
+        "id": "iam-role-assume-policy",
+        "type": "line-range",
+        "startLine": 20,
+        "endLine": 34,
+        "title": "Trust policy, derived",
+        "content": "The Lambda service principal is resolved through a data source instead of hardcoded, so the same program synthesizes correctly in any partition.",
+        "highlight": "background"
+      },
+      {
+        "id": "asset-pipeline",
+        "type": "line-range",
+        "startLine": 109,
+        "endLine": 117,
+        "title": "The asset pipeline, in plain Terraform",
+        "content": "Bucket, object, content hash and source path — all emitted from that one Code.fromAsset() call, all managed by ordinary Terraform state.",
+        "highlight": "border"
+      },
+      {
+        "id": "api-gateway-dependencies",
+        "type": "line-range",
+        "startLine": 132,
+        "endLine": 150,
+        "title": "Race conditions, pre-solved",
+        "content": "Explicit depends_on, create_before_destroy, and a redeployment trigger hashed from the API definition. This is the part of a hand-written module that is always subtly wrong.",
+        "highlight": "background"
+      },
+      {
+        "id": "lambda-permissions",
+        "type": "line-range",
+        "startLine": 192,
+        "endLine": 197,
+        "title": "Cross-service permission you never asked for",
+        "content": "You never wrote a lambda_permission. The API construct asked the function for a grant, and it materialized here with the correct source ARN.",
+        "highlight": "background"
+      }
+    ]
+  }
+}
