@@ -1,3 +1,9 @@
+# pnpm 11 no longer reads the `pnpm` field in package.json; these settings live
+# here instead. `overrides` is kept in package.json too, so an older pnpm
+# resolves the same tree rather than reporting the lockfile as out of date.
+overrides:
+  hono: 4.12.25
+
 allowBuilds:
   msw: true
   sharp: true
