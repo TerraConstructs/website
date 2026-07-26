@@ -59,9 +59,24 @@ let highlighterPromise: Promise<Highlighter> | null = null
 function getHighlighter(): Promise<Highlighter> {
   highlighterPromise ??= createHighlighter({
     themes: ['github-light', 'vitesse-dark'],
-    langs: ['typescript', 'hcl'],
+    langs: ['typescript', 'hcl', 'json', 'bash', 'diff', 'yaml'],
   })
   return highlighterPromise
+}
+
+const SUPPORTED_LANGS = new Set(['typescript', 'ts', 'hcl', 'tf', 'json', 'bash', 'sh', 'shell', 'diff', 'yaml', 'yml'])
+const LANG_ALIAS: Record<string, string> = { ts: 'typescript', tf: 'hcl', sh: 'bash', shell: 'bash', yml: 'yaml' }
+
+/** Shiki-highlighted HTML for MDX fenced code blocks. */
+export async function highlightToHtml(code: string, lang: string): Promise<string> {
+  const highlighter = await getHighlighter()
+  const resolved = SUPPORTED_LANGS.has(lang) ? (LANG_ALIAS[lang] ?? lang) : 'text'
+  return highlighter.codeToHtml(code, {
+    lang: resolved,
+    themes: { light: 'github-light', dark: 'vitesse-dark' },
+    defaultColor: false,
+    colorReplacements: { '#ffffff': 'transparent', '#121212': 'transparent' },
+  })
 }
 
 async function highlight(code: string, lang: string, label: string): Promise<CodePane> {

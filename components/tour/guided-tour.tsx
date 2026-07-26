@@ -171,7 +171,7 @@ export function GuidedTour({ demos }: { demos: Demo[] }) {
       <div className="border-t p-3 sm:p-4">
         {!started ? (
           <p className="text-sm text-muted-foreground">
-            Both files above are real: 27 lines of TypeScript on the left, the{' '}
+            Both files above are real: {demo.input.lineCount} lines of TypeScript on the left, the{' '}
             {demo.output.lineCount} lines of HCL{' '}
             <code className="font-mono text-xs text-foreground">cdktn synth</code> produced from
             them on the right. Highlighted regions are clickable, or step through them in order.

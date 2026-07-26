@@ -1,14 +1,18 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { LINKS } from '@/lib/links'
+import { getDemos } from '@/lib/demos'
 
-const STATS = [
-  { value: '27', label: 'lines of TypeScript' },
-  { value: '230', label: 'lines of HCL, synthesized' },
-  { value: '0', label: 'IAM statements hand-written' },
-]
+export async function Hero() {
+  // The headline numbers are read off the real pre-compiled demo, so they can
+  // never drift from what the guided tour actually shows.
+  const [demo] = await getDemos()
+  const STATS = [
+    { value: String(demo.input.lineCount), label: 'lines of TypeScript' },
+    { value: String(demo.output.lineCount), label: 'lines of HCL, synthesized' },
+    { value: '0', label: 'IAM statements hand-written' },
+  ]
 
-export function Hero() {
   return (
     <section className="relative overflow-hidden border-b">
       <div className="grid-backdrop pointer-events-none absolute inset-0 opacity-60" aria-hidden />

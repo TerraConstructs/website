@@ -1,0 +1,79 @@
+---
+title: "Porting the AWS CDK grant model onto terraform-provider-aws"
+description: "IGrantable, IPrincipal and IGrant are the most load-bearing interfaces in the AWS CDK. Here is what it took to reimplement them on top of ordinary Terraform IAM resources."
+date: "2026-05-07"
+authors: ["TerraConstructs"]
+tags: ["iam", "internals"]
+---
+
+`grant()` is the single feature people miss most when they leave the AWS CDK. This post covers how TerraConstructs reimplements it — and what had to change because the target is `terraform-provider-aws` rather than CloudFormation.
+
+## The three interfaces
+
+The AWS CDK's IAM model rests on a small set of types:
+
+- **`IPrincipal`** — something that can appear in the `Principal` of a trust policy, or be the subject of an identity policy. A role, a user, a service principal, an account.
+- **`IGrantable`** — anything that *has* a principal. Every compute construct implements this by delegating to its execution role.
+- **`IGrant`** — the result of a grant: a record of which statements were added where, so callers can add dependencies on it.
+
+The important property is that resource constructs depend on `IGrantable`, never on concrete types. `bucket.grantRead(x)` works for a Lambda function, an ECS task, a state machine, or an imported role, because all of them can produce a principal.
+
+## Where CloudFormation and Terraform differ
+
+In the AWS CDK, a grant appends a statement to a `PolicyDocument` object that is later rendered into the template. Policy documents are mutable right up until synthesis.
+
+Terraform has no equivalent mutable-until-synth object. There are two viable shapes:
+
+```hcl
+# inline: statements live on the role
+resource "aws_iam_role" "role" {
+  inline_policy { policy = data.aws_iam_policy_document.x.json }
+}
+
+# attached: a standalone policy, then an attachment
+resource "aws_iam_role_policy" "p" {
+  role   = aws_iam_role.role.name
+  policy = data.aws_iam_policy_document.x.json
+}
+```
+
+<Callout type="warning" title="Inline policies fight with grants">
+`inline_policy` on `aws_iam_role` is authoritative — the provider will remove anything not in the block. Since grants accumulate statements from arbitrary call sites during synthesis, TerraConstructs emits `aws_iam_role_policy` resources instead, one default policy per role, populated at the end of synthesis.
+</Callout>
+
+So the port keeps the CDK's programming model but changes the backing store: each role construct owns a lazily-created **default policy**, and `addToPrincipalPolicy` accumulates statements into it. At synthesis time the accumulated statements become a single `data.aws_iam_policy_document` plus one `aws_iam_role_policy`.
+
+### Deduplication matters more here
+
+Because every statement becomes part of a rendered document, duplicate grants produce noisy diffs. The port normalizes and merges statements with identical actions, resources and conditions before rendering — something the CDK also does, but which is more visible in HCL output where a human reads the plan.
+
+## What you get back
+
+The payoff is that the familiar call sites work unchanged:
+
+```typescript
+const table = new Table(this, "Orders", { /* … */ });
+const handler = new LambdaFunction(this, "Handler", { /* … */ });
+const workflow = new StateMachine(this, "Flow", { /* … */ });
+
+table.grantReadWriteData(handler);
+table.grantReadData(workflow);
+table.grantReadData(new ArnPrincipal(auditRoleArn));
+```
+
+Three different kinds of grantee, one API. The third isn't even a resource in this stack — it's a role in another account, and `grantReadData` neither knows nor cares.
+
+## Cross-service grants
+
+The interesting cases are the ones where a grant has to touch both sides. Granting a Lambda function permission to be invoked by an API Gateway needs a resource-based policy on the function, scoped to the API's execution ARN. In a document model that's a `aws_lambda_permission` you write by hand with a `source_arn` you assemble from four interpolations.
+
+In the object model the API construct asks the function for it, and the function knows how to describe itself. The [guided tour](/#guided-tour) shows the exact HCL this produces.
+
+## Current limits
+
+Two things are deliberately not ported yet:
+
+1. **Permission boundaries** as an aspect-applied default. You can attach them explicitly, but there is no stack-wide `PermissionsBoundary.of(scope)` yet.
+2. **`grantAssumeRole` chains** across constructs imported from different providers, which needs more thought about how partition and account lookups compose.
+
+Both are tracked in [terraconstructs/base](https://github.com/terraconstructs/base). If you want to pick one up, say so in [cdk.dev](https://cdk.dev) first — these touch a lot of surface area.

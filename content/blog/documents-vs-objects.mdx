@@ -1,0 +1,106 @@
+---
+title: "Documents vs objects: the split that actually matters"
+description: "Declarative versus imperative is the wrong axis. HCL and a CDK program both describe desired end state — the difference is whether infrastructure is data to be merged or a typed object with behaviour."
+date: "2026-06-18"
+authors: ["TerraConstructs"]
+tags: ["design"]
+---
+
+Every discussion about CDK-style tooling versus HCL eventually arrives at the same framing: declarative or imperative? Pick a side.
+
+It's the wrong axis, and it has been for years.
+
+## Both models are declarative
+
+A Terraform configuration describes a desired end state. So does a CDK program. Neither one tells the cloud provider *how* to get there — that is the engine's job, and in both cases the engine is Terraform or OpenTofu producing a plan against real state.
+
+The presence of a `for` loop does not make a program imperative with respect to infrastructure. HCL has `for_each`. HCL has `count`, `dynamic` blocks, conditional expressions, and a standard library of ~100 functions. Nobody calls `for_each` imperative.
+
+<Callout type="note" title="The synthesis boundary">
+A TerraConstructs program runs to completion and emits JSON that Terraform consumes. By the time anything touches your cloud account, you are holding a plan — the same artifact you would get from hand-written HCL. The TypeScript is gone.
+</Callout>
+
+So if both sides describe end state, and both sides support iteration, what is the actual difference?
+
+## The real axis: data or type
+
+The difference is what an abstraction *is*.
+
+In Terraform, the unit of abstraction is a module, and a module's interface is exactly its `variables` and its `outputs`. That is a document schema. You pass it a bag of values; it hands you back a bag of values.
+
+In TerraConstructs, the unit of abstraction is a construct — a class. Its interface is its constructor props *and its methods*, and it can declare that it implements a capability.
+
+<SplitCompare leftLabel="Document — variables and outputs" rightLabel="Object — a method on a type" caption="Left: two strings cross a document boundary, and something on the other side has to reassemble them into a policy. Right: one object asks another for a capability.">
+
+```hcl
+module "worker" {
+  source            = "./modules/worker"
+  bucket_arn        = module.storage.bucket_arn
+  bucket_kms_key_id = module.storage.kms_key_id
+  # and now the module must contain
+  # a policy document that hopes these
+  # two strings are the right shape
+}
+```
+
+```typescript
+const bucket = new Bucket(this, "Storage");
+const worker = new LambdaFunction(this, "Worker", { /* … */ });
+
+// the bucket writes its own policy,
+// for whatever this principal is
+bucket.grantReadWrite(worker);
+```
+
+</SplitCompare>
+
+### A document has nowhere to put behaviour
+
+This is the part that gets missed. It isn't that HCL is verbose — it's that a document has no place to put a method.
+
+Two resources cannot hand each other permission to talk. Something has to sit outside both of them and wire up the rule: a `data.aws_iam_policy_document` block, a policy attachment, and a set of string references that must line up. That wiring code is not owned by either resource. It lives in the gap between them, and it is yours to maintain.
+
+In an object-oriented model, that wiring *is* the object graph. A construct that implements a capability interface — TerraConstructs' port of the AWS CDK's `IConnectable`, `IGrantable` and `IPrincipal` — can be handed to any other construct's connection or grant method, regardless of what either one actually is underneath.
+
+## Why polymorphism is the whole argument
+
+Consider one line:
+
+```typescript
+table.grantReadWriteData(target)
+```
+
+`target` can be a `LambdaFunction`, a `FargateTaskDefinition`, a `StateMachine`, or a bare `ArnPrincipal` for a role that lives in another account entirely. The call site does not change. `grantReadWriteData` does not ask what `target` is — it asks for a principal, and every one of those types knows how to produce one.
+
+That is polymorphism, and **a document has no place to put it.** You cannot write a module that accepts "anything that can be granted to," because a module accepts strings.
+
+### The cost compounds upward
+
+The effect is most visible where abstractions stack. A Step Functions state machine built from task fragments needs the union of every permission its tasks require. In an object model, each fragment reports what it needs and the state machine aggregates:
+
+```typescript
+const definition = Chain.start(fetchOrder)
+  .next(chargeCard)
+  .next(new Choice(this, "Approved?")
+    .when(Condition.booleanEquals("$.ok", true), notifyCustomer)
+    .otherwise(refund));
+
+// every task's IAM requirements bubble up here
+new StateMachine(this, "Checkout", { definition });
+```
+
+Nobody enumerated the policy. Add a task, and the role changes with it.
+
+In a document model, that permission set is a separate artifact you maintain by hand, and it drifts the moment someone edits a branch of the workflow.
+
+<Callout type="tip" title="See it synthesized">
+The [guided tour](/#guided-tour) steps through a real 26-line program and the 230 lines of HCL it produces — including every IAM policy document nobody wrote.
+</Callout>
+
+## What this is not
+
+This is not an argument against Terraform. TerraConstructs runs *on* Terraform and OpenTofu, through [CDK Terrain](https://cdktn.io). The providers, the state file, the plan/apply loop, the ecosystem of 4,000+ providers — all of it is the foundation, not the competition.
+
+It's an argument about where your abstractions live. If your infrastructure is a handful of resources, a document is fine — arguably better, because it is inert and greppable. If you are maintaining shared platform abstractions that other teams compose, the document boundary is what keeps costing you, and no amount of `for_each` will fix it.
+
+You are not choosing between declarative and imperative. You are choosing whether your abstractions can have behaviour.

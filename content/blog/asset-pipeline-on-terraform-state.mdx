@@ -1,0 +1,92 @@
+---
+title: "Code.fromAsset() without a bootstrap stack"
+description: "The AWS CDK asset pipeline depends on a bootstrapped account and a staging bucket. TerraConstructs rebuilds bundling, hashing and publishing on top of ordinary Terraform resources and state."
+date: "2026-03-24"
+authors: ["TerraConstructs"]
+tags: ["assets", "internals"]
+---
+
+`Code.fromAsset("lambda")` is deceptively small. Four words that mean: bundle this directory, hash the result, upload it somewhere the service can read, and wire the reference through. In the AWS CDK all of that leans on `cdk bootstrap` — a pre-provisioned staging bucket, ECR repository, and a set of deploy roles.
+
+TerraConstructs has no bootstrap step. Here's what replaces it.
+
+## What an asset actually needs
+
+Strip away the CDK-specific machinery and an asset needs four things:
+
+1. **Bundling** — turn source into a deployable artifact (esbuild a TypeScript handler, `docker build` an image).
+2. **A content hash** — so unchanged assets don't redeploy, and changed ones do.
+3. **A publish target** — an S3 object, or an ECR image tag.
+4. **A reference** — the `s3_bucket`/`s3_key` or image URI the consuming resource points at.
+
+The CDK solves 3 and 4 with bootstrap infrastructure that exists before your stack does. Terraform can solve them with resources *inside* your stack, because Terraform's state file already tracks whether an object exists and what its hash was.
+
+## Bundling happens at synth time
+
+Bundling runs while your program runs, before any HCL is emitted:
+
+```typescript
+const hello = new LambdaFunction(this, "HelloHandler", {
+  runtime: Runtime.NODEJS_22_X,
+  code: Code.fromAsset("lambda"),
+  handler: "hello.handler",
+});
+```
+
+By the time synthesis finishes, there is a staged artifact on disk and a hash computed from its contents. The emitted HCL is boring on purpose:
+
+```hcl
+resource "aws_s3_bucket" "AssetBucket" {
+  bucket = "demo-uuid-${data.aws_caller_identity.CallerIdentity.account_id}"
+}
+
+resource "aws_s3_object" "FileAsset_S3" {
+  bucket      = aws_s3_bucket.AssetBucket.bucket
+  key         = "ac628f13c88c233682e5ac4270a6063b0f3ef8dc2a12061e9…"
+  source      = "assets/FileAsset/ac628f13c88c233682e5ac4270a6063b…"
+  source_hash = "ac628f13c88c233682e5ac4270a6063b0f3ef8dc2a12061e9…"
+}
+```
+
+<Callout type="note" title="Why source_hash carries the weight">
+`source_hash` is what makes this work without a bootstrap. Terraform compares it against state and replaces the object only when the bundled content actually changed. The content hash is also the object key, so old versions remain addressable while a rollout is in flight.
+</Callout>
+
+## Docker images take the same shape
+
+`DockerImageAsset` builds the image during synthesis and emits an ECR repository plus a push, keyed by the image's content hash:
+
+```typescript
+const image = new DockerImageAsset(this, "Api", {
+  directory: "./service",
+});
+
+new FargateTaskDefinition(this, "Task", {
+  image: ContainerImage.fromDockerImageAsset(image),
+});
+```
+
+The task definition references the tagged URI. Rebuild with no source changes and the hash is identical, so `terraform plan` is empty — which is the property that makes this usable in CI.
+
+## The tradeoffs, honestly
+
+This design is genuinely different from the CDK's, and not strictly better:
+
+| | AWS CDK | TerraConstructs |
+| --- | --- | --- |
+| Prerequisite | `cdk bootstrap` per account/region | none |
+| Asset bucket | shared, account-wide | per-stack by default |
+| Lifecycle | `cdk gc` cleans orphans | Terraform destroys with the stack |
+| Cross-stack reuse | native | requires an explicit shared bucket |
+
+The per-stack bucket is the main thing to be aware of. It makes teardown clean and removes the bootstrap requirement, but if you deploy many stacks you'll want to pass a shared bucket explicitly rather than accumulating one per stack.
+
+<Callout type="tip" title="Step through the real output">
+The [guided tour](/#guided-tour) highlights exactly which HCL lines the asset pipeline generates from a single `Code.fromAsset()` call, alongside the IAM the framework derives for it.
+</Callout>
+
+## What's next
+
+Asset support currently covers S3 file/directory assets and ECR Docker images on AWS. The same staging abstraction is what the planned GCP and Azure L2 constructs will use for Cloud Storage and Blob Storage — the bundling and hashing layers are provider-agnostic already.
+
+If you want to help with that, the [repository](https://github.com/terraconstructs/base) is the place to start and [cdk.dev](https://cdk.dev) is where the design discussion happens.
