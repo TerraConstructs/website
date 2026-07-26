@@ -7,6 +7,7 @@ import { Capabilities } from '@/components/landing/capabilities'
 import { Foundation } from '@/components/landing/foundation'
 import { Agents } from '@/components/landing/agents'
 import { CommunityCta } from '@/components/landing/community-cta'
+import { SiteJsonLd } from '@/components/site/json-ld'
 
 export const metadata: Metadata = {
   title: 'TerraConstructs — Infrastructure as actual code',
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
+      <SiteJsonLd />
       <Hero />
       <DocumentsVsObjects />
       <TourSection />

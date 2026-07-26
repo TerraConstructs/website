@@ -1,18 +1,20 @@
-import workshopRedirects from './scripts/workshop-redirects.json' with { type: 'json' }
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static export: the site is served from S3 behind CloudFront, so there is no
+  // Next server at runtime. Every route is SSG already, so nothing is lost.
+  output: 'export',
+  // Emits `about/index.html` rather than `about.html`, which is what the
+  // existing CloudFront viewer-request function rewrites extensionless URLs to.
+  trailingSlash: true,
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
     unoptimized: true,
   },
-  // The Hugo workshop lived on its own subdomain with uglyurls (.html). These
-  // keep those links alive once aws-workshop.terraconstructs.dev is retired.
-  async redirects() {
-    return workshopRedirects
-  },
+  // NOTE: `redirects()` is inert under `output: 'export'`. The workshop and blog
+  // redirects live in a CloudFront viewer-request function instead;
+  // scripts/workshop-redirects.json is retained as its test fixture.
 }
 
 export default nextConfig

@@ -8,6 +8,8 @@ import { formatDate, getPost, getPostSlugs } from '@/lib/blog'
 import { mdxComponents } from '@/components/blog/mdx-components'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { LINKS } from '@/lib/links'
+import { ogImage, SITE_URL } from '@/lib/site'
+import { ArticleJsonLd } from '@/components/site/json-ld'
 
 export async function generateStaticParams() {
   const slugs = await getPostSlugs()
@@ -23,16 +25,21 @@ export async function generateMetadata({
   const post = await getPost(slug)
   if (!post) return {}
 
+  const url = `/blog/${slug}/`
   return {
     title: `${post.title} — TerraConstructs`,
     description: post.description,
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description: post.description,
       type: 'article',
+      url,
       publishedTime: post.date,
       authors: post.authors,
+      images: [{ url: ogImage(url), width: 1200, height: 630 }],
     },
+    twitter: { card: 'summary_large_image' },
   }
 }
 
@@ -43,6 +50,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
+      <ArticleJsonLd
+        title={post.title}
+        description={post.description}
+        url={`${SITE_URL}/blog/${slug}/`}
+        datePublished={post.date}
+        authors={post.authors}
+        image={ogImage(`/blog/${slug}/`)}
+      />
       <Link
         href="/blog"
         className="inline-flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground"

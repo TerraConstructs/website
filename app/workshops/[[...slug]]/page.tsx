@@ -18,6 +18,8 @@ import { PrevNext } from '@/components/workshop/prev-next'
 import { ChildrenList } from '@/components/workshop/children-list'
 import { WorkshopImage } from '@/components/workshop/workshop-image'
 import { WorkshopIndex } from '@/components/workshop/workshop-index'
+import { BreadcrumbJsonLd } from '@/components/site/json-ld'
+import { ogImage } from '@/lib/site'
 
 type Params = { slug?: string[] }
 
@@ -37,16 +39,32 @@ export async function generateMetadata({
       title: 'Workshops — TerraConstructs',
       description:
         'Hands-on workshops for building cloud infrastructure with TerraConstructs and CDKTN.',
+      alternates: { canonical: '/workshops/' },
+      openGraph: {
+        title: 'Workshops — TerraConstructs',
+        url: '/workshops/',
+        images: [{ url: ogImage('/workshops/'), width: 1200, height: 630 }],
+      },
+      twitter: { card: 'summary_large_image' },
     }
   }
 
   const page = await getWorkshopPage(slug)
   if (!page) return {}
 
+  const url = `/workshops/${slug.join('/')}/`
   return {
     title: `${page.title} — TerraConstructs Workshop`,
     description: page.description,
-    openGraph: { title: page.title, description: page.description, type: 'article' },
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      type: 'article',
+      url,
+      images: [{ url: ogImage(url), width: 1200, height: 630 }],
+    },
+    twitter: { card: 'summary_large_image' },
   }
 }
 
@@ -70,6 +88,13 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
 
   return (
     <main className="mx-auto max-w-[88rem] px-4 py-10 sm:px-6">
+      <BreadcrumbJsonLd
+        items={[
+          { title: 'Workshops', href: '/workshops/' },
+          ...page.breadcrumbs,
+          { title: page.title, href: page.href },
+        ]}
+      />
       <div className="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[15rem_minmax(0,1fr)_14rem] xl:gap-12">
         <aside className="hidden lg:block">
           <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pb-8">
