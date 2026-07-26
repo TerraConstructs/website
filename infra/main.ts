@@ -135,13 +135,12 @@ class LandingPageStack extends AwsStack {
     // the viewer-request function runs for /blog/* too, which the old blog
     // redirects depend on.
     const distribution = new Distribution(this, "Cdn", {
-      // TODO: add `aws-workshop.${domainName}` here once the retired workshop
-      // distribution releases it. CloudFront rejects a CNAME that is still
-      // attached to another distribution (CNAMEAlreadyExists), so moving the
-      // subdomain is a separate cutover: detach there, attach here, then
-      // destroy that stack. The viewer-request function already redirects that
-      // host, so it starts working the moment the alias lands.
-      ...(certificate ? { aliases: [domainName], certificate } : {}),
+      // The retired Hugo workshop's subdomain is served here purely to redirect:
+      // the viewer-request function maps its old URLs onto /workshops/aws/.
+      // Covered by the certificate's *.${domainName} SAN, so no second cert.
+      ...(certificate
+        ? { aliases: [domainName, `aws-workshop.${domainName}`], certificate }
+        : {}),
       priceClass: PriceClass.PRICE_CLASS_100,
       defaultBehavior: {
         origin,
@@ -167,6 +166,14 @@ class LandingPageStack extends AwsStack {
     // create apex record for CDN
     new ARecord(this, "CdnAlias", {
       zone,
+      target: RecordTarget.fromAlias(new DistributionTarget(distribution)),
+    });
+
+    // Retired workshop subdomain, now pointed here so its old URLs redirect.
+    // Previously owned by the intro-workshop stack, which is being destroyed.
+    new ARecord(this, "WorkshopAlias", {
+      zone,
+      recordName: `aws-workshop.${domainName}.`,
       target: RecordTarget.fromAlias(new DistributionTarget(distribution)),
     });
   }
