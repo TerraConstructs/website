@@ -130,7 +130,11 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
             <MDXRemote
               source={page.content}
               components={components}
-              options={{ mdxOptions: { rehypePlugins: [rehypeSlug, rehypeCodeMeta] } }}
+              // See the blog route: v6 blocks JSX expression props by default.
+              options={{
+                blockJS: false,
+                mdxOptions: { rehypePlugins: [rehypeSlug, rehypeCodeMeta] },
+              }}
             />
           </div>
 

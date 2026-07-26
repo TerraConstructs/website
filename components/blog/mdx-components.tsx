@@ -4,15 +4,19 @@ import { cn } from '@/lib/utils'
 import { CodeBlock } from './code-block'
 import { Callout } from './callout'
 import { SplitCompare } from './split-compare'
+import { Milestones } from './milestones'
+import { Stats } from './stats'
 
 /**
- * Components available to every MDX post. `Callout`, `SplitCompare` and
- * `CodeBlock` can be used directly in markdown without importing.
+ * Components available to every MDX post. These can be used directly in
+ * markdown without importing.
  */
 export const mdxComponents = {
   Callout,
   SplitCompare,
   CodeBlock,
+  Milestones,
+  Stats,
 
   h2: ({ className, ...props }: ComponentPropsWithoutRef<'h2'>) => (
     <h2

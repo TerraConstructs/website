@@ -107,7 +107,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             <MDXRemote
               source={post.content}
               components={mdxComponents}
-              options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }}
+              // next-mdx-remote v6 strips every JSX expression by default,
+              // including attribute expressions like `items={[...]}`. That
+              // sandbox is for untrusted MDX; ours is first-party and reviewed,
+              // so it is disabled to get standard MDX semantics back.
+              options={{ blockJS: false, mdxOptions: { rehypePlugins: [rehypeSlug] } }}
             />
           </div>
 
