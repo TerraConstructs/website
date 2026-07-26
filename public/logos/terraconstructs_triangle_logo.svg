@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="256" height="256" preserveAspectRatio="xMinYMin meet" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="256" height="256"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-256)" style="clip-path: url(#clip)">
+		<g transform="">
+			<polygon points="128 238, 32.73721 183, 32.73721 73, 128 18, 223.2628 73, 223.2628 183" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 8; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="128 128, 32.73721 73, 128 18, 223.2628 73" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="128 128, 128 238, 32.73721 183, 32.73721 73" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="128 128, 223.2628 73, 223.2628 183, 128 238" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 1; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+			<path d="M 128,238 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 223.262794,73 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 32.737206,73 L 128,128 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="128 128, 128 172, 89.89488 194, 89.89488 150" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+			<polygon points="128 128, 166.1051 150, 166.1051 194, 128 172" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="128 172, 166.1051 194, 128 216, 89.89488 194" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="89.89488 62, 89.89488 106, 51.78976 128, 51.78976 84" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+			<polygon points="89.89488 62, 128 84, 128 128, 89.89488 106" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="89.89488 106, 128 128, 89.89488 150, 51.78976 128" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="166.1051 62, 166.1051 106, 128 128, 128 84" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(60%,36%,89%); fill-rule: evenodd;"/>
+			<polygon points="166.1051 62, 204.2102 84, 204.2102 128, 166.1051 106" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="166.1051 106, 204.2102 128, 166.1051 150, 128 128" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: rgb(70%,51%,85%); fill-rule: evenodd;"/>
+			<polygon points="128 216.0891, 89.8177 194.0446, 89.8177 149.9554, 128 127.9109, 166.1823 149.9554, 166.1823 194.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+			<path d="M 128,172 L 128,127.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 128,172 L 166.182296,194.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 128,172 L 89.817704,194.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="89.89488 150.0891, 51.71259 128.0446, 51.71259 83.95544, 89.89488 61.91088, 128.0772 83.95544, 128.0772 128.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+			<path d="M 89.894882,106 L 89.894882,61.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 89.894882,106 L 128.077178,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 89.894882,106 L 51.712586,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="166.1051 150.0891, 127.9228 128.0446, 127.9228 83.95544, 166.1051 61.91088, 204.2874 83.95544, 204.2874 128.0446" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2; fill: none; fill-rule: evenodd;"/>
+			<path d="M 166.105118,106 L 166.105118,61.910882 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 166.105118,106 L 204.287414,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 166.105118,106 L 127.922822,128.044559 Z" style="stroke: rgb(36%,17%,64%); stroke-linecap: butt; stroke-width: 2;"/>
+		</g>
+	</g>
+</svg>
