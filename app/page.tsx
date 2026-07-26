@@ -5,6 +5,7 @@ import { TourSection } from '@/components/landing/tour-section'
 import { Polymorphism } from '@/components/landing/polymorphism'
 import { Capabilities } from '@/components/landing/capabilities'
 import { Foundation } from '@/components/landing/foundation'
+import { Agents } from '@/components/landing/agents'
 import { CommunityCta } from '@/components/landing/community-cta'
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function Page() {
       <Polymorphism />
       <Capabilities />
       <Foundation />
+      <Agents />
       <CommunityCta />
     </>
   )

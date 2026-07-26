@@ -12,6 +12,7 @@ const NAV = [
   { label: 'Why objects', href: '/#documents-vs-objects' },
   { label: 'Guided tour', href: '/#guided-tour' },
   { label: 'Capabilities', href: '/#capabilities' },
+  { label: 'For agents', href: '/#agents' },
   { label: 'Blog', href: '/blog' },
 ]
 
