@@ -1,0 +1,114 @@
+{
+  "/workshops/aws/prerequisites/new-user-1.png": {
+    "width": 1083,
+    "height": 462
+  },
+  "/workshops/aws/prerequisites/new-user-2.png": {
+    "width": 768,
+    "height": 357
+  },
+  "/workshops/aws/prerequisites/new-user-3.png": {
+    "width": 996,
+    "height": 389
+  },
+  "/workshops/aws/typescript/create-project/structure.png": {
+    "width": 472,
+    "height": 816
+  },
+  "/workshops/aws/shared/apiref.png": {
+    "width": 2176,
+    "height": 794
+  },
+  "/workshops/aws/typescript/hello-cdk/auto-complete.png": {
+    "width": 1367,
+    "height": 501
+  },
+  "/workshops/aws/typescript/hello-cdk/lambda-1.png": {
+    "width": 1520,
+    "height": 715
+  },
+  "/workshops/aws/typescript/hello-cdk/lambda-2.png": {
+    "width": 2332,
+    "height": 1586
+  },
+  "/workshops/aws/typescript/hello-cdk/lambda-3.png": {
+    "width": 2098,
+    "height": 995
+  },
+  "/workshops/aws/typescript/hello-cdk/lambda-4.png": {
+    "width": 920,
+    "height": 301
+  },
+  "/workshops/aws/typescript/hello-cdk/lambda-5.png": {
+    "width": 625,
+    "height": 193
+  },
+  "/workshops/aws/typescript/hello-cdk/browser.png": {
+    "width": 612,
+    "height": 189
+  },
+  "/workshops/aws/shared/hello-arch.png": {
+    "width": 751,
+    "height": 136
+  },
+  "/workshops/aws/typescript/hit-counter/logs1.png": {
+    "width": 2096,
+    "height": 412
+  },
+  "/workshops/aws/typescript/hit-counter/logs2.png": {
+    "width": 1968,
+    "height": 1551
+  },
+  "/workshops/aws/typescript/hit-counter/logs3.png": {
+    "width": 2215,
+    "height": 1030
+  },
+  "/workshops/aws/typescript/hit-counter/apigw1.png": {
+    "width": 2021,
+    "height": 414
+  },
+  "/workshops/aws/typescript/hit-counter/apigw2.png": {
+    "width": 2338,
+    "height": 1545
+  },
+  "/workshops/aws/typescript/hit-counter/logs5.png": {
+    "width": 2788,
+    "height": 877
+  },
+  "/workshops/aws/typescript/hit-counter/logs6.png": {
+    "width": 1308,
+    "height": 1129
+  },
+  "/workshops/aws/typescript/hit-counter/dynamo1.png": {
+    "width": 393,
+    "height": 563
+  },
+  "/workshops/aws/shared/hit-counter.png": {
+    "width": 658,
+    "height": 393
+  },
+  "/workshops/aws/typescript/table-viewer/table-viewer-npm.png": {
+    "width": 619,
+    "height": 340
+  },
+  "/workshops/aws/typescript/table-viewer/table-viewer-props.png": {
+    "width": 905,
+    "height": 226
+  },
+  "/workshops/aws/typescript/table-viewer/viewer1.png": {
+    "width": 411,
+    "height": 131
+  },
+  "/workshops/aws/typescript/table-viewer/viewer2.png": {
+    "width": 827,
+    "height": 430
+  },
+  "/workshops/aws/shared/table-viewer.png": {
+    "width": 816,
+    "height": 190
+  },
+  "/workshops/aws/shared/favicon.png": {
+    "width": 256,
+    "height": 256
+  }
+}

@@ -70,8 +70,33 @@ function getHighlighter(): Promise<Highlighter> {
 const SUPPORTED_LANGS = new Set(['typescript', 'ts', 'hcl', 'tf', 'json', 'bash', 'sh', 'shell', 'diff', 'yaml', 'yml'])
 const LANG_ALIAS: Record<string, string> = { ts: 'typescript', tf: 'hcl', sh: 'bash', shell: 'bash', yml: 'yaml' }
 
+/**
+ * Parses a fence meta string like `{3,5-7}` into the set of 1-based line
+ * numbers to emphasise. This is the workshop's replacement for Hugo's
+ * `{{<highlight ts "hl_lines=3 5-7">}}`.
+ */
+export function parseHighlightLines(meta?: string): Set<number> {
+  const lines = new Set<number>()
+  const inner = /\{([\d,\s-]+)\}/.exec(meta ?? '')?.[1]
+  if (!inner) return lines
+
+  for (const part of inner.split(',')) {
+    const range = /^\s*(\d+)\s*-\s*(\d+)\s*$/.exec(part)
+    if (range) {
+      for (let i = Number(range[1]); i <= Number(range[2]); i++) lines.add(i)
+    } else if (part.trim()) {
+      lines.add(Number(part.trim()))
+    }
+  }
+  return lines
+}
+
 /** Shiki-highlighted HTML for MDX fenced code blocks. */
-export async function highlightToHtml(code: string, lang: string): Promise<string> {
+export async function highlightToHtml(
+  code: string,
+  lang: string,
+  highlightLines?: Set<number>,
+): Promise<string> {
   const highlighter = await getHighlighter()
   const resolved = SUPPORTED_LANGS.has(lang) ? (LANG_ALIAS[lang] ?? lang) : 'text'
   return highlighter.codeToHtml(code, {
@@ -79,6 +104,17 @@ export async function highlightToHtml(code: string, lang: string): Promise<strin
     themes: { light: 'github-light', dark: 'vitesse-dark' },
     defaultColor: false,
     colorReplacements: { '#ffffff': 'transparent', '#121212': 'transparent' },
+    transformers:
+      highlightLines?.size
+        ? [
+            {
+              // marks emphasised lines; `.line.hl` is styled in globals.css
+              line(node, line) {
+                if (highlightLines.has(line)) this.addClassToHast(node, 'hl')
+              },
+            },
+          ]
+        : [],
   })
 }
 

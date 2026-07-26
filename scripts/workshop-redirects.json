@@ -1,0 +1,992 @@
+[
+  {
+    "source": "/15-prerequisites/100-awscli.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/awscli",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/100-awscli",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/awscli",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/200-account.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/account",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/200-account",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/account",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/300-nodejs.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/nodejs",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/300-nodejs",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/nodejs",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/400-ide.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/ide",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/400-ide",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/ide",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/500-toolkit.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/toolkit",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/500-toolkit",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/toolkit",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/550-terraform.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/terraform",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/550-terraform",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites/terraform",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites",
+    "permanent": true
+  },
+  {
+    "source": "/15-prerequisites",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/prerequisites",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/100-cdktn-init.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/cdktn-init",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/100-cdktn-init",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/cdktn-init",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/300-structure.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/structure",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/300-structure",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/structure",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/350-terraconstructs.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/terraconstructs",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/350-terraconstructs",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/terraconstructs",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/400-synth.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/synth",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/400-synth",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/synth",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/500-deploy.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/deploy",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/500-deploy",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project/deploy",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/20-create-project",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/create-project",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/100-cleanup.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/cleanup",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/100-cleanup",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/cleanup",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/200-lambda.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/lambda",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/200-lambda",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/lambda",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/300-cdk-watch.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/cdk-watch",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/300-cdk-watch",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/cdk-watch",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/400-apigw.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/apigw",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/400-apigw",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk/apigw",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/30-hello-cdk",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hello-cdk",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/100-api.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/api",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/100-api",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/api",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/200-handler.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/handler",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/200-handler",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/handler",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/300-resources.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/resources",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/300-resources",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/resources",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/400-use.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/use",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/400-use",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/use",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/500-logs.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/logs",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/500-logs",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/logs",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/600-permissions.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/permissions",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/600-permissions",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/permissions",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/700-test.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/test",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/700-test",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter/test",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/40-hit-counter",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/hit-counter",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/100-discovery.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/discovery",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/100-discovery",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/discovery",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/200-install.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/install",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/200-install",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/install",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/300-add.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/add",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/300-add",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/add",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/400-expose-table.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/expose-table",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/400-expose-table",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/expose-table",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/500-deploy.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/deploy",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/500-deploy",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/deploy",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/600-extra-credit.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/extra-credit",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/600-extra-credit",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer/extra-credit",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/50-table-viewer",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/table-viewer",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/60-cleanups/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/cleanups",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/60-cleanups.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/cleanups",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/60-cleanups",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/cleanups",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/100-construct-testing/1000-assertion-test.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics/construct-testing/assertion-test",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/100-construct-testing/1000-assertion-test",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics/construct-testing/assertion-test",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/100-construct-testing/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics/construct-testing",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/100-construct-testing.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics/construct-testing",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/100-construct-testing",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics/construct-testing",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/70-advanced-topics",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript/advanced-topics",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript",
+    "permanent": true
+  },
+  {
+    "source": "/20-typescript",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/typescript",
+    "permanent": true
+  },
+  {
+    "source": "/80-conclusion/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/conclusion",
+    "permanent": true
+  },
+  {
+    "source": "/80-conclusion.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/conclusion",
+    "permanent": true
+  },
+  {
+    "source": "/80-conclusion",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws/conclusion",
+    "permanent": true
+  },
+  {
+    "source": "/index.html",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws",
+    "permanent": true
+  },
+  {
+    "source": "/",
+    "has": [
+      {
+        "type": "host",
+        "value": "aws-workshop.terraconstructs.dev"
+      }
+    ],
+    "destination": "https://terraconstructs.dev/workshops/aws",
+    "permanent": true
+  }
+]

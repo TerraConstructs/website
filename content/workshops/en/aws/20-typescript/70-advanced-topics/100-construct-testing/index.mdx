@@ -1,0 +1,39 @@
+---
+title: 'Testing Constructs'
+---
+
+## Testing Constructs (Optional)
+
+The [CDKTN Developer Guide](https://cdktn.io/docs/test/unit-tests) has a good guide on testing constructs.
+
+#### CDKTN assert Library
+
+We will be using the CDKTN Jest Matchers throughout this section.
+The library contains several helper functions for writing unit and integration tests.
+
+<Callout type="info">
+More advanced [assertion helpers](https://github.com/TerraConstructs/base/blob/v0.1.0/test/assertions.ts) are available in TerraConstructs and may be published for easier set up in the future.
+</Callout>
+
+For this workshop we will mostly be using the `toHaveResource` and `toHaveResourceWithProperties` Jest matchers. This helper is used when you
+only care that a resource of a particular type exists (regardless of its logical identfier), and that _some_
+properties are set to specific values.
+
+Example:
+
+```ts
+// NOTE: terraconstructs requires stack.prepareStack()
+// due to many of its late binding features.
+stack.prepareStack();
+const template = Testing.synth(stack, runValidations)
+expect(template).toHaveResourceWithProperties(instance.Instance, {
+    ami: "ami-xxxxx",
+    // Note: some properties omitted here
+});
+
+expect(template).not.toHaveResourceWithProperties(instance.Instance, {
+    availability_zone: expect.anything(), // should not have this property set
+});
+```
+
+To see the rest of the documentation, please read the docs [here](https://cdktn.io/docs/test/unit-tests#write-assertions).

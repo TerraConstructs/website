@@ -1,12 +1,22 @@
-import { AlertTriangle, Info, Lightbulb } from 'lucide-react'
+import { AlertTriangle, Info, Lightbulb, OctagonAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+/**
+ * `note`/`tip`/`warning` are the blog's vocabulary; `info`/`danger` come from
+ * the workshop (Hugo's notice shortcode). `info` is an alias of `note`.
+ */
 const VARIANTS = {
   note: { icon: Info, ring: 'border-doc/30 bg-doc-muted', tint: 'text-doc' },
+  info: { icon: Info, ring: 'border-doc/30 bg-doc-muted', tint: 'text-doc' },
   tip: { icon: Lightbulb, ring: 'border-brand/30 bg-brand-muted', tint: 'text-brand' },
   warning: {
     icon: AlertTriangle,
-    ring: 'border-destructive/30 bg-destructive/[0.08]',
+    ring: 'border-warning/30 bg-warning-muted',
+    tint: 'text-warning',
+  },
+  danger: {
+    icon: OctagonAlert,
+    ring: 'border-destructive/40 bg-destructive/[0.08]',
     tint: 'text-destructive',
   },
 } as const

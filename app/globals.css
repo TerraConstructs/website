@@ -46,6 +46,8 @@
   --color-brand-muted: var(--brand-muted);
   --color-doc: var(--doc);
   --color-doc-muted: var(--doc-muted);
+  --color-warning: var(--warning);
+  --color-warning-muted: var(--warning-muted);
   --color-surface: var(--surface);
   --color-hairline: var(--hairline);
 
@@ -88,6 +90,8 @@
   --brand-muted: oklch(0.67 0.2 295 / 15%);
   --doc: oklch(0.76 0.1 200);
   --doc-muted: oklch(0.76 0.1 200 / 14%);
+  --warning: oklch(0.79 0.15 78);
+  --warning-muted: oklch(0.79 0.15 78 / 13%);
 
   --chart-1: oklch(0.67 0.2 295);
   --chart-2: oklch(0.76 0.1 200);
@@ -133,6 +137,8 @@
   --brand-muted: oklch(0.48 0.21 295 / 10%);
   --doc: oklch(0.48 0.1 205);
   --doc-muted: oklch(0.48 0.1 205 / 10%);
+  --warning: oklch(0.58 0.13 70);
+  --warning-muted: oklch(0.58 0.13 70 / 11%);
 
   --chart-1: oklch(0.48 0.21 295);
   --chart-2: oklch(0.48 0.1 205);
@@ -182,6 +188,19 @@
 }
 .shiki {
   white-space: pre;
+}
+
+/*
+ * Emphasised lines (workshop fences like ```ts {3,5-7}). Full-bleed via
+ * negative inline margins so the tint reaches the block's padded edges.
+ */
+.shiki .line.hl {
+  display: inline-block;
+  width: calc(100% + 2rem);
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  background-color: var(--brand-muted) !important;
+  box-shadow: inset 2px 0 0 var(--brand);
 }
 
 @utility label-mono {

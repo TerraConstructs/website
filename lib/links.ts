@@ -1,7 +1,9 @@
 export const LINKS = {
   github: 'https://github.com/terraconstructs/base',
   githubOrg: 'https://github.com/terraconstructs',
-  docs: 'https://docs.terraconstructs.dev',
+  websiteRepo: 'https://github.com/terraconstructs/website',
+  /** The construct API reference lives on Construct Hub, not a self-hosted docs site. */
+  docs: 'https://constructs.dev/packages/terraconstructs/?lang=typescript',
   workshop: 'https://aws-workshop.terraconstructs.dev',
   cdkDev: 'https://cdk.dev',
   cdktn: 'https://cdktn.io',

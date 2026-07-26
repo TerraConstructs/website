@@ -95,10 +95,10 @@ export const mdxComponents = {
   // the Shiki-backed CodeBlock instead of rendering a bare <pre>.
   pre: ({ children }: { children?: ReactNode }) => {
     const child = children as
-      | { props?: { className?: string; children?: string } }
+      | { props?: { className?: string; children?: string; meta?: string } }
       | undefined
     const lang = /language-(\w+)/.exec(child?.props?.className ?? '')?.[1] ?? 'text'
     const code = String(child?.props?.children ?? '').replace(/\n$/, '')
-    return <CodeBlock code={code} lang={lang} />
+    return <CodeBlock code={code} lang={lang} meta={child?.props?.meta} />
   },
 }

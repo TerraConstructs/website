@@ -1,0 +1,36 @@
+---
+title: 'Terraform CLI'
+---
+
+Next, we'll install the Terraform CLI. Terraform is a command-line utility
+which allows you to apply the CDKTN generated configurations.
+
+<Callout type="info">
+You may use [tenv](https://github.com/tofuutils/tenv?tab=readme-ov-file#installation) to manage multiple versions of `terraform` or [OpenTofu](https://opentofu.org/).
+Follow the installation instructions for your operating system.
+</Callout>
+
+Using `tenv`, download terraform 1.7.3 with the following command.
+
+```
+tenv terraform install 1.7.3
+```
+
+You can check the terraform version:
+
+```
+$ terraform --version
+1.7.3
+```
+
+<Callout type="info">
+When using `tenv`, best practice to set `TERRAFORM_BINARY_NAME` environment variable for CDKTN CLI.
+</Callout>
+
+```
+export TERRAFORM_BINARY_NAME=$(which terraform)
+```
+
+## See Also
+
+- [Installing Terraform User Guide](https://developer.hashicorp.com/terraform/install)

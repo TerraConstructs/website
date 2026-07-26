@@ -1,19 +1,24 @@
-import { highlightToHtml } from '@/lib/demos'
+import { highlightToHtml, parseHighlightLines } from '@/lib/demos'
 
 /**
  * Server-rendered Shiki code block. Shares the highlighter singleton with the
  * guided tour so posts and the tour stay visually consistent.
+ *
+ * `meta` is the fence's trailing meta string (e.g. `{3,5-7}`), used by workshop
+ * pages to emphasise the lines a step just changed.
  */
 export async function CodeBlock({
   code,
   lang = 'text',
   filename,
+  meta,
 }: {
   code: string
   lang?: string
   filename?: string
+  meta?: string
 }) {
-  const html = await highlightToHtml(code, lang)
+  const html = await highlightToHtml(code, lang, parseHighlightLines(meta))
 
   return (
     <figure className="mt-6 overflow-hidden rounded-lg border bg-surface">

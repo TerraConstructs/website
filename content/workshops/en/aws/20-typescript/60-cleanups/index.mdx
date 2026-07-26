@@ -1,0 +1,40 @@
+---
+title: 'Clean up'
+---
+
+## Clean up your stack
+
+<Callout type="danger">
+Current version of TerraConstructs does **NOT** retain persistent data such as DynamoDb Tables.
+Terraform will brutally destroy your data if you are not careful.
+</Callout>
+
+Now that we know which resources will be deleted, we can proceed with deleting the
+stack. You can either delete the stack through the AWS CloudFormation console or use
+`cdktn destroy`:
+
+```
+cdktn destroy
+```
+
+You'll be asked:
+
+```
+Plan: 0 to add, 0 to change, 44 to destroy.
+
+              Changes to Outputs:
+                - EndpointOutputs       = {
+                    - restApiId             = "1wtlltjta4"
+                    - restApiName           = "cdkworkshopEndpoint424A4D39"
+                    - restApiRootResourceId = "2yujx46z9g"
+cdk-workshop  - url                   = "https://1wtlltjta4.execute-api.us-east-1.amazonaws.com/prod/"
+                  } -> null
+                - ViewerEndpointOutputs = {
+                    - restApiId             = "xxvnil1249"
+                    - restApiName           = "cdkworkshopViewHitCounterViewerEndpoint39EB6BA3"
+                    - restApiRootResourceId = "0vk5angn2k"
+                    - url                   = "https://xxvnil1249.execute-api.us-east-1.amazonaws.com/prod/"
+                  } -> null
+```
+
+Select `Approve` and you'll see your stack being destroyed.

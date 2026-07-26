@@ -1,0 +1,99 @@
+---
+title: 'Optional - Watch'
+---
+
+<Callout type="info">
+This section is not necessary to complete the workshop, but we
+recommend that you take the time to see how `cdk watch` can speed up your personal deployments.
+</Callout>
+
+## CDKTN Watch
+
+<Callout type="warning">
+The watch command is experimental, so you should only use it in development environments. It also automatically deploys all changes without asking for confirmation.
+</Callout>
+
+We can do better than calling `cdktn deploy` each time.
+`cdktn watch` is similar to `cdktn deploy` except that instead of being a one-shot
+operation, it monitors your code and assets for changes and attempts to perform a
+deployment automatically when a change is detected.
+
+Once we set it up, we can use `cdktn watch --auto-approve` to detect changes that require
+full Terraform apply.
+
+## Modify your `cdktf.json` file
+
+When the `cdktn watch` command runs, the files that it observes are determined by the
+`"watchPattern"` setting in the `cdktf.json` file. the `watchPattern` expects an array
+of glob patterns, e.g. `["main.ts", "../constructs/**/*.ts", "lib/*.ts"]`. See the [configure files to watch](https://cdktn.io/docs/create-and-deploy/configuration-file#configure-files-to-watch) section of configuration file overview.
+
+Your `cdktf.json` file should look similar to this:
+
+```json
+{
+  "language": "typescript",
+  "app": "npx ts-node main.ts",
+  // ...
+  "watchPattern": [
+    "./**/*.ts",
+  ]
+}
+```
+
+As you can see, the sample app comes with a suggested `"watchPattern"` setting. We do in
+fact want to observe our `.js` files in the `lambda` folder, so let's add
+`"lambda/*.js"` to the list:
+
+```json
+{
+  "language": "typescript",
+  "app": "npx ts-node main.ts",
+  // ...
+  "watchPattern": [
+    "./**/*.ts",
+    "lambda/*.js",
+  ]
+}
+```
+
+Now you're all set to start watching!
+
+## Running `cdktn watch`
+
+First, call `cdktn watch`:
+
+<Callout type="danger">
+Due to its potential destructive behaviour, you have to explicitely set the `--auto-approve` flag.
+</Callout>
+
+```
+cdktn watch --auto-approve
+```
+
+This will trigger an initial deployment and immediately begin observing the files
+we've specified in `cdktf.json`.
+
+Let's change our lambda asset code in `lambda/hello.js` one more time:
+
+```js {6}
+exports.handler = async function(event) {
+  console.log("request:", JSON.stringify(event, undefined, 2));
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "text/plain" },
+    body: `Good Night, CDKTN! You've hit ${event.path}\n`
+  };
+};
+```
+
+Once you save the changes to your Lambda code file, `cdktn watch` will recognize that
+your file has changed and trigger a new deployment.
+
+## Wrap Up
+
+The rest of this tutorial will continue using `cdktn deploy` instead of `cdktn watch`.
+But if you want to, you can simply keep `cdktn watch` on. If you need to make a full
+deployment, `cdktn watch` will call `cdktn deploy` for you.
+
+For a deeper dive on `cdktn watch` use cases, read
+[Increasing Development Speed with CDKTN Watch](https://cdktn.io/docs/cli-reference/commands#watch).
