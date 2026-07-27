@@ -12,7 +12,7 @@
 #
 set -euo pipefail
 
-STATE="${INFRA_STATE:-../website/cdktf.out/stacks/landing/landing.tfstate}"
+STATE="${INFRA_STATE:-cdktf.out/stacks/landing/landing.tfstate}"
 OUT="${OUT_DIR:-out}"
 DRYRUN=""
 [[ "${1:-}" == "--dryrun" ]] && DRYRUN="--dryrun"

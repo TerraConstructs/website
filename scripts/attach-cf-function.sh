@@ -18,7 +18,7 @@
 # Idempotent — exits early if the association is already correct.
 set -euo pipefail
 
-STATE="${INFRA_STATE:-../website/cdktf.out/stacks/landing/landing.tfstate}"
+STATE="${INFRA_STATE:-cdktf.out/stacks/landing/landing.tfstate}"
 FUNCTION_NAME="${FUNCTION_NAME:-website-indexRewrite}"
 
 DIST=$(python3 -c "
