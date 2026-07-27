@@ -239,16 +239,17 @@ function handler(event) {
       target += segments.join('/') + '/';
     }
   } else {
-    // Posts from the previous site. The new blog uses entirely different slugs
-    // and none of these have an equivalent yet, so they land on the blog index.
-    // TODO: point year-in-review at its own URL once that post is ported.
+    // Posts from the previous site. The new blog uses entirely different slugs.
+    // Only year-in-review was ported and so redirects to its own URL; the rest
+    // have no equivalent and land on the blog index, which Google treats as a
+    // soft 404 but keeps inbound links from dead-ending.
     var blogTargets = {
       '/blog/2025-10-01-terraconstructs-overview': '/blog/',
       '/blog/2025-11-01-1-1-the-problem': '/blog/',
       '/blog/2025-11-10-1-2-ai-impact-iac': '/blog/',
       '/blog/2025-11-25-1-3-grid-introduction': '/blog/',
       '/blog/2025-12-12-cdktf-future': '/blog/',
-      '/blog/2025-12-25-year-in-review': '/blog/',
+      '/blog/2025-12-25-year-in-review': '/blog/2025-year-in-review/',
     };
     var blogKey = uri.replace(/\.html$/, '').replace(/\/$/, '');
     if (Object.prototype.hasOwnProperty.call(blogTargets, blogKey)) {
