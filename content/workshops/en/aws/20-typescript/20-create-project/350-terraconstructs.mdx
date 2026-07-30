@@ -70,7 +70,7 @@ class MyStack extends AwsStack {
     super(scope, id, props);
 
     const queue = new Queue(this, "CdkWorkshopQueue", {
-      visibilityTimeoutSeconds: Duration.minutes(5).toSeconds(),
+      visibilityTimeout: Duration.minutes(5),
     });
 
     const topic = new Topic(this, "CdkWorkshopTopic");
