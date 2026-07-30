@@ -1,0 +1,8 @@
+{
+  "language": "typescript",
+  "codeMakerOutput": "src/.gen",
+  "app": "pnpm ts-node --swc -P ./tsconfig.json src/index.ts",
+  "terraformProviders": [],
+  "terraformModules": [],
+  "projectId": "d1dd24b3-6056-4263-93ae-ec59454a47b5"
+}

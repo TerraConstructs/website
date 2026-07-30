@@ -176,6 +176,12 @@ export default function precomputeDemoCode() {
       terraformPath: path.join(root, "demos/instance-signal/cdk.tf"),
       fileName: "instance.ts",
     },
+    "community-day": {
+      // EC2 instance with CloudFormation signal
+      typescriptPath: path.join(root, "demos/community-day/src/stack.ts"),
+      terraformPath: path.join(root, "demos/community-day/cdk.tf"),
+      fileName: "stack.ts",
+    },
   };
 
   const tourConfigJson = path.join(root, "src/tour-configs.json");

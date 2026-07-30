@@ -245,6 +245,160 @@ export const tourConfigs = {
       },
     ],
   },
+  "community-day": {
+    name: "Community Day Example using L2 Constructs",
+    description:
+      "Learn about L2 Constructs, IAM patterns, and deterministic synthesis",
+    inputSteps: [
+      {
+        id: "imports",
+        type: "line-range",
+        startLine: 37,
+        endLine: 37,
+        title: "L2 Construct Imports",
+        content:
+          "Creating VPC at ease including multiple AZs subnets and route tables.",
+        highlight: "border",
+      },
+      {
+        id: "lambda",
+        type: "line-range",
+        startLine: 39,
+        endLine: 43,
+        title: "Lambda Function",
+        content:
+          "LambdaFunction provides strong typing and sensible defaults. Code.fromAsset() uses the asset pipeline for bundling and deployment. We can skip the archive provider .. etc here.",
+        highlight: "border",
+      },
+      {
+        id: "event-bridge",
+        type: "line-range",
+        startLine: 45,
+        endLine: 63,
+        title: "Event Bridge Rule",
+        content:
+          "L2 Construct for EventBridge provides a simple way to create rules and targets.",
+        highlight: "border",
+      },
+      {
+        id: "sqs",
+        type: "line-range",
+        startLine: 67,
+        endLine: 67,
+        title: "Sqs Subscription",
+        content:
+          "Creates an SNS Topic, an SQS Queue, and subscribes the queue to the topic (SQS subscription).",
+        highlight: "border",
+      },
+      {
+        id: "instance-create",
+        type: "line-range",
+        startLine: 69,
+        endLine: 81,
+        title: "EC2 Instance creation",
+        content:
+          "Instantiates an Instance L2 with explicit instanceType and machineImage (Amazon Linux).",
+        highlight: "border",
+      },
+      {
+        id: "sqs-grant",
+        type: "line-range",
+        startLine: 82,
+        endLine: 82,
+        title: "SQS consume grant",
+        content:
+          "Grants the EC2 instance permission to consume messages from the SQS queue.",
+        highlight: "border",
+      },
+      {
+        id: "rds-sg-from-id",
+        type: "line-range",
+        startLine: 84,
+        endLine: 88,
+        title: "Import existing Security Group by ID",
+        content:
+          "Loads an existing Security Group (`sg-0123456789abcdef0`) via `fromSecurityGroupId` for cross-resource connectivity checks.",
+        highlight: "border",
+      },
+      {
+        id: "sg-allow-from",
+        type: "line-range",
+        startLine: 89,
+        endLine: 93,
+        title: "Allow DB access from Instance",
+        content:
+          "Adds a `connections.allowFrom` rule to permit the instance to reach the RDS security group on TCP 1433 (MSSQL port used here).",
+        highlight: "border",
+      },
+      {
+        id: "bucket",
+        type: "line-range",
+        startLine: 95,
+        endLine: 98,
+        title: "Create bucket and allow read write from instance.",
+        content:
+          "Creates an S3 bucket and allows read/write access from the EC2 instance.",
+        highlight: "border",
+      },
+    ],
+    outputSteps: [
+      {
+        id: "s3-object",
+        type: "line-range",
+        startLine: 403,
+        endLine: 408,
+        title: "Lambda S3 Object",
+        content:
+          "S3 Bucket object created for Lambda function code with code asset pipeline.",
+        highlight: "background",
+      },
+      {
+        id: "sqs-subscription",
+        type: "line-range",
+        startLine: 476,
+        endLine: 486,
+        title: "SQS Subscription",
+        content: "One liner subscription.",
+        highlight: "background",
+      },
+      {
+        id: "instance-creation",
+        type: "line-range",
+        startLine: 599,
+        endLine: 625,
+        title: "Instance Creation",
+        content: "Instance creation using Enum instead of magic number.",
+        highlight: "background",
+      },
+      {
+        id: "sqs-grant-read",
+        type: "line-range",
+        startLine: 545,
+        endLine: 558,
+        title: "SQS Grant Read",
+        content: "One liner grant sqs read access for the instance.",
+        highlight: "background",
+      },
+      {
+        id: "s3-read-write",
+        type: "line-range",
+        startLine: 559,
+        endLine: 578,
+        title: "S3 Read Write",
+        content: "One liner grant s3 read write access for the instance.",
+        highlight: "background",
+      },
+      {
+        id: "rds-ingress",
+        type: "line-range",
+        startLine: 629,
+        endLine: 641,
+        title: "RDS Ingress",
+        content: "One liner grant rds mssql ingress access for the instance.",
+        highlight: "background",
+      },
+    ],
+  },
 };
 
 export function getTourConfig(demoKey) {
