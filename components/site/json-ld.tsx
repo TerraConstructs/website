@@ -19,7 +19,7 @@ const ORGANIZATION = {
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/icon.svg`,
+  logo: `${SITE_URL}/logos/terraconstructs_logo_512x512.png`,
   sameAs: [LINKS.githubOrg, LINKS.cdkDev],
 }
 

@@ -30,21 +30,21 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   icons: {
+    // The triangle mark's palette (purple fill, dark stroke) reads fine on
+    // both light and dark backgrounds, so there's no need for separate
+    // light/dark favicon variants the way the old hand-made icons had.
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        url: '/logos/terraconstructs_logo_32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
+        url: '/logos/terraconstructs_triangle_logo.svg',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/logos/terraconstructs_logo_512x512.png',
   },
 }
 
