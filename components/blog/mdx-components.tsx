@@ -7,7 +7,7 @@ import { SplitCompare } from './split-compare'
 import { Milestones } from './milestones'
 import { Stats } from './stats'
 import { DiagramFigure } from './diagram-figure'
-import { ClaudeNativePipeline, GranularityAB, MastraPipeline } from './diagrams/terratitan'
+import { CfnScanExplainer, ClaudeNativePipeline, GranularityAB, MastraPipeline } from './diagrams/terratitan'
 
 /**
  * Components available to every MDX post. These can be used directly in
@@ -21,6 +21,7 @@ export const mdxComponents = {
   Stats,
   DiagramFigure,
   MastraPipeline,
+  CfnScanExplainer,
   ClaudeNativePipeline,
   GranularityAB,
 

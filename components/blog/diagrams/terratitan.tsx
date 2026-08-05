@@ -291,6 +291,55 @@ export function MastraPipeline() {
 
 /* ------------------------------------------------------------------ */
 
+/** A small, deliberately concrete explainer for the AST scanner section. */
+export function CfnScanExplainer() {
+  return (
+    <svg viewBox="0 0 470 410" role="img" aria-labelledby="scan-t" fontFamily="var(--font-sans)">
+      <title id="scan-t">
+        cfn-scan reads TypeScript files, finds which files import other files, and groups them into
+        conversion waves. A task definition comes before a service that imports it; unrelated files
+        in the same wave can be converted at the same time.
+      </title>
+
+      <Caption x={24} y={24}>
+        upstream TypeScript files
+      </Caption>
+      <Node x={24} y={36} w={196} label="task-definition.ts" sub="uses CfnTaskDefinition" tone="doc" />
+      <Node x={250} y={36} w={196} label="logging.ts" sub="uses helper code" tone="doc" />
+
+      <Caption x={24} y={120}>
+        import relationship found by the scanner
+      </Caption>
+      <Node x={137} y={132} w={196} label="service.ts" sub="imports task-definition.ts" tone="doc" />
+      <Curve d="M220,84 C220,108 194,106 194,132" color="var(--doc)" />
+      <Head x={194} y={132} color="var(--doc)" />
+
+      <Caption x={24} y={218}>
+        conversion waves
+      </Caption>
+      <Node x={24} y={230} w={196} label="Wave 1" sub="task definition + logging" tone="brand" />
+      <Node x={250} y={230} w={196} label="Wave 2" sub="service, after its import exists" tone="brand" />
+      <Curve d="M220,254 H244" color="var(--brand)" />
+      <Head x={250} y={254} dir="left" color="var(--brand)" />
+
+      <Caption x={24} y={316}>
+        classification guides the work
+      </Caption>
+      <text x={24} y={338} fill="var(--foreground)" fontSize={11} fontFamily={MONO}>
+        L1_BACKED → map and convert
+      </text>
+      <text x={24} y={360} fill="var(--foreground)" fontSize={11} fontFamily={MONO}>
+        PURE_L2 → copy with small import/header edits
+      </text>
+      <text x={24} y={382} fill="var(--foreground)" fontSize={11} fontFamily={MONO}>
+        BARREL → wire exports after destination paths exist
+      </text>
+    </svg>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+
 /** The Claude-native workflow: deterministic inputs, pinned models, bounded
  *  retry loops, and an independent verifier before anything reaches a human. */
 export function ClaudeNativePipeline() {
