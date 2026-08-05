@@ -113,11 +113,24 @@ function Node({
 
 /** Arrowheads are drawn inline; <defs> markers would collide when the same
  *  diagram is rendered twice (inline + inside the zoom dialog). */
-function Head({ x, y, dir = 'down', color = 'var(--border)' }: { x: number; y: number; dir?: 'down' | 'left'; color?: string }) {
-  const d =
-    dir === 'down'
-      ? `M${x - 4},${y - 6} L${x + 4},${y - 6} L${x},${y} Z`
-      : `M${x + 6},${y - 4} L${x + 6},${y + 4} L${x},${y} Z`
+function Head({
+  x,
+  y,
+  dir = 'down',
+  color = 'var(--border)',
+}: {
+  x: number
+  y: number
+  dir?: 'down' | 'up' | 'left' | 'right'
+  color?: string
+}) {
+  // (x, y) is always the tip; the base trails behind it.
+  const d = {
+    down: `M${x - 4},${y - 6} L${x + 4},${y - 6} L${x},${y} Z`,
+    up: `M${x - 4},${y + 6} L${x + 4},${y + 6} L${x},${y} Z`,
+    left: `M${x + 6},${y - 4} L${x + 6},${y + 4} L${x},${y} Z`,
+    right: `M${x - 6},${y - 4} L${x - 6},${y + 4} L${x},${y} Z`,
+  }[dir]
   return <path d={d} fill={color} />
 }
 
@@ -311,16 +324,18 @@ export function CfnScanExplainer() {
         import relationship found by the scanner
       </Caption>
       <Node x={137} y={132} w={196} label="service.ts" sub="imports task-definition.ts" tone="doc" />
-      <Curve d="M220,84 C220,108 194,106 194,132" color="var(--doc)" />
-      <Head x={194} y={132} color="var(--doc)" />
+      {/* Points importer → imported, matching the label. Conversion order is
+          the reverse, and the waves below are what say so. */}
+      <Curve d="M194,132 C194,110 220,112 220,90" color="var(--doc)" />
+      <Head x={220} y={84} dir="up" color="var(--doc)" />
 
       <Caption x={24} y={218}>
         conversion waves
       </Caption>
       <Node x={24} y={230} w={196} label="Wave 1" sub="task definition + logging" tone="brand" />
-      <Node x={250} y={230} w={196} label="Wave 2" sub="service, after its import exists" tone="brand" />
+      <Node x={250} y={230} w={196} label="Wave 2" sub="after its import exists" tone="brand" />
       <Curve d="M220,254 H244" color="var(--brand)" />
-      <Head x={250} y={254} dir="left" color="var(--brand)" />
+      <Head x={250} y={254} dir="right" color="var(--brand)" />
 
       <Caption x={24} y={316}>
         classification guides the work
