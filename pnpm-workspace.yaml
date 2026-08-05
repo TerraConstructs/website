@@ -8,3 +8,5 @@ allowBuilds:
   esbuild: true
   msw: true
   sharp: true
+  # eslint's module resolver, a native binary its postinstall fetches.
+  unrs-resolver: true

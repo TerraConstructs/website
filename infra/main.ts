@@ -253,6 +253,7 @@ function handler(event) {
     };
     var blogKey = uri.replace(/\.html$/, '').replace(/\/$/, '');
     if (Object.prototype.hasOwnProperty.call(blogTargets, blogKey)) {
+      // @ts-ignore — index signature; this body is ES5 source, not typed code
       target = blogTargets[blogKey];
     }
   }
