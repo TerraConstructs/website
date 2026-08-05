@@ -1,0 +1,403 @@
+---
+title: "Retiring the RAG pipeline"
+description: "TerraTitan converted AWS CDK constructs with a vector database, two blocking human gates and a one-shot generator. Its replacement is four JavaScript files. Seven runs of measurements on what actually changed."
+date: "2026-08-05"
+authors: ["Vincent De Smet"]
+tags: ["workflows", "internals"]
+---
+
+[TerraTitan](https://github.com/TerraConstructs/TerraTitan) is the machine that ports AWS CDK L2 constructs into TerraConstructs. The first version was
+a [Mastra](https://mastra.ai) workflow: an Upstash vector index over the Terraform AWS provider, an
+embedding-and-rerank retrieval step, two points where the run suspended and waited for a human, and
+Gemini generating the result in a single [few-shot prompt](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/prompts/few-shot-optimizer).
+
+One year later and an eternity in LLM Advancements, [the replacement](https://github.com/TerraConstructs/TerraTitan/blob/bd8142b8319c548b98ce038557b90d98966cf5ea/workflows/convert-module.js) is four JavaScript files and two markdown rulebooks. No vector database, no embeddings,
+no suspend/resume, no API keys beyond basic Claude Code harness authentication. Seven conversion runs later, the
+whole of it has steadily been porting AWSCDK modules into the library and landed them as merged pull requests.
+
+This post is about what changed and — more usefully — what the runs measured, including optimization tuning and extended "zero defects" verification with e2e.
+
+<Stats items={[
+  { value: "7", label: "conversion runs", icon: "code" },
+  { value: "28.1M", label: "tokens across 14 journals", icon: "code" },
+  { value: "306", label: "agents spawned", icon: "code" },
+]} />
+
+## What the old pipeline did
+
+Eight stages, and painful human reviews in two of them.
+
+<DiagramFigure
+  title="The Mastra conversion workflow"
+  caption="Two suspend points, a vector index in the middle, and nothing downstream of generation."
+>
+  <MastraPipeline />
+</DiagramFigure>
+
+<Callout type="note" title="RAG at its core">
+The retrieval half must be highlighted as it underwent the biggest change. The index was
+built by parsing the `@cdktf/provider-aws` JSII assembly with `jsii-reflect`, keeping every class that
+extended `TerraformResource`, merging each with the matching provider documentation, and embedding the
+result — 1,526 resources, one chunk each, 19 MB of intermediate JSON. Retrieval asked
+`What CDKTF Resources are relevant to <class>: <jsdoc>`, took the top 10, and reranked to 5 with
+`gpt-4o-mini`.
+</Callout>
+
+A human had to carefully and painfully pick from those five, whenever the reranker's score dropped to 0.7 or below.
+
+Interestingly, **the retrieved chunks were never what the generator saw.** Once a human confirmed a mapping, the
+selected type name was used to look up `data/reference/merged/provider-aws/<resource>/index.d.ts`, and the
+compressed *type definitions only* file went into the prompt to properly ground the TS generating model.
+The vector database was only used to bridge the CloudFormation to Terraform Provider AWS cross resource mapping **semantically**.
+
+<Callout type="warning" title="The running cost of that design">
+Four API keys, two pre-created Upstash indices, a LibSQL file for suspend/resume state, and a custom Go helper
+for scraping provider docs — which had its own interactive disambiguation mode. Bumping the provider
+version was a six-stage manual ritual: re-scrape, re-parse, re-embed in batches with sleep delays (rate limited),
+re-upsert. The index namespace was simply `provider-aws-resources-5-100-0`, and provider v6 a separate namepspace.
+The corpus had a clear staleness guardrail.
+</Callout>
+
+But once the initial converesion ran, no gate of any kind had been built to loop on the outputs. No compile check, no test run, no fix loop.
+
+This planned expansion got stalled when [Hashicorp announced the deprecation of Terraform for CDK](https://github.com/hashicorp/terraform-cdk#sunset-notice).
+Which presented the opportunity for the creation of the official community maintained [CDKTN.io](https://cdktn.io) fork. And now, after 6 months of stabilisation
+and revival efforts under [the Open Constructs Foundation](https://the-ocf.org) umbrella, it was finally time to evolve TerraTitan!
+
+## The inversion
+
+The new system's design note highlights the main goal of a much needed re-write:
+
+<Callout type="tip" title="tools/TOOLS.md">
+The old Mastra workflow focused on the hard parts in 2025: **Retrieval via RAG/embeddings** for **200k context window** constrainted agents.
+
+Today (2026), an agent equiped with a now mature harness like **Claude Code**, greps the filesystem in seconds and comfortably holds relevant information
+in its **1Million context window**!
+
+Time to address the missing mechanical parts.
+</Callout>
+
+Two things replaced retrieval:
+
+**Live types instead of an index.** Every agent is pointed at
+`node_modules/@cdktn/provider-aws/lib/<resource>/index.d.ts` *inside the worktree it is compiling*, plus
+an exact-tag `aws-cdk-lib` install for the `Cfn*` definitions. The mapping prompt literally instructs
+`ls $PROVIDER | grep -i $prefix`. The *common pattern introduced by Claude Code* is to leverage LLM models fine tuned for the
+CLI - no snapshots to refresh, because the ground truth is the same files the compiler will use. The entire staleness class
+disappears by construction.
+
+**An AST scan instead of LLM discovery.** Initial runs naively used LLM tokens to derive the inventory. A fresh `tools/cfn-scan.mjs` utility now walks
+the TypeScript AST and emits the per-file `Cfn*` inventory, the intra-module import graph turned into: topological conversion waves, the
+cross-module dependencies, and a `L1_BACKED` / `PURE_L2` / `BARREL` classification reminiscant of the original AST based tooling.
+
+This time, the utility evolved naturally from observing where tokens were spent across iterations. The deterministic utility carefully crafted from the LLM-derived inventory mechanics.
+Twelve `Cfn` references, the wave ordering, five of twelve files pure-L2 — now drive the conversion in about a second while significantly saving on token costs.
+
+Embeddings went to the mechanical work's grave, and the mechanical work got a fresh parser.
+
+## What a dynamic workflow looks like
+
+The workflow is a plain JS script. It spawns agents, and it branches on what they return.
+
+```javascript
+phase('Plan')
+const plan = await agent(planPrompt, { model: 'opus', schema: PLAN_SCHEMA })
+
+phase('Convert')
+for (const ord of orders) {
+  const wave = plan.srcFiles.filter((f) => f.order === ord)
+  await parallel(batchesOf(wave).map((batch) => () =>
+    agent(convertPrompt(batch), { model: 'sonnet', schema: CONVERT_SCHEMA })))
+}
+```
+
+Three properties matter more than the syntax.
+
+**Models are pinned per agent and never inherited.** Sonnet converts and fixes; opus plans, adversarially
+checks the mappings, verifies independently, and reviews. Mechanical agents — the copy-mode batch,
+codegen, `git add -A` — run at low reasoning effort. Crucial for first time [Dynamic Workflows](https://code.claude.com/docs/en/workflows)
+adopters: **never inherit the session model.**
+
+**Every agent returns JSON against a schema**, and the script reads it. `plan.srcFiles` decides the
+fan-out shape. `plan.integChoice` decides which integration test gets ported. `verify.violations.length`
+decides whether a fixer agent gets spawned at all. That is what makes the workflow *dynamic* — the graph
+isn't drawn in advance, it's computed from what the previous phase found.
+
+**Loops are bounded and the verifier is independent.** Compile and test each retry up to six times,
+integration synthesis three, verification three rounds with a fixer in between.
+
+<DiagramFigure
+  title="The Claude Code dynamic workflow"
+  caption="Deterministic inputs at the top, pinned models per phase, bounded retry loops on the right, and a human who reads a pull request rather than answering a prompt."
+>
+  <ClaudeNativePipeline />
+</DiagramFigure>
+
+<Callout type="note" title="Humans still review">
+Human attention is now focused on most valuable signals. 
+</Callout>
+
+Blocking, per-file, mid-run CLI prompts became asynchronous review of
+committed artifacts — the plan JSON, the mapping manifests, and a report whose "human sign-offs needed
+before PR" section is written by the reviewing agent. Every run report has one, and the external review
+of the ECS pull request came back with seven blocking findings, so the review load is entirely real. It
+just stopped being a thing that holds a pipeline open.
+
+## Seven runs
+
+<Milestones items={[
+  { date: "Run 1 — aws-sqs", title: "Green, and self-certified", description: "Compiled and passed its own tests in 52 minutes. The tests were written by the same pipeline. It had quietly dropped the repo's physical-naming invariant.", icon: "milestone" },
+  { date: "Run 2 — aws-autoscaling", title: "The verification ladder", description: "Added an independent verify phase and a live apply. The live apply found a bug all three static gates missed.", icon: "update" },
+  { date: "Run 3 — aws-secretsmanager", title: "Blind adjudication", description: "Run against an existing human PR the agents were forbidden to read. Won on mapping, lost on API design.", icon: "update" },
+  { date: "Run 4 — aws-servicediscovery", title: "Tooling A/B — goal missed", description: "Deterministic scanner in, per-agent cost down 33%, and the token target missed anyway. The miss was the finding.", icon: "feature" },
+  { date: "Run 5 — aws-servicediscovery", title: "Granularity, controlled", description: "Same module, same inputs, only the script changed. −21% tokens, −25% wall clock, strictly better output.", icon: "launch" },
+  { date: "Runs 6 & 7 — aws-ecs, aws-batch", title: "Scale, then live deploys", description: "37k lines at the best ratio yet, then a live-deploy campaign that found seven defects no static gate could see.", icon: "milestone" },
+]} />
+
+The numbers below come from the harness's own run journals.
+
+| Run | Module | Upstream LOC | Tokens | Agents | tok/LOC | tok/agent |
+|---|---|---|---|---|---|---|
+| 2 | aws-autoscaling | 8,829 | 4.39M | 45 | 497 | 97.6k |
+| 3 | aws-secretsmanager | 4,929 | 2.50M | 24 | 507 | 104.2k |
+| 4 | aws-servicediscovery | 2,547 | 2.46M | 35 | 966 | 70.3k |
+| 5 | aws-servicediscovery | 2,547 | 1.94M | 30 | 762 | 64.8k |
+| 6 | aws-ecs | 37,161 | 8.52M | 71 | 229 | 119.9k |
+| 7 | aws-batch | 9,947 | 4.22M | 43 | 425 | 98.2k |
+
+Runs 1 through 5 all happened inside 21 hours, Fable orchestrated. Some attempts don't appear in the table because
+due to misfires — Fixed two minutes later.
+
+### Run 1: never let the generator be its own oracle
+
+The first run reached compile-green and test-green on its own, which felt like a result for about as long
+as it took the reviewing agent to diff the output against the reference implementation.
+
+The verdict identified a crucial gap in its initial design:
+
+> the "passing" state is **self-certified**: the generator authored the tests from upstream
+> CloudFormation semantics and then made its own output satisfy them, so the checks were blind to the
+> repo's actual invariants.
+
+Concretely: the repo's stack-scoped physical naming was gone, replaced with a plain `name`. A public
+handle had been made private. Policy statements grew an attribute they shouldn't have. All five golden
+snapshot tests had vanished. And one fix-loop agent had "repaired" a failing assertion by removing the
+resolve call from one side of it, turning it into a tautology.
+
+Fable determined the fix wasn't better tests. It was a structurally independent verifier that reads the files, the
+snapshots and the `git diff` against an explicit rule list, plus the rulebook those rules live in.
+Invariant six in that document reads: *tests are not the oracle.*
+
+### Run 2: each oracle catches what the one below cannot
+
+Run 2 added the independent verify phase, and then went further and deployed the result.
+
+`aws_autoscaling_schedule` defaults unset min/max/desired values to zero, and reserves −1 as the
+"don't modify this" sentinel. An `undefined` passing straight through produced a request AWS rejected at
+apply time. Jest was green. The convention verifier was green. `tofu validate` was green. Only a real
+`apply` against a real account failed.
+
+That produced the ladder every run since has climbed: jest for shape, independent verification for
+invariants, `tofu validate` for provider schema, live apply for provider *runtime* semantics — and, by
+run 7, a drift oracle that asserts a second plan comes back empty. Each rung has since caught something
+the rungs below it structurally could not.
+
+### Run 3: a barrier in the wrong place manufactures work
+
+Run 3 was an adjudication: convert `aws-secretsmanager` blind, then diff it against a pull request a
+human had already written, which the agents were forbidden to read.
+
+It won the mapping. Faced with a CloudFormation resource that has no Terraform equivalent, it produced a
+composition rather than hallucinating a resource that doesn't exist, and independently derived a
+validation error the human PR only got after review. It lost the API design: its version model made the
+canonical upstream call pattern throw.
+
+The structural lesson was smaller and more useful. Verification ran *before* the integration leg, so it
+kept reporting unresolved violations about artifacts that hadn't been produced yet — and each phantom
+finding triggered a fix round. Moving integration ahead of verification deleted the whole class.
+
+### Run 4: the miss that located the next optimization
+
+Run 4 swapped LLM inventory work for the AST scanner and measured it.
+
+Accuracy came back better than any run before it: the plan's inventory matched the scanner exactly, zero
+deprecated members leaked in (the first run to pass a gate that runs 2 and 3 both failed), zero manual
+fixes afterwards, and a review verdict of *no correctness defects found*.
+
+The token goal missed by a factor of nearly three.
+
+<figure>
+
+| Run | Module | Upstream LOC | Tokens | Agents | tok/LOC | tok/agent |
+|---|---|---|---|---|---|---|
+| 2 (no tools) | autoscaling | 8,829 | 4.39M | 45 | 497 | 97.6k |
+| 3 (no tools) | secretsmanager | 4,929 | 2.50M | 24 | 507 | 104.2k |
+| 4 (tools) | servicediscovery | 2,547 | 2.46M | 35 | **966 ✗** | **70.3k ✓** |
+
+</figure>
+
+Both axes moved, in opposite directions. Per-agent cost fell by a third — the tooling worked exactly as
+intended. Agent *count* rose 46% on a module half the size, because fan-out was one agent per file and
+`servicediscovery` is twelve small files averaging 110 lines where `secretsmanager` was five averaging
+265.
+
+> Fixed per-agent overhead (reading conventions + plan + mapping + siblings ≈ 40–70k tokens) dominates
+> for many-small-file modules. LOC-normalization hides granularity effects; per-agent cost is the truer
+> tooling signal.
+
+Two axes, and you need both. `tok/LOC` measures the workload. `tok/agent` measures the overhead. Report
+one and you will misread your own experiment.
+
+### Run 5: the granularity A/B
+
+Same module, same tag, same inputs, an explicit integrity guard forbidding the agents from reading run 4's
+output — and only the script changed.
+
+<DiagramFigure
+  title="Converter fan-out: run 4 vs run 5"
+  caption="Each pill is one agent; each square inside it is a file that agent converted. Wave four is the point: seven files, 697 of a 700-line budget, one agent. Tap to zoom."
+>
+  <GranularityAB />
+</DiagramFigure>
+
+The enabling change is not the batching — it's that the planner started emitting facts the *script* could
+act on. In run 4 the planner already knew which files were pure-L2 boilerplate; it wrote so in a free-text
+`notes` field, where no `if` statement could reach it. Run 5 promoted `loc` and `copyMode` to **required**
+schema fields.
+
+Then the converter loop could budget:
+
+<SplitCompare leftLabel="Run 4 — per file" rightLabel="Run 5 — per 700 LOC">
+
+```js
+for (const ord of orders) {
+  const wave = plan.srcFiles
+    .filter(f => f.order === ord)
+
+  await parallel(wave.map(f => () =>
+    agent(convertOne(f), {
+      model: 'sonnet',
+      schema: CONVERT_SCHEMA,
+    })))
+}
+```
+
+```js
+const BATCH_LOC = 700
+for (const ord of orders) {
+  const wave = plan.srcFiles
+    .filter(f => f.order === ord)
+  const copies = wave.filter(f => f.copyMode)
+  const real = wave.filter(f => !f.copyMode)
+  const batches = budget(real, BATCH_LOC)
+  if (copies.length) batches.push(copies)
+
+  await parallel(batches.map(b => () =>
+    agent(convertMany(b), {
+      model: 'sonnet',
+      schema: CONVERT_SCHEMA,
+      ...(b[0].copyMode ? { effort: 'low' } : {}),
+    })))
+}
+```
+
+</SplitCompare>
+
+Copy-mode files — the ones with no CloudFormation resource behind them — all go to a single agent, with a
+different prompt and reduced reasoning effort. The rulebook got split too: converters now read a 49-line
+core sheet instead of the 26 KB full document, which every converter had previously been paying for.
+
+The last change fixed a latent script bug. Run 4's verify schema had only `violations[]`, and its journal
+records the consequence — `verifyPass: true, unresolvedViolations: 3`. The opus verifier had returned
+"pass" *while listing three violations*, because it had nowhere to put a judgment call. Run 5 added an
+`advisories[]` array, tightened the gate to `pass && violations.length === 0`, and told the verifier which
+findings belong where. Advisories never trigger a fix round.
+
+<figure>
+
+| | Run 4 | Run 5 | Δ |
+|---|---|---|---|
+| Tokens | 2.46M | **1.94M** | **−21%** |
+| Agents | 35 | 30 | −14% |
+| Tokens/agent | 70.3k | 64.8k | −8% |
+| Duration | 98 min | **74 min** | **−25%** |
+| Correctness defects | 0 | 0 | ✓ |
+| Verify | 0 blocking + 3 conflated | 0 blocking + **5 cleanly-split advisories** | ✓ |
+
+</figure>
+
+Two honest footnotes on that table. The converter phase saved seven agents, not five — verification
+needed a second round in run 5 where run 4 passed first time, because the tightened gate caught two real
+violations the old gate would have waved through. And the planner also chose a different wave grouping and
+a different integration test, so a run advertised as controlled had one uncontrolled variable inside it.
+
+The kicker: run 4's reviewer reported *no correctness defects*, and run 5's A/B diff found one it had
+missed — a property injection identifier missing its submodule segment, already shipped in a merged pull
+request. A clean bill of health from the same family of models that wrote the code is weak evidence, and
+this project's own artifacts are the proof.
+
+### Runs 6 and 7: what scale and reality added
+
+`aws-ecs` was 45 files and 37,000 lines, and turned in the best ratio of any run — 229 tokens per line —
+because the fixed overhead finally had something to amortize against. It also found a new failure mode:
+after two schema-validation failures the review agent returned placeholder junk that *passed* validation.
+Every workflow since writes its report to a file first and returns only a pointer.
+
+Then the integration tests were actually deployed, and four construct defects surfaced that jest,
+snapshots and `tofu validate` had all missed: scaling policies referencing raw strings instead of resource
+attributes, so no dependency edge existed and two AWS calls raced; a name-length validator the code
+tripped over itself; a volume policy destroyed in parallel with the service that needed it, wedging the
+task; and a `desired_count` sentinel that created a service with zero tasks. Run 7 added a drift oracle
+and immediately caught a block that Terraform would have re-planned forever.
+
+That campaign is now `port-integ-tests.js`, a reusable workflow carrying a playbook whose header reads:
+*every rule below was paid for with a real failed deploy.*
+
+## What generalizes
+
+1. **Never let the generator be its own oracle.** Compile-green and test-green mean nothing when the same
+   pipeline wrote the tests. You need a verifier that is structurally independent, not merely a second
+   prompt.
+2. **Structured output is for the script, not the reader.** If your control flow needs a fact, put the
+   fact in the schema. Run 5's entire win traces back to promoting two fields out of a prose `notes`
+   string.
+3. **Batch to a work budget, not a file count.** Fixed per-agent overhead makes one-file-per-agent a tax.
+4. **Tier by whether the work needs judgment.** Model *and* reasoning effort are per-call. Pin both;
+   inheriting the session model makes cost unpredictable across runs.
+5. **Give the verifier somewhere to put opinions.** With only a blocking channel, an opinionated reviewer
+   either fails the run over a style preference or passes while listing violations.
+6. **Tool the mechanical, prompt the judgmental — and check you haven't inverted it.** A 141-line AST
+   script replaced a vector database, an embedding budget and a manual re-index ritual.
+7. **Order phases so the verifier sees the finished artifact.** A barrier in the wrong place manufactures
+   phantom findings and the fix rounds that chase them.
+8. **Keep adding oracles until the cheap ones stop finding things.** Every rung of that ladder caught a
+   class the rung below could not.
+9. **A/B the pipeline, not just the output.** Same inputs, one variable, an integrity guard against
+   reading the previous result. That is what turns "this feels better" into a number.
+
+## What this does not prove
+
+<Callout type="warning" title="Read the numbers narrowly">
+There is **no head-to-head** of the old system against the new one on the same module, anywhere in this
+evidence. Run 1's report retracts its own comparison claim explicitly: no Mastra draft was produced or
+compared, and a true baseline comparison remains unmeasured. Everything above is a story about the second
+system improving against itself.
+</Callout>
+
+Runs 4 and 5 are the only controlled experiment; every other run-to-run delta changes the module and the
+pipeline at the same time. Module size dominates the headline ratio — fitting tokens against lines across
+the full-pipeline runs suggests a fixed floor around 2M tokens per run plus roughly 180 per line, which
+means the 350 tokens-per-line goal was **unreachable for small modules no matter what the script did**.
+The floor alone exceeds the entire budget for a 2,500-line module. That regression mixes five pipeline
+versions, so treat it as a shape, not a constant.
+
+The scope isn't like-for-like either: the new pipeline ports source, tests *and* integration tests, and
+deploys them. Some of the extra spend buys strictly more artifact. Wall-clock isn't clean — part of run 5's
+25% came from run 4 hitting two stall-and-retry events. And "better quality" in the A/B was judged by an
+opus agent diffing two outputs; the individual findings are concrete and checkable, but the aggregate
+verdict is model judgment.
+
+The honest summary is narrower than the numbers make it look: a vector database was replaced by a `grep`,
+two blocking human gates were replaced by an independent verifier and asynchronous review, and five
+scripted iterations made the result 21% cheaper and 25% faster on the one module where that was measured
+properly.

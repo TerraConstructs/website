@@ -6,6 +6,8 @@ import { Callout } from './callout'
 import { SplitCompare } from './split-compare'
 import { Milestones } from './milestones'
 import { Stats } from './stats'
+import { DiagramFigure } from './diagram-figure'
+import { ClaudeNativePipeline, GranularityAB, MastraPipeline } from './diagrams/terratitan'
 
 /**
  * Components available to every MDX post. These can be used directly in
@@ -17,6 +19,10 @@ export const mdxComponents = {
   CodeBlock,
   Milestones,
   Stats,
+  DiagramFigure,
+  MastraPipeline,
+  ClaudeNativePipeline,
+  GranularityAB,
 
   h2: ({ className, ...props }: ComponentPropsWithoutRef<'h2'>) => (
     <h2
