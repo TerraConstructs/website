@@ -1,7 +1,7 @@
-import { BookOpen, Code, Globe, Mic, Video } from 'lucide-react'
+import { BookOpen, Code, Globe, Mic, Video, Coins, Bot, Network } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const ICONS = { mic: Mic, video: Video, book: BookOpen, globe: Globe, code: Code } as const
+const ICONS = { mic: Mic, video: Video, book: BookOpen, globe: Globe, code: Code, coins: Coins, bot: Bot, network: Network } as const
 
 type Stat = {
   value: string
