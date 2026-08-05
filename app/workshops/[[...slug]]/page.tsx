@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
 import { ChevronRight, Pencil } from 'lucide-react'
 import {
   getAllWorkshopParams,
@@ -137,7 +138,10 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
               // See the blog route: v6 blocks JSX expression props by default.
               options={{
                 blockJS: false,
-                mdxOptions: { rehypePlugins: [rehypeSlug, rehypeCodeMeta] },
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                  rehypePlugins: [rehypeSlug, rehypeCodeMeta],
+                },
               }}
             />
           </div>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
 import { ArrowLeft } from 'lucide-react'
 import { formatDate, getPost, getPostSlugs } from '@/lib/blog'
 import { mdxComponents } from '@/components/blog/mdx-components'
@@ -111,7 +112,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               // including attribute expressions like `items={[...]}`. That
               // sandbox is for untrusted MDX; ours is first-party and reviewed,
               // so it is disabled to get standard MDX semantics back.
-              options={{ blockJS: false, mdxOptions: { rehypePlugins: [rehypeSlug] } }}
+              // remark-gfm is what makes markdown tables parse; without it the
+              // `table`/`th`/`td` entries in mdxComponents are unreachable and
+              // a table renders as literal pipes.
+              options={{
+                blockJS: false,
+                mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] },
+              }}
             />
           </div>
 
