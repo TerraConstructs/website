@@ -70,9 +70,17 @@ aws s3 sync "$OUT/" "s3://$BUCKET" "${COMMON[@]}" --delete \
   --include "*.ico" --include "*.webp" --include "*.woff2" \
   --cache-control "public,max-age=86400"
 
+# The aws cli guesses Content-Type from the extension, and not every Python it
+# ships with maps .md to text/markdown — so set it outright.
+echo "==> markdown twins (always revalidate)"
+aws s3 sync "$OUT/" "s3://$BUCKET" "${COMMON[@]}" --delete \
+  --exclude "*" --include "*.md" \
+  --content-type "text/markdown; charset=utf-8" \
+  --cache-control "public,max-age=0,must-revalidate"
+
 echo "==> html and metadata (always revalidate)"
 aws s3 sync "$OUT/" "s3://$BUCKET" "${COMMON[@]}" --delete \
-  --exclude "_next/static/*" \
+  --exclude "_next/static/*" --exclude "*.md" \
   --exclude "*.png" --exclude "*.jpg" --exclude "*.svg" \
   --exclude "*.ico" --exclude "*.webp" --exclude "*.woff2" \
   --cache-control "public,max-age=0,must-revalidate"

@@ -128,6 +128,15 @@ class LandingPageStack extends AwsStack {
       code: FunctionCode.fromInline(handler.toString()),
     });
 
+    const agentHeaders = new Function(this, 'AgentHeaders', {
+      nameSuffix: "agentHeaders",
+      // CloudFront only ever invokes a function named `handler`; this module
+      // already has one, so rename the source text instead.
+      code: FunctionCode.fromInline(
+        responseHandler.toString().replace(/^function responseHandler\b/, "function handler")
+      ),
+    });
+
     // TODO: fix permanent diff on viewer certificate (min protocol TSLv1 and ssl_support_method SNI-only)
     //
     // There is no /blog/* behavior any more: it only existed to attach a
@@ -149,6 +158,9 @@ class LandingPageStack extends AwsStack {
         functionAssociations: [{
           function: indexRewrite,
           eventType: FunctionEventType.VIEWER_REQUEST,
+        }, {
+          function: agentHeaders,
+          eventType: FunctionEventType.VIEWER_RESPONSE,
         }],
       },
       defaultRootObject: "index.html",
@@ -266,11 +278,96 @@ function handler(event) {
     };
   }
 
+  // Every page has a Markdown twin beside its index.html (emitted by
+  // scripts/generate-markdown.mjs). Serve it at the page's own URL when the
+  // client ranks text/markdown above text/html; a tie, `*/*` or no Accept at
+  // all stays HTML. Rewriting the URI also makes it the cache key, so the
+  // two representations never share a cache entry.
+  //
+  // Each media range is matched by its most specific form (RFC 9110 §12.5.1):
+  // rank 2 = exact type, 1 = text/*, 0 = */*.
+  var accept = request.headers.accept ? request.headers.accept.value : '';
+  var htmlQ = accept ? 0 : 1;
+  var htmlRank = -1;
+  var markdownQ = 0;
+  var markdownRank = -1;
+  var ranges = accept.split(',');
+  for (var r = 0; r < ranges.length; r++) {
+    var params = ranges[r].split(';');
+    var range = params[0].trim().toLowerCase();
+    var q = 1;
+    for (var p = 1; p < params.length; p++) {
+      var pair = params[p].split('=');
+      if (pair[0].trim().toLowerCase() === 'q') {
+        q = parseFloat(pair[1]);
+        if (isNaN(q)) {
+          q = 0;
+        }
+      }
+    }
+    var rank = range === '*/*' ? 0 : range === 'text/*' ? 1 : 2;
+    if ((rank < 2 || range === 'text/markdown') && rank > markdownRank) {
+      markdownRank = rank;
+      markdownQ = q;
+    }
+    if ((rank < 2 || range === 'text/html') && rank > htmlRank) {
+      htmlRank = rank;
+      htmlQ = q;
+    }
+  }
+
   // Static export shape: directory URLs resolve to their index.html.
   if (uri.endsWith('/')) {
     request.uri += 'index.html';
   } else if (!uri.includes('.') && !uri.includes('?')) {
     request.uri += '/index.html';
   }
+  if (markdownQ > htmlQ && request.uri.endsWith('/index.html')) {
+    request.uri = request.uri.slice(0, -'html'.length) + 'md';
+  }
   return request;
+}
+
+/**
+ * CloudFront viewer-response function. Same constraints as `handler` above:
+ * self-contained, ES5, no named inner functions.
+ *
+ * Advertises each page's Markdown twin and /llms.txt in a `Link` header
+ * (RFC 8288), so agents can find them without parsing HTML. `request.uri` may
+ * be the original or the rewritten URI, so both shapes are recognised.
+ */
+// @ts-ignore
+function responseHandler(event) {
+  var request = event.request;
+  var response = event.response;
+  var uri = request.uri;
+  var headers = response.headers;
+
+  if (uri.endsWith('.md')) {
+    // The twins duplicate every page; only the HTML should be indexed.
+    headers['x-robots-tag'] = { value: 'noindex' };
+  }
+  if (response.statusCode !== 200 && response.statusCode !== 304) {
+    return response;
+  }
+
+  var page = null;
+  if (/\/index\.(html|md)$/.test(uri)) {
+    page = uri.replace(/index\.(html|md)$/, '');
+  } else if (uri.endsWith('/')) {
+    page = uri;
+  } else if (!uri.includes('.')) {
+    page = uri + '/';
+  }
+  if (page !== null) {
+    headers.link = {
+      value: '<' + page + 'index.md>; rel="alternate"; type="text/markdown", ' +
+        '</llms.txt>; rel="describedby"',
+    };
+    var vary = headers.vary ? headers.vary.value : '';
+    if (!/(^|,)\s*accept\s*(,|$)/i.test(vary)) {
+      headers.vary = { value: vary ? vary + ', Accept' : 'Accept' };
+    }
+  }
+  return response;
 }

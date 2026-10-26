@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/generate-og.mjs && next build && node scripts/generate-og.mjs --verify",
+    "build": "node scripts/generate-og.mjs && next build && node scripts/generate-og.mjs --verify && node scripts/generate-markdown.mjs",
     "dev": "next dev",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -41,11 +41,17 @@
     "constructs": "^10.7.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.2.6",
+    "hast-util-select": "^6.0.4",
     "postcss": "^8.5",
+    "rehype-parse": "^9.0.1",
+    "rehype-remark": "^10.0.1",
+    "remark-stringify": "^11.0.0",
     "tailwindcss": "^4.3.3",
     "terraconstructs": "0.2.20",
     "tsx": "^4",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "unified": "^11.0.5",
+    "unist-util-remove": "^4.0.0"
   },
   "packageManager": "pnpm@11.17.0",
   "pnpm": {
