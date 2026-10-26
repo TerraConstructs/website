@@ -29,11 +29,11 @@ export function SplitCompare({
 }) {
   return (
     <div className="mt-6">
-      <div className="grid gap-x-3 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-3 md:grid-cols-2">
         <span className="label-mono text-doc">{leftLabel}</span>
         <span className="label-mono mt-4 text-brand md:mt-0">{rightLabel}</span>
       </div>
-      <div className="mt-2 grid items-start gap-3 md:grid-cols-2 [&>figure]:mt-0">
+      <div className="mt-2 grid grid-cols-1 items-start gap-3 md:grid-cols-2 [&>figure]:mt-0">
         {children}
       </div>
       {caption ? (

@@ -1,21 +1,14 @@
 import Link from 'next/link'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { LINKS } from '@/lib/links'
-import { getDemos } from '@/lib/demos'
 
-export async function Hero() {
-  // The headline numbers are read off the real pre-compiled demo, so they can
-  // never drift from what the guided tour actually shows.
-  const [demo] = await getDemos()
-  const STATS = [
-    { value: String(demo.input.lineCount), label: 'lines of TypeScript' },
-    { value: String(demo.output.lineCount), label: 'lines of HCL, synthesized' },
-    { value: '0', label: 'IAM statements hand-written' },
-  ]
-
+export function Hero() {
   return (
     <section className="relative overflow-hidden border-b">
-      <div className="grid-backdrop pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+      <div
+        className="grid-backdrop pointer-events-none absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,black_0%,black_45%,transparent_100%)]"
+        aria-hidden
+      />
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-brand/[0.07] to-transparent"
         aria-hidden
@@ -30,9 +23,9 @@ export async function Hero() {
             href={LINKS.cdktn}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1 rounded-full border bg-background/60 px-2.5 py-1 font-mono text-[0.6875rem] text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground"
+            className="flex items-center gap-1 rounded-full border border-brand/40 bg-brand-muted px-2.5 py-1 font-mono text-[0.6875rem] text-brand transition-colors hover:border-brand"
           >
-            built on CDK Terrain
+            built on CDK Terrain (cdktn)
             <ArrowUpRight className="size-3 opacity-60" />
           </a>
           <span className="rounded-full border bg-background/60 px-2.5 py-1 font-mono text-[0.6875rem] text-muted-foreground">
@@ -44,7 +37,7 @@ export async function Hero() {
           Infrastructure as{' '}
           <span className="relative whitespace-nowrap">
             <span className="text-muted-foreground/40 line-through decoration-brand/60 decoration-2">
-              data
+              config
             </span>
           </span>
           <br />
@@ -53,10 +46,30 @@ export async function Hero() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-          TerraConstructs is an open-source L2 construct library for Terraform and OpenTofu. It
-          gives you the AWS CDK programming model — the asset pipeline, the IAM grant SDK, Step
-          Functions ASL — on top of the providers and state you already run.
+          HCL, CloudFormation and Kubernetes YAML are configuration: documents you merge, look up
+          and template. TerraConstructs is an L2 construct library that brings the AWS CDK
+          programming model to Terraform and OpenTofu — the asset pipeline, IAM grant SDK and Step
+          Functions ASL, on the providers and state you already run.
         </p>
+
+        <a
+          href={LINKS.cdktn}
+          target="_blank"
+          rel="noreferrer"
+          className="group mt-6 flex max-w-2xl items-start gap-3 rounded-lg border border-brand/30 bg-background/70 px-4 py-3 backdrop-blur-sm transition-colors hover:border-brand/60"
+        >
+          <span className="mt-0.5 shrink-0 rounded bg-brand-muted px-1.5 py-0.5 font-mono text-[0.6875rem] text-brand">
+            cdktn
+          </span>
+          <span className="text-pretty text-sm leading-relaxed text-muted-foreground">
+            <span className="text-foreground">
+              Built on CDK Terrain, the community-led fork of the Terraform CDK.
+            </span>{' '}
+            If you run a CDKTF platform today, cdktn is the maintained way forward — and
+            TerraConstructs is the L2 library that runs on it.
+            <ArrowUpRight className="ml-1 inline size-3.5 align-[-2px] opacity-60 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        </a>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link
@@ -77,29 +90,14 @@ export async function Hero() {
             </svg>
             terraconstructs/base
           </a>
-          <a
+          <Link
             href={LINKS.workshop}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-1 px-1 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="group flex items-center gap-1 px-1 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             AWS workshop
-            <ArrowUpRight className="size-3.5 opacity-60" />
-          </a>
+            <ArrowRight className="size-3.5 opacity-60 transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
-
-        <dl className="mt-14 grid max-w-2xl grid-cols-1 gap-px overflow-hidden rounded-lg border bg-border sm:grid-cols-3">
-          {STATS.map((s) => (
-            <div key={s.label} className="bg-background/70 px-4 py-4 backdrop-blur-sm">
-              <dt className="font-mono text-2xl font-medium tabular-nums text-foreground">
-                {s.value}
-              </dt>
-              <dd className="mt-1 font-mono text-[0.6875rem] uppercase tracking-[0.1em] text-muted-foreground">
-                {s.label}
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   )

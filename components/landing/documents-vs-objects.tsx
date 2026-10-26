@@ -49,7 +49,7 @@ export function DocumentsVsObjects() {
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <span className="label-mono">The actual distinction</span>
 
-        <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
+        <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
           <div>
             <h2 className="text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
               It was never declarative versus imperative.

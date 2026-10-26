@@ -134,7 +134,7 @@ export function GuidedTour({ demos }: { demos: Demo[] }) {
       </div>
 
       {/* code panes */}
-      <div className="grid gap-3 p-3 sm:p-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 p-3 sm:p-4 lg:grid-cols-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="label-mono">Input · TypeScript</span>
@@ -178,26 +178,6 @@ export function GuidedTour({ demos }: { demos: Demo[] }) {
           </p>
         ) : (
           <div className="flex flex-col gap-3">
-            <div className="flex items-start gap-3">
-              <span
-                className={cn(
-                  'mt-0.5 shrink-0 rounded px-1.5 py-0.5 font-mono text-[0.6875rem]',
-                  current!.pane === 'input'
-                    ? 'bg-brand-muted text-brand'
-                    : 'bg-doc-muted text-doc',
-                )}
-              >
-                {current!.pane === 'input' ? 'TS' : 'HCL'} L{current!.startLine}–
-                {current!.endLine}
-              </span>
-              <div className="min-w-0">
-                <h3 className="text-sm font-medium">{current!.title}</h3>
-                <p className="mt-1 text-pretty text-sm leading-relaxed text-muted-foreground">
-                  {current!.content}
-                </p>
-              </div>
-            </div>
-
             <div className="flex items-center gap-3">
               <Button
                 size="sm"
@@ -245,6 +225,26 @@ export function GuidedTour({ demos }: { demos: Demo[] }) {
                 Next
                 <ArrowRight className="size-3.5" />
               </Button>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <span
+                className={cn(
+                  'mt-0.5 shrink-0 rounded px-1.5 py-0.5 font-mono text-[0.6875rem]',
+                  current!.pane === 'input'
+                    ? 'bg-brand-muted text-brand'
+                    : 'bg-doc-muted text-doc',
+                )}
+              >
+                {current!.pane === 'input' ? 'TS' : 'HCL'} L{current!.startLine}–
+                {current!.endLine}
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-sm font-medium">{current!.title}</h3>
+                <p className="mt-1 text-pretty text-sm leading-relaxed text-muted-foreground">
+                  {current!.content}
+                </p>
+              </div>
             </div>
           </div>
         )}

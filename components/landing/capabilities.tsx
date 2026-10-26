@@ -47,12 +47,12 @@ export function Capabilities() {
             Not a thin wrapper. The parts of CDK that were hard to build.
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            Anyone can generate HCL from a template. These are the subsystems that make the
-            programming model actually feel different — each one ported and in use.
+            Anyone can generate HCL from a template. These are the subsystems that make a construct
+            program more than a template — each one ported from the AWS CDK and in use.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2">
           {CAPABILITIES.map((cap) => {
             const Icon = cap.icon
             const Wrapper = cap.href ? 'a' : 'div'

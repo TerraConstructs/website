@@ -1,6 +1,6 @@
 {
-  "name": "Workshop — Lambda + API Gateway",
-  "description": "L2 constructs, the asset pipeline, and the IAM wiring the framework derives for you.",
+  "name": "Lambda + API Gateway",
+  "description": "Asset pipeline, and the IAM wiring the framework derives for you.",
   "fileName": "src/main.ts",
   "outputFileName": "cdktn.out/stacks/workshop/cdk.tf.hcl",
   "tour": {

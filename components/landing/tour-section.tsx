@@ -10,12 +10,11 @@ export async function TourSection() {
         <div className="max-w-2xl">
           <span className="label-mono">Guided tour</span>
           <h2 className="mt-4 text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
-            Read the input. Then read what it became.
+            From CDK to HCL.
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            Nothing here is a mock-up. The HCL on the right is the real synthesized output of the
-            TypeScript on the left, pre-compiled at build time. Step through it and watch which lines
-            each construct is responsible for.
+            The HCL on the right is real synthesized output of the TypeScript on the left.
+            Step through it and watch which lines each construct is responsible for.
           </p>
         </div>
 

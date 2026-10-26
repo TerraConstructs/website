@@ -14,11 +14,11 @@ const NAV = [
   { label: 'Capabilities', href: '/#capabilities' },
   { label: 'For agents', href: '/#agents' },
   { label: 'Blog', href: '/blog' },
+  { label: 'Workshop', href: LINKS.workshop },
 ]
 
 const EXTERNAL = [
   { label: 'Docs', href: LINKS.docs },
-  { label: 'Workshop', href: LINKS.workshop },
   { label: 'GitHub', href: LINKS.github },
 ]
 

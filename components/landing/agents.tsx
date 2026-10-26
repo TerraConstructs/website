@@ -1,315 +1,376 @@
 'use client'
 
-import { useState } from 'react'
-import { Play, RotateCcw, Coins, Braces, ShieldCheck, TriangleAlert } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Pause, Play } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-type Verdict = 'derived' | 'encoded' | 'remains'
+type Kind = 'turn' | 'policy' | 'code' | 'apply' | 'synth' | 'denied' | 'derived' | 'passed'
 
-/**
- * Every entry below is from a real run log: a hand-authored least-privilege IAM
- * policy for a CI role deploying a single-instance Atlantis module. Each line
- * cost one ~20 minute CI cycle (AMI build + apply + destroy) to discover.
- */
-const ITERATIONS: {
-  missing: string
-  why: string
-  verdict: Verdict
-}[] = [
-  {
-    missing: 'ec2:ModifyImageAttribute',
-    why: 'Packer sets ami_description after create — not just for sharing.',
-    verdict: 'remains',
-  },
-  {
-    missing: 'All of S3',
-    why: 'The module flag tfmigrate_enabled = true creates a bucket. Invisible unless you read module internals.',
-    verdict: 'derived',
-  },
-  {
-    missing: 'iam:ListRoleTags, iam:CreateServiceLinkedRole',
-    why: 'Refresh-time reads, not anything in the plan.',
-    verdict: 'remains',
-  },
-  {
-    missing: 'route53:ListTagsForResource',
-    why: 'The aws_route53_zone data source reads tags.',
-    verdict: 'derived',
-  },
-  {
-    missing: 'route53:GetChange scoped to zone ARN',
-    why: 'The action does not support resource-level permissions, so scoping it is a permanent deny.',
-    verdict: 'encoded',
-  },
-  {
-    missing: 'iam:TagInstanceProfile',
-    why: 'default_tags makes tag-on-create part of CreateInstanceProfile.',
-    verdict: 'derived',
-  },
-  {
-    missing: 'All of KMS',
-    why: 'SecureString parameters and encrypted = true volumes.',
-    verdict: 'derived',
-  },
-  {
-    missing: 'ec2:GetSecurityGroupsForVpc',
-    why: 'ec2:Describe* does not cover ec2:Get*.',
-    verdict: 'encoded',
-  },
-  {
-    missing: 's3:DeleteBucketOwnershipControls',
-    why: 'Not a real IAM action. IAM accepts invalid names silently — it reads as granted and matches nothing.',
-    verdict: 'encoded',
-  },
-  {
-    missing: 'ssm:GetInventory',
-    why: 'Required by terratest’s WaitForSsmInstance assertion.',
-    verdict: 'remains',
-  },
-  {
-    missing: 'arn:aws:s3:::e2e-*',
-    why: 'The wildcard also matched the shared tfstate bucket — a PR-assumable role could delete its own state.',
-    verdict: 'derived',
-  },
-]
-
-const VERDICT_META: Record<Verdict, { label: string; tone: string }> = {
-  derived: {
-    label: 'derived from the graph',
-    tone: 'bg-brand-muted text-brand',
-  },
-  encoded: {
-    label: 'encoded in the library',
-    tone: 'bg-brand-muted text-brand',
-  },
-  remains: {
-    label: 'still yours to write',
-    tone: 'bg-doc-muted text-doc',
-  },
+type Row = {
+  kind: Kind
+  /** Overrides the kind as the left-hand label, e.g. "turn 3". */
+  label?: string
+  text: string
+  sub?: string
 }
 
-const MINUTES_PER_CYCLE = 20
+const KIND_STYLE: Record<Kind, { bar: string; label: string; text: string; mono?: boolean }> = {
+  turn: { bar: 'border-muted-foreground/40', label: 'text-muted-foreground', text: 'text-foreground' },
+  policy: { bar: 'border-doc', label: 'text-doc', text: 'text-doc', mono: true },
+  code: { bar: 'border-doc', label: 'text-doc', text: 'text-doc', mono: true },
+  apply: { bar: 'border-warning', label: 'text-warning', text: 'text-foreground' },
+  synth: { bar: 'border-warning', label: 'text-warning', text: 'text-foreground' },
+  denied: { bar: 'border-destructive', label: 'text-destructive', text: 'text-destructive', mono: true },
+  derived: { bar: 'border-brand', label: 'text-brand', text: 'text-foreground' },
+  passed: { bar: 'border-brand', label: 'text-brand', text: 'text-foreground' },
+}
 
-const PILLARS = [
+/**
+ * The same task run twice: a least-privilege deploy role for a KMS-encrypted
+ * state bucket and a SecureString config parameter. Token totals are cumulative
+ * per turn — each retry re-reads the whole context.
+ */
+const RAW: { tokens: number; rows: Row[] }[] = [
   {
-    icon: Coins,
-    title: 'The loop is the line item',
-    body: 'A model that cannot know an action exists has to discover it by failing. Every discovery is a full apply, a parsed error, a re-plan and a re-validate — context re-read from scratch each time. That is where the budget goes, and it buys knowledge thousands of teams have already paid for.',
+    tokens: 58_000,
+    rows: [
+      { kind: 'turn', label: 'turn 1', text: 'Read the module, enumerate what the deploy role obviously needs.' },
+      { kind: 'policy', text: '"Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: 'plan + apply + smoke test · 4m 12s' },
+      { kind: 'denied', text: 'AccessDenied: s3:ListBucket on arn:aws:s3:::tf-state-prod' },
+    ],
   },
   {
-    icon: Braces,
-    title: 'Intent-oriented, not resource-oriented',
-    body: 'grantReadWrite is a decision. Thirty-one policy actions across four services is a transcription. Models are markedly more reliable choosing among a few well-typed intents than emitting hundreds of interdependent low-level fields, and a typed surface makes an invalid action a compile error rather than a silent no-op.',
+    tokens: 132_000,
+    rows: [
+      { kind: 'turn', label: 'turn 2', text: 'Add ListBucket on the bucket ARN, re-run.' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 03s · context re-read from scratch' },
+      { kind: 'denied', text: 'AccessDenied: kms:Decrypt — the bucket is SSE-KMS' },
+    ],
   },
   {
-    icon: ShieldCheck,
-    title: 'Deterministic and already tested',
-    body: 'The constructs are end-to-end tested and synthesis is deterministic: the same program yields the same HCL, so an agent’s output is reviewable as a diff. The library carries the AWS trivia — which actions ignore resource scoping, which APIs tag on create — so nobody rediscovers it per repository.',
+    tokens: 201_000,
+    rows: [
+      { kind: 'turn', label: 'turn 3', text: 'Add kms:Decrypt scoped to the bucket key.' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 09s · context re-read from scratch' },
+      { kind: 'denied', text: 'AccessDenied: kms:GenerateDataKey — PutObject needs a data key' },
+    ],
+  },
+  {
+    tokens: 268_000,
+    rows: [
+      { kind: 'turn', label: 'turn 4', text: 'Add GenerateDataKey on the same key.' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 15s · context re-read from scratch' },
+      { kind: 'denied', text: 'AccessDenied: ssm:GetParameter on parameter/deploy/config' },
+    ],
+  },
+  {
+    tokens: 343_000,
+    rows: [
+      { kind: 'turn', label: 'turn 5', text: 'Grant GetParameter on the config parameter.' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 01s · context re-read from scratch' },
+      { kind: 'denied', text: 'AccessDenied: kms:Decrypt — the SecureString uses a second key' },
+    ],
+  },
+  {
+    tokens: 422_000,
+    rows: [
+      { kind: 'turn', label: 'turn 6', text: 'Widen kms:Decrypt to key/* so the run stops failing.' },
+      { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 07s · context re-read from scratch' },
+      { kind: 'passed', text: 'Converged — six deploys later, with a key wildcard someone now has to review out.' },
+    ],
   },
 ]
 
-export function Agents() {
-  const [revealed, setRevealed] = useState(0)
+const L2_TOKENS = 44_000
 
-  const done = revealed >= ITERATIONS.length
-  const eliminated = ITERATIONS.filter((i) => i.verdict !== 'remains').length
+const L2: Row[] = [
+  { kind: 'turn', label: 'turn 1', text: 'State the intent against the constructs that already exist.' },
+  { kind: 'code', text: 'state.grantReadWrite(deployRole);\nconfig.grantRead(deployRole);' },
+  { kind: 'synth', text: 'cdktn synth · diff reviewed locally', sub: '8s · no cloud call' },
+  {
+    kind: 'derived',
+    text: '11 actions across s3, kms and ssm, derived from the graph — including both KMS keys and the data-key grant nobody remembered.',
+  },
+  { kind: 'apply', text: 'tofu apply · full end-to-end deploy', sub: '4m 06s · first attempt' },
+  { kind: 'passed', text: 'Converged — same 11 actions, one deploy, no wildcard to review out.' },
+]
+
+/** Left-hand rows flattened into one timeline, each tagged with its turn. */
+const TIMELINE = RAW.flatMap((turn, t) => turn.rows.map((row) => ({ row, turn: t })))
+
+const STEP_MS = 900
+const HOLD_MS = 4500
+
+const CARDS = [
+  {
+    title: 'Intent, not resources',
+    body: (
+      <>
+        <code className="font-mono text-[0.8125rem] text-foreground">grantReadWrite</code> is a
+        decision. Thirty-one policy actions across four services is a transcription.
+      </>
+    ),
+  },
+  {
+    title: 'Deterministic',
+    body: 'Same program, same HCL — so an agent’s output is reviewable as a diff, and the constructs it calls are already covered by end-to-end tests.',
+  },
+]
+
+function formatTokens(n: number) {
+  return `${Math.round(n / 1000)}k`
+}
+
+/** Tweens a number toward its target so the counters visibly climb each turn. */
+function useCountUp(target: number, duration = 600) {
+  const [value, setValue] = useState(target)
+  const from = useRef(target)
+
+  useEffect(() => {
+    const start = performance.now()
+    const origin = from.current
+    let frame = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      const next = origin + (target - origin) * (1 - Math.pow(1 - p, 3))
+      from.current = next
+      setValue(next)
+      if (p < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [target, duration])
+
+  return value
+}
+
+function LogRow({ row, className, hidden }: { row: Row; className?: string; hidden?: boolean }) {
+  const style = KIND_STYLE[row.kind]
+  return (
+    <li
+      aria-hidden={hidden}
+      className={cn(
+        'grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 border-l-2 py-2.5 pl-3 pr-4 sm:grid-cols-[5rem_minmax(0,1fr)] sm:pl-5',
+        style.bar,
+        className,
+      )}
+    >
+      <span className={cn('pt-px font-mono text-xs', style.label)}>{row.label ?? row.kind}</span>
+      <div className="min-w-0">
+        <p
+          className={cn(
+            'text-pretty',
+            style.text,
+            style.mono
+              ? 'whitespace-pre-wrap break-words font-mono text-[0.8125rem] leading-relaxed'
+              : 'text-sm leading-relaxed',
+          )}
+        >
+          {row.text}
+        </p>
+        {row.sub && <p className="mt-1 font-mono text-xs text-muted-foreground">{row.sub}</p>}
+      </div>
+    </li>
+  )
+}
+
+function PanelHeader({
+  title,
+  tone,
+  tokens,
+  deploys,
+}: {
+  title: string
+  tone: string
+  tokens: number
+  deploys: number
+}) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b px-4 py-3 sm:px-5">
+      <span className={cn('font-mono text-[0.8125rem]', tone)}>{title}</span>
+      <span className="font-mono text-xs tabular-nums text-muted-foreground">
+        {formatTokens(tokens)} tokens · {deploys} {deploys === 1 ? 'deploy' : 'deploys'}
+      </span>
+    </div>
+  )
+}
+
+export function Agents() {
+  const [tick, setTick] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const logRef = useRef<HTMLDivElement>(null)
+
+  const total = TIMELINE.length
+  // With reduced motion, show both finished runs and never animate.
+  const step = reducedMotion ? total : tick
+  const done = step >= total
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setReducedMotion(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+      threshold: 0.25,
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // Only advance while the section is on screen, so a reader arriving late
+  // still sees the runs from the start.
+  useEffect(() => {
+    if (reducedMotion || !visible || paused) return
+    const id = window.setTimeout(
+      () => setTick((s) => (s >= total ? 0 : s + 1)),
+      done ? HOLD_MS : STEP_MS,
+    )
+    return () => window.clearTimeout(id)
+  }, [step, visible, paused, reducedMotion, done, total])
+
+  // Keep the newest raw-resource row in view without scrolling the page.
+  useEffect(() => {
+    const el = logRef.current
+    if (!el) return
+    el.scrollTo({ top: step === 0 ? 0 : el.scrollHeight, behavior: reducedMotion ? 'auto' : 'smooth' })
+  }, [step, reducedMotion])
+
+  const revealed = TIMELINE.slice(0, step)
+  const currentTurn = revealed.length ? revealed[revealed.length - 1].turn : -1
+  const rawDeploys = revealed.filter((r) => r.row.kind === 'apply').length
+  const l2Shown = Math.min(step, L2.length)
+  const l2Deploys = L2.slice(0, l2Shown).some((r) => r.kind === 'apply') ? 1 : 0
+
+  const rawTokens = useCountUp(currentTurn >= 0 ? RAW[currentTurn].tokens : 0)
+  const l2Tokens = useCountUp(l2Shown > 0 ? L2_TOKENS : 0)
 
   return (
-    <section id="agents" className="scroll-mt-16 border-b bg-card/30">
+    <section ref={sectionRef} id="agents" className="scroll-mt-16 border-b bg-card/30">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="max-w-2xl">
-          <span className="label-mono">Why this matters now</span>
-          <h2 className="mt-4 text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
-            The cheapest tokens are the ones you never spend.
-          </h2>
-          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            The constraint on adopting AI in 2026 is not access to frontier models — it is what they
-            cost to run. Plenty of organisations spent an annual budget in six months and are now
-            re-forecasting. So the question stops being “can an agent do this?” and becomes “how much
-            iteration does this task require before it converges?”
-          </p>
-          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            An agent can absolutely author raw provider configuration for every resource. It will
-            just have to validate its way there.
-          </p>
-        </div>
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <span className="label-mono text-destructive">Agent loop · running side by side</span>
+            <h2 className="mt-4 text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
+              The cheapest tokens are the ones you never spend.
+            </h2>
+            <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
+              Same task — least-privilege IAM for a deploy role. Left: the agent discovers each
+              missing action by failing a real end-to-end apply. Right: it picks an intent and the
+              library owns the transcription.
+            </p>
+          </div>
 
-        {/* The loop */}
-        <div className="mt-12 overflow-hidden rounded-xl border bg-background">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-surface px-4 py-3">
-            <div className="flex items-center gap-2.5">
-              <TriangleAlert className="size-4 text-doc" />
-              <span className="font-mono text-xs text-muted-foreground">
-                least-privilege IAM policy, authored by reading the module
+          <div className="flex w-full shrink-0 flex-col gap-2 lg:w-80">
+            <div className="flex items-center justify-between gap-3 lg:justify-end">
+              <span className="whitespace-nowrap font-mono text-xs tabular-nums text-muted-foreground" aria-live="polite">
+                {done
+                  ? reducedMotion
+                    ? 'both runs complete'
+                    : 'both runs complete · restarting'
+                  : `turn ${Math.max(currentTurn, 0) + 1} of ${RAW.length}`}
               </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs tabular-nums text-muted-foreground">
-                {revealed}/{ITERATIONS.length} found
-                <span className="mx-2 text-border">|</span>
-                <span className={revealed > 0 ? 'text-doc' : ''}>
-                  ~{revealed * MINUTES_PER_CYCLE} min CI
-                </span>
-              </span>
-              {done ? (
+              {!reducedMotion && (
                 <button
                   type="button"
-                  onClick={() => setRevealed(0)}
-                  className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 font-mono text-xs transition-colors hover:bg-card"
+                  onClick={() => setPaused((p) => !p)}
+                  aria-label={paused ? 'Resume animation' : 'Pause animation'}
+                  className="rounded-md border p-1 text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <RotateCcw className="size-3" />
-                  Reset
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setRevealed((r) => r + 1)}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 font-mono text-xs text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  <Play className="size-3" />
-                  {revealed === 0 ? 'Run the loop' : 'Next cycle'}
+                  {paused ? <Play className="size-3" /> : <Pause className="size-3" />}
                 </button>
               )}
             </div>
+            <div className="h-1 overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full bg-brand transition-[width] duration-500 ease-out"
+                style={{ width: `${(step / total) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="flex flex-col overflow-hidden rounded-xl border bg-destructive/[0.03]">
+            <PanelHeader
+              title="raw provider resources"
+              tone="text-destructive"
+              tokens={rawTokens}
+              deploys={rawDeploys}
+            />
+            <div ref={logRef} className="h-[26rem] overflow-y-auto py-3 sm:h-[30rem]">
+              <ol className="flex flex-col gap-1">
+                {revealed.map(({ row }, i) => (
+                  <LogRow
+                    key={i}
+                    row={row}
+                    className="animate-in fade-in slide-in-from-bottom-1 duration-300"
+                  />
+                ))}
+              </ol>
+            </div>
           </div>
 
-          <div className="divide-y">
-            {revealed === 0 && (
-              <p className="px-4 py-8 text-center text-sm text-muted-foreground sm:px-6">
-                Policy written by enumerating what the module “obviously” needs.
-                <br className="hidden sm:inline" /> Step through what a real deployment actually
-                demanded.
-              </p>
-            )}
-
-            {ITERATIONS.slice(0, revealed).map((item, i) => {
-              const meta = VERDICT_META[item.verdict]
-              return (
-                <div key={item.missing} className="flex gap-3 px-4 py-4 sm:gap-4 sm:px-6">
-                  <span className="mt-0.5 font-mono text-xs tabular-nums text-muted-foreground">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-                      <span className="font-mono text-xs text-doc">AccessDenied</span>
-                      <code className="break-all font-mono text-sm text-foreground">
-                        {item.missing}
-                      </code>
-                    </div>
-                    <p className="mt-1.5 text-pretty text-sm leading-relaxed text-muted-foreground">
-                      {item.why}
-                    </p>
-                  </div>
-                  <span
-                    className={`mt-0.5 hidden shrink-0 self-start rounded px-2 py-1 font-mono text-[0.6875rem] leading-none sm:inline-block ${meta.tone}`}
-                  >
-                    {meta.label}
-                  </span>
-                </div>
-              )
-            })}
+          <div className="flex flex-col overflow-hidden rounded-xl border border-brand/30 bg-brand-muted/30">
+            <PanelHeader
+              title="L2 constructs + grant methods"
+              tone="text-brand"
+              tokens={l2Tokens}
+              deploys={l2Deploys}
+            />
+            {/* Every row is always rendered so the panel never changes height; on
+                mobile, where the panels stack, that keeps the page from jumping. */}
+            <ol className="flex flex-col gap-1 py-3 lg:h-[30rem]">
+              {L2.map((row, i) => (
+                <LogRow
+                  key={i}
+                  row={row}
+                  hidden={i >= l2Shown}
+                  className={cn(
+                    'transition-all duration-300',
+                    i < l2Shown ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0',
+                  )}
+                />
+              ))}
+            </ol>
           </div>
+        </div>
 
-          {done && (
-            <div className="border-t bg-surface px-4 py-5 sm:px-6">
-              <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
-                <span className="text-foreground">
-                  Eleven cycles, roughly {(ITERATIONS.length * MINUTES_PER_CYCLE) / 60} hours of CI
-                  wall-clock
-                </span>{' '}
-                — and the empirical shortcut had holes too. Replaying 555 CloudTrail events from a
-                successful run still missed <code className="font-mono">iam:TagInstanceProfile</code>
-                , because CloudTrail does not log tag-on-create authorizations. And{' '}
-                <code className="font-mono">simulate-principal-policy</code> reports{' '}
-                <code className="font-mono">implicitDeny</code> for anything behind a condition key
-                unless you pass <code className="font-mono">--context-entries</code>, producing false
-                alarms on <code className="font-mono">iam:PassRole</code> and{' '}
-                <code className="font-mono">kms:ViaService</code>.
-              </p>
-              <p className="mt-3 text-pretty text-sm leading-relaxed">
-                <span className="text-brand">{eliminated} of {ITERATIONS.length}</span>
-                <span className="text-muted-foreground">
-                  {' '}
-                  never surface in a construct program — the grant is derived from the object graph,
-                  or the quirk is already encoded in the library. The remaining{' '}
-                  {ITERATIONS.length - eliminated} come from outside the graph — Packer, provider
-                  refresh reads, test assertions — and those are still yours.
-                </span>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {CARDS.map((card) => (
+            <div key={card.title} className="rounded-xl border bg-background p-6">
+              <h3 className="label-mono">{card.title}</h3>
+              <p className="mt-3 text-pretty text-sm leading-relaxed text-muted-foreground">
+                {card.body}
               </p>
             </div>
-          )}
-        </div>
+          ))}
 
-        {/* Contrast */}
-        <div className="mt-6 grid gap-px overflow-hidden rounded-xl border bg-border lg:grid-cols-2">
-          <div className="bg-background p-5 sm:p-6">
-            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-doc">
-              Enumerated by hand or by agent
-            </span>
-            <p className="mt-3 text-pretty text-sm leading-relaxed text-muted-foreground">
-              Every action, every resource ARN, every condition key — transcribed, then corrected
-              against reality one denial at a time. Nothing about the policy states{' '}
-              <em className="italic">why</em>
-              {' any of it is there.'}
-            </p>
-            <pre className="mt-4 overflow-x-auto rounded-md border bg-surface p-3 font-mono text-xs leading-relaxed text-foreground/80">
-              <code>{`{
-  "Action": [
-    "s3:GetObject",
-    "s3:PutObject",
-    "s3:DeleteObject",
-    "s3:ListBucket",
-    "kms:Decrypt",
-    "kms:GenerateDataKey",
-    /* … 25 more, some invalid, */
-    /* one wildcard too broad  */
-  ]
-}`}</code>
-            </pre>
-          </div>
-
-          <div className="bg-background p-5 sm:p-6">
-            <span className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-brand">
-              Derived from intent
-            </span>
-            <p className="mt-3 text-pretty text-sm leading-relaxed text-muted-foreground">
-              The constructs already know they are encrypted, already know their own ARNs. The agent
-              picks an intent; the library owns the transcription — and the KMS grant nobody
-              remembered comes along with it.
-            </p>
-            <pre className="mt-4 overflow-x-auto rounded-md border bg-surface p-3 font-mono text-xs leading-relaxed text-foreground/80">
-              <code>{`const state = new Bucket(this, "TfMigrate", {
-  encryption: BucketEncryption.KMS,
-});
-const config = new StringParameter(this, "Cfg", {
-  secure: true,
-});
-
-state.grantReadWrite(deployRole);
-config.grantRead(deployRole);`}</code>
-            </pre>
+          <div className="relative overflow-hidden rounded-xl border bg-background p-6">
+            <div aria-hidden className="pointer-events-none select-none blur-[3px]">
+              <span className="label-mono">Token benchmark</span>
+              <div className="mt-4 h-2 w-2/3 rounded-full bg-brand/50" />
+              <div className="mt-2 h-2 w-1/4 rounded-full bg-destructive/50" />
+              <p className="mt-4 text-sm text-muted-foreground">
+                tokens to converge, by module and approach
+              </p>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center p-6">
+              <span className="rounded-md border bg-background px-3 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-foreground">
+                Benchmark report — coming soon
+              </span>
+            </div>
           </div>
         </div>
-
-        {/* Pillars */}
-        <div className="mt-6 grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3">
-          {PILLARS.map((p) => {
-            const Icon = p.icon
-            return (
-              <div key={p.title} className="flex flex-col gap-3 bg-background p-6">
-                <span className="flex size-8 items-center justify-center rounded-md bg-brand-muted text-brand">
-                  <Icon className="size-4" />
-                </span>
-                <h3 className="text-base font-medium tracking-tight">{p.title}</h3>
-                <p className="text-pretty text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-              </div>
-            )
-          })}
-        </div>
-
-        <p className="mx-auto mt-10 max-w-2xl text-pretty text-center leading-relaxed text-muted-foreground">
-          Spend the context window on the problem nobody has solved yet — not on re-validating what
-          every other infrastructure team has already re-validated, one denial at a time.
-        </p>
       </div>
     </section>
   )

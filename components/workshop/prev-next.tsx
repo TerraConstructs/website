@@ -11,7 +11,7 @@ export function PrevNext({ prev, next }: { prev: Neighbour; next: Neighbour }) {
   if (!prev && !next) return null
 
   return (
-    <nav aria-label="Workshop pagination" className="mt-14 grid gap-3 border-t pt-6 sm:grid-cols-2">
+    <nav aria-label="Workshop pagination" className="mt-14 grid grid-cols-1 gap-3 border-t pt-6 sm:grid-cols-2">
       {prev ? (
         <Link
           href={prev.href}

@@ -4,9 +4,12 @@ export const LINKS = {
   websiteRepo: 'https://github.com/terraconstructs/website',
   /** The construct API reference lives on Construct Hub, not a self-hosted docs site. */
   docs: 'https://constructs.dev/packages/terraconstructs/?lang=typescript',
-  workshop: 'https://aws-workshop.terraconstructs.dev',
+  /** Served from this site since the move off the aws-workshop subdomain. */
+  workshop: '/workshops/aws/',
   cdkDev: 'https://cdk.dev',
   cdktn: 'https://cdktn.io',
+  /** CDK Terrain's own guide for moving a CDKTF project onto cdktn. */
+  cdktnMigrate: 'https://cdktn.io/docs/release/upgrade-guide-v0-22',
   license: 'https://github.com/terraconstructs/base/blob/main/LICENSE',
   issues: 'https://github.com/terraconstructs/base/issues',
   awsCdk: 'https://github.com/aws/aws-cdk',

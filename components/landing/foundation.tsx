@@ -12,7 +12,7 @@ const STACK = [
   {
     name: 'CDK Terrain (cdktn)',
     license: 'MPL-2.0',
-    role: 'The community fork of the Terraform CDK. Synthesizes constructs and targets both OpenTofu and Terraform.',
+    role: 'The community-led fork of the Terraform CDK (CDKTF), and where TerraConstructs gets synthesis, provider bindings and the CLI. Targets both Terraform and OpenTofu.',
     href: LINKS.cdktn,
   },
   {
@@ -53,7 +53,7 @@ export function Foundation() {
   return (
     <section className="border-b">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
           <div>
             <span className="label-mono">The stack underneath</span>
             <h2 className="mt-4 text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
@@ -76,12 +76,12 @@ export function Foundation() {
 
           <ol className="flex flex-col gap-px overflow-hidden rounded-xl border bg-border">
             {STACK.map((layer, i) => (
-              <li key={layer.name} className="bg-background">
+              <li key={layer.name} className="flex-1 bg-background">
                 <a
                   href={layer.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-start gap-4 p-5 transition-colors hover:bg-card/60 sm:px-6"
+                  className="group flex h-full items-start gap-4 p-5 transition-colors hover:bg-card/60 sm:px-6"
                 >
                   <span className="mt-0.5 font-mono text-[0.6875rem] tabular-nums text-muted-foreground/60">
                     {String(i + 1).padStart(2, '0')}
@@ -112,7 +112,29 @@ export function Foundation() {
           </ol>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2">
+        <div className="mt-10 flex flex-col gap-4 rounded-xl border border-brand/30 bg-brand-muted/40 p-6 sm:p-7 lg:flex-row lg:items-center lg:gap-12">
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-medium">Already running CDKTF?</h3>
+            <p className="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">
+              CDK Terrain picks up where the Terraform CDK left off, as a community-led fork. It is
+              the maintained home for existing CDKTF platforms, and the layer TerraConstructs is
+              built on: move your stacks to{' '}
+              <code className="font-mono text-[0.8125rem] text-foreground">cdktn</code> and the L2
+              constructs become available to the same programs.
+            </p>
+          </div>
+          <a
+            href={LINKS.cdktnMigrate}
+            target="_blank"
+            rel="noreferrer"
+            className="group inline-flex shrink-0 items-center gap-1 self-start rounded-md border border-brand/40 px-3 py-2 font-mono text-xs text-brand transition-colors hover:border-brand lg:self-center"
+          >
+            Migrating from CDKTF to cdktn
+            <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-2">
           <div className="flex flex-col gap-6 bg-background p-6 sm:p-7">
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="size-4 shrink-0 text-doc" aria-hidden />

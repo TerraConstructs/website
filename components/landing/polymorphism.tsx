@@ -225,9 +225,9 @@ export function Polymorphism() {
   return (
     <section className="border-b">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-14">
           <div>
-            <span className="label-mono">Where the object graph pays for itself</span>
+            <span className="label-mono">Objects carry the behaviour</span>
             <h2 className="mt-4 text-balance text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
               One call site. Whatever it takes underneath.
             </h2>
@@ -235,7 +235,7 @@ export function Polymorphism() {
               <code className="font-mono text-[0.8125rem] text-foreground">{m.callLine}</code>
             </p>
             <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-              It accepts an{' '}
+              the method accepts an{' '}
               <code className="font-mono text-[0.8125rem] text-brand">{m.iface}</code>
               {' '}
               {m.blurb}

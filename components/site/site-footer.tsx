@@ -8,7 +8,7 @@ const COLUMNS = [
     links: [
       { label: 'GitHub — base', href: LINKS.github, external: true },
       { label: 'Documentation', href: LINKS.docs, external: true },
-      { label: 'AWS workshop', href: LINKS.workshop, external: true },
+      { label: 'AWS workshop', href: LINKS.workshop, external: false },
       { label: 'Blog', href: '/blog', external: false },
     ],
   },

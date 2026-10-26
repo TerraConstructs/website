@@ -1,4 +1,5 @@
-import { ArrowUpRight, GitPullRequest, MessagesSquare, GraduationCap } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, ArrowUpRight, GitPullRequest, MessagesSquare, GraduationCap } from 'lucide-react'
 import { LINKS } from '@/lib/links'
 
 const PATHS = [
@@ -16,6 +17,7 @@ const PATHS = [
     body: 'A guided, hands-on build: Lambda, API Gateway, assets and IAM, deployed with Terraform or OpenTofu from a construct program.',
     cta: 'Open the workshop',
     href: LINKS.workshop,
+    internal: true,
   },
   {
     icon: GitPullRequest,
@@ -48,15 +50,16 @@ export function CommunityCta() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border bg-border md:grid-cols-3">
           {PATHS.map((path) => {
             const Icon = path.icon
+            const Arrow = path.internal ? ArrowRight : ArrowUpRight
+            const Anchor = path.internal ? Link : 'a'
             return (
-              <a
+              <Anchor
                 key={path.title}
                 href={path.href}
-                target="_blank"
-                rel="noreferrer"
+                {...(path.internal ? {} : { target: '_blank', rel: 'noreferrer' })}
                 className="group flex flex-col gap-4 bg-background p-6 transition-colors hover:bg-card/60 sm:p-8"
               >
                 <span
@@ -80,9 +83,15 @@ export function CommunityCta() {
                   }
                 >
                   {path.cta}
-                  <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <Arrow
+                    className={
+                      path.internal
+                        ? 'size-3.5 transition-transform group-hover:translate-x-0.5'
+                        : 'size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+                    }
+                  />
                 </span>
-              </a>
+              </Anchor>
             )
           })}
         </div>
