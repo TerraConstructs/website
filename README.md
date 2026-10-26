@@ -13,7 +13,7 @@ app/            routes; /blog/[slug] and /workshops/[[...slug]] are the dynamic 
 content/        MDX — blog posts and the workshop tree
 components/     UI, including the MDX component map
 lib/            content layer: blog.ts, workshops.ts, markdown.ts
-infra/          CDKTF stack (S3 + CloudFront + ACM + Route53)
+infra/          cdktn stack (S3 + CloudFront + ACM + Route53)
 cdktf.out/      synthesized config and terraform state (committed)
 scripts/        build and deploy tooling
 ```
@@ -45,9 +45,6 @@ The build also renders one Open Graph card per route into `public/og/`
 pnpm synth
 aws-vault exec --no-session tcons-vincent -- tofu -chdir=cdktf.out/stacks/landing apply
 
-# re-attach the viewer-request function — see the note below
-aws-vault exec --no-session tcons-vincent -- ./scripts/attach-cf-function.sh
-
 # content
 pnpm build
 aws-vault exec --no-session tcons-vincent -- ./scripts/deploy.sh
@@ -56,16 +53,6 @@ aws-vault exec --no-session tcons-vincent -- ./scripts/deploy.sh
 `deploy.sh` reads the bucket and distribution from terraform state, syncs with
 per-file-type `Cache-Control`, and invalidates. Pass `--dryrun` to see what
 would change.
-
-> [!IMPORTANT]
-> **`attach-cf-function.sh` must run after every `tofu apply`.**
-> The TerraConstructs `Distribution` construct drops `functionAssociations` on
-> the default cache behavior, so each apply detaches the viewer-request
-> function. Without it, `/workshops/aws/` is looked up as a literal S3 key, S3
-> answers 403, and the error response turns that into a 404 — every deep link
-> breaks. Tracked at
-> [TerraConstructs/base#99](https://github.com/TerraConstructs/base/issues/99);
-> delete the script once fixed.
 
 ## Redirects
 

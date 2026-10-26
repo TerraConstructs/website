@@ -2,7 +2,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import { fileURLToPath } from "url";
 import { Construct } from "constructs";
-import { App, LocalBackend } from "cdktf";
+import { App, LocalBackend } from "cdktn";
 import { AwsStack, AwsStackProps } from "terraconstructs/lib/aws";
 import {
   PublicCertificate,
