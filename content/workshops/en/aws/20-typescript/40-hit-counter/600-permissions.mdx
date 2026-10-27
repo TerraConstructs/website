@@ -118,6 +118,14 @@ We should see the count for `/` path is incrementing now:
 
 ![](/workshops/aws/typescript/hit-counter/logs6.png)
 
+You can verify the same table contents from the terminal. First, find the
+generated table name, then scan it:
+
+```bash
+aws dynamodb list-tables --query "TableNames[?contains(@, 'HelloHitCounterHits')]" --output text
+aws dynamodb scan --table-name <table-name>
+```
+
 But, we must also give our hit counter permissions to invoke the downstream lambda function.
 
 ## Grant invoke permissions

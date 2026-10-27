@@ -18,7 +18,7 @@ If `cdktn init` created a test directory for you, then you should have a `__test
 First, let's add `@cdktn/provider-aws` as a Dev dependency
 
 ```
-npm install -D @cdktn/provider-aws@~24.8.0
+pnpm add -D @cdktn/provider-aws@~24.8.0
 ```
 
 If you do not already have a `__tests__` directory (usually created automatically when you
@@ -82,13 +82,13 @@ TerraConstructs, combines multiple L1 Constructs into L2 Constructs exposing a m
 Run the test.
 
 ```bash
-$ npm run test
+$ pnpm run test
 ```
 
 You should see output like this:
 
 ```bash
-$ npm run test
+$ pnpm run test
 
 > cdk-workshop@0.1.0 test /home/cdk-workshop
 > jest
@@ -164,14 +164,14 @@ Create a new test in `hitcounter.test.ts` with the below code:
 Save the file and run the test again.
 
 ```bash
-$ npm run test
+$ pnpm run test
 ```
 
 This time the test should fail and you should be able to grab the correct value for the
 variables from the expected output.
 
 ```bash {19-20}
-$ npm run test
+$ pnpm run test
 
 > cdk-workshop@0.1.0 test /home/cdk-workshop
 > jest
@@ -248,13 +248,13 @@ Grab the real values for the environment variables and update your test
 Now run the test again. This time is should pass.
 
 ```bash
-$ npm run test
+$ pnpm run test
 ```
 
 You should see output like this:
 
 ```bash
-$ npm run test
+$ pnpm run test
 
 > cdk-workshop@0.1.0 test /home/cdk-workshop
 > jest
@@ -301,7 +301,7 @@ First we'll update the test to reflect this new requirement.
 Now run the test, which should fail.
 
 ```bash
-$ npm run test
+$ pnpm run test
 
 > cdk-workshop@0.1.0 test /home/cdk-workshop
 > jest
@@ -403,7 +403,7 @@ export class HitCounter extends Construct {
 Now run the test again, which should now pass.
 
 ```bash
-npm run test
+pnpm run test
 
 > cdk-workshop@0.1.0 test /home/cdk-workshop
 > jest
