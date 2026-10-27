@@ -29,6 +29,12 @@ you how to find your logs through the AWS console.
 
 6. Look for the most-recent message containing the string "errorMessage". You'll likely see something like this:
 
+   You can also stream the recent log entries from the terminal:
+
+   ```bash
+   aws logs tail /aws/lambda/<hit-counter-function-name> --since 10m --format short
+   ```
+
    ```json
    {
         "errorType": "AccessDeniedException",
@@ -92,3 +98,10 @@ Now confirm the deployment history on the prod stage:
 
 3. Review the Stages deployment history
     ![](/workshops/aws/typescript/hit-counter/apigw2.png)
+
+   You can also list the deployment history for the API ID shown in the
+   `cdktn deploy` output:
+
+   ```bash
+   aws apigateway get-deployments --rest-api-id <rest-api-id>
+   ```

@@ -15,8 +15,12 @@ mkdir cdk-workshop && cd cdk-workshop
 We will use `cdktn init` to create a new TypeScript CDKTN project:
 
 ```
-cdktn init --template=typescript --local
+cdktn init --template=typescript-pnpm --local
 ```
+
+This workshop uses the pnpm project template. `npm` remains the default for
+`cdktn init`; selecting `typescript-pnpm` makes the generated project use pnpm
+and creates its pnpm workspace configuration.
 
 Output should look like this (you can safely ignore warnings about
 initialization of a git repository, this probably means you don't have git
@@ -44,22 +48,24 @@ Confirm the prompts:
 
   Refer to [crash reporting](https://cdktn.io/docs/create-and-deploy/configuration-file#enable-crash-reporting-for-the-cli) for more information
 
+- Help us prioritize features and bolster regression tests by sending anonymous usage telemetry? `Yes`
+
+  Usage telemetry helps maintainers understand which CLI capabilities are used.
+  It does not include your application code, file paths, or resource names.
+
 - What providers do you want to use? `↩` (none)
 
 ```
-added 2 packages, and audited 102 packages in 3s
-...
-========================================================================================================
 
   Your CDKTN TypeScript project is ready!
 
   cat help                Print this message
 
   Compile:
-    npm run get           Import/update Terraform providers and modules (you should check-in this directory)
-    npm run compile       Compile typescript code to javascript (or "npm run watch")
-    npm run watch         Watch for changes and compile typescript in the background
-    npm run build         Compile typescript
+    pnpm run get           Import/update Terraform providers and modules (you should check-in this directory)
+    pnpm run compile       Compile typescript code to javascript (or "pnpm run watch")
+    pnpm run watch         Watch for changes and compile typescript in the background
+    pnpm run build         Compile typescript
 
   Synthesize:
     cdktn synth [stack]   Synthesize Terraform resources from stacks to cdktf.out/ (ready for 'terraform apply')
@@ -74,12 +80,12 @@ added 2 packages, and audited 102 packages in 3s
     cdktn destroy [stack] Destroy the stack
 
   Test:
-    npm run test        Runs unit tests (edit __tests__/main-test.ts to add your own tests)
-    npm run test:watch  Watches the tests and reruns them on change
+    pnpm run test        Runs unit tests (edit __tests__/main-test.ts to add your own tests)
+    pnpm run test:watch  Watches the tests and reruns them on change
 
   Upgrades:
-    npm run upgrade        Upgrade cdktn modules to latest version
-    npm run upgrade:next   Upgrade cdktn modules to latest "@next" version (last commit)
+    pnpm run upgrade        Upgrade cdktn modules to latest version
+    pnpm run upgrade:next   Upgrade cdktn modules to latest "@next" version (last commit)
 
  Use Providers:
 
@@ -88,14 +94,14 @@ added 2 packages, and audited 102 packages in 3s
   cdktn provider add "aws@~>3.0" null kreuzwerker/docker
 
   You can find all prebuilt providers on npm: https://www.npmjs.com/search?q=keywords:cdktn
-  You can also install these providers directly through npm:
+  You can also install these providers directly through pnpm:
 
-  npm install @cdktn/provider-aws
-  npm install @cdktn/provider-google
-  npm install @cdktn/provider-azurerm
-  npm install @cdktn/provider-docker
-  npm install @cdktn/provider-github
-  npm install @cdktn/provider-null
+  pnpm add @cdktn/provider-aws
+  pnpm add @cdktn/provider-google
+  pnpm add @cdktn/provider-azurerm
+  pnpm add @cdktn/provider-docker
+  pnpm add @cdktn/provider-github
+  pnpm add @cdktn/provider-null
 
   You can also build any module or provider locally. Learn more https://cdktn.io/docs/concepts/providers
 

@@ -32,7 +32,7 @@ Your `cdktf.json` file should look similar to this:
 ```json
 {
   "language": "typescript",
-  "app": "npx ts-node main.ts",
+  "app": "pnpm exec tsx main.ts",
   // ...
   "watchPattern": [
     "./**/*.ts",
@@ -47,7 +47,7 @@ fact want to observe our `.js` files in the `lambda` folder, so let's add
 ```json
 {
   "language": "typescript",
-  "app": "npx ts-node main.ts",
+  "app": "pnpm exec tsx main.ts",
   // ...
   "watchPattern": [
     "./**/*.ts",
