@@ -28,6 +28,12 @@ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hello/world
 6. Try hitting a new path and refresh the Items view.
    You should see a new item with a `hits` count of one.
 
+You can inspect the table from the terminal instead:
+
+```
+aws dynamodb scan --table-name <table-name>
+```
+
 ## Good job!
 
 The cool thing about our `HitCounter` is that it's quite useful. It basically
@@ -36,7 +42,7 @@ Gateway proxy backend and it will log hits to this API.
 
 Since our hit counter is a simple JavaScript class, you could package it into an
 npm module and publish it to [npmjs.org](http://npmjs.org/), which is the
-JavaScript package manager. Then, anyone could `npm install` it and add it to
+JavaScript package manager. Then, anyone could `pnpm add` it and add it to
 their CDK apps.
 
 -----
