@@ -203,6 +203,28 @@
   box-shadow: inset 2px 0 0 var(--brand);
 }
 
+/*
+ * Line numbers (opt-in via CodeBlock's `lineNumbers`). A CSS counter on each
+ * `.line` keeps the numbers out of the text, so selecting or copying the code
+ * never picks them up. `.hl` lines pad back to the same content edge, so the
+ * gutter stays aligned across emphasised and plain lines. Spacing and colour
+ * match the guided tour's code pane gutter.
+ */
+.line-numbers .shiki code {
+  counter-reset: line;
+}
+.line-numbers .shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: var(--ln-width, 2ch);
+  margin-right: 1rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+  user-select: none;
+}
+
 @utility label-mono {
   @apply font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground;
 }

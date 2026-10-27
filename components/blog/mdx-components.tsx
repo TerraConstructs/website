@@ -10,6 +10,33 @@ import { DiagramFigure } from './diagram-figure'
 import { CfnScanExplainer, ClaudeNativePipeline, GranularityAB, MastraPipeline } from './diagrams/terratitan'
 
 /**
+ * Fenced code blocks arrive as <pre><code class="language-x">. Hand them to the
+ * Shiki-backed CodeBlock instead of rendering a bare <pre>. Workshops build
+ * theirs with `lineNumbers`; blog posts keep the plain listing.
+ */
+export function fencedCode({ lineNumbers = false }: { lineNumbers?: boolean } = {}) {
+  return function Pre({ children }: { children?: ReactNode }) {
+    const child = children as
+      | { props?: { className?: string; children?: string; meta?: string } }
+      | undefined
+    const lang = /language-(\w+)/.exec(child?.props?.className ?? '')?.[1] ?? 'text'
+    const code = String(child?.props?.children ?? '').replace(/\n$/, '')
+    const meta = child?.props?.meta
+    // ```ts title="hitcounter.ts" {3-5} — title and line ranges can share a fence
+    const title = /\btitle=(?:"([^"]*)"|'([^']*)')/.exec(meta ?? '')
+    return (
+      <CodeBlock
+        code={code}
+        lang={lang}
+        meta={meta}
+        filename={title?.[1] ?? title?.[2]}
+        lineNumbers={lineNumbers}
+      />
+    )
+  }
+}
+
+/**
  * Components available to every MDX post. These can be used directly in
  * markdown without importing.
  */
@@ -102,14 +129,5 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  // Fenced code blocks arrive as <pre><code class="language-x">. Hand them to
-  // the Shiki-backed CodeBlock instead of rendering a bare <pre>.
-  pre: ({ children }: { children?: ReactNode }) => {
-    const child = children as
-      | { props?: { className?: string; children?: string; meta?: string } }
-      | undefined
-    const lang = /language-(\w+)/.exec(child?.props?.className ?? '')?.[1] ?? 'text'
-    const code = String(child?.props?.children ?? '').replace(/\n$/, '')
-    return <CodeBlock code={code} lang={lang} meta={child?.props?.meta} />
-  },
+  pre: fencedCode(),
 }
