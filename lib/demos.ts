@@ -89,6 +89,7 @@ const SUPPORTED_LANGS = new Set([
   'diff',
   'yaml',
   'yml',
+  'tfplan',
 ])
 const LANG_ALIAS: Record<string, string> = {
   ts: 'typescript',
@@ -100,6 +101,7 @@ const LANG_ALIAS: Record<string, string> = {
   shell: 'bash',
   terminal: 'bash', // a Hugo-era label that survived the workshop conversion
   yml: 'yaml',
+  tfplan: 'text', // `cdktn diff` output: plain tokens, rows shaded by planChange
 }
 
 /**
@@ -123,6 +125,19 @@ export function parseHighlightLines(meta?: string): Set<number> {
   return lines
 }
 
+/**
+ * The Terraform plan action marker on a `cdktn diff` output line, after the
+ * optional stack-name prefix cdktn prints (`cdk-workshop  + create`).
+ */
+const PLAN_MARKER = /^(?:\S+\s+)?\s*(-\/\+|\+\/-|[+~-])\s/
+const PLAN_CLASS: Record<string, string> = {
+  '+': 'plan-add',
+  '-': 'plan-remove',
+  '~': 'plan-change',
+  '-/+': 'plan-replace',
+  '+/-': 'plan-replace',
+}
+
 /** Shiki-highlighted HTML for MDX fenced code blocks. */
 export async function highlightToHtml(
   code: string,
@@ -140,22 +155,22 @@ export async function highlightToHtml(
     await highlighter.loadLanguage(resolved as Parameters<typeof highlighter.loadLanguage>[0])
   }
 
+  const sourceLines = code.split('\n')
   return highlighter.codeToHtml(code, {
     lang: resolved,
     themes: { light: 'github-light', dark: 'vitesse-dark' },
     defaultColor: false,
     colorReplacements: { '#ffffff': 'transparent', '#121212': 'transparent' },
-    transformers:
-      highlightLines?.size
-        ? [
-            {
-              // marks emphasised lines; `.line.hl` is styled in globals.css
-              line(node, line) {
-                if (highlightLines.has(line)) this.addClassToHast(node, 'hl')
-              },
-            },
-          ]
-        : [],
+    transformers: [
+      {
+        // marks emphasised lines and plan actions; both are styled in globals.css
+        line(node, line) {
+          if (highlightLines?.has(line)) this.addClassToHast(node, 'hl')
+          const marker = lang === 'tfplan' && PLAN_MARKER.exec(sourceLines[line - 1])?.[1]
+          if (marker) this.addClassToHast(node, PLAN_CLASS[marker])
+        },
+      },
+    ],
   })
 }
 

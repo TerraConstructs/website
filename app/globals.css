@@ -204,6 +204,29 @@
 }
 
 /*
+ * `cdktn diff` output (```tfplan): rows tinted by their Terraform action,
+ * full-bleed like `.hl`.
+ */
+.shiki .line[class*='plan-'] {
+  display: inline-block;
+  width: calc(100% + 2rem);
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  background-color: color-mix(in oklab, var(--plan) 14%, transparent) !important;
+  box-shadow: inset 2px 0 0 var(--plan);
+}
+.shiki .line.plan-add {
+  --plan: oklch(0.68 0.16 150);
+}
+.shiki .line.plan-remove {
+  --plan: var(--destructive);
+}
+.shiki .line.plan-change,
+.shiki .line.plan-replace {
+  --plan: var(--warning);
+}
+
+/*
  * Line numbers (opt-in via CodeBlock's `lineNumbers`). A CSS counter on each
  * `.line` keeps the numbers out of the text, so selecting or copying the code
  * never picks them up. `.hl` lines pad back to the same content edge, so the

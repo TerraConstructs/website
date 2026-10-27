@@ -13,6 +13,7 @@ const NO_LINE_NUMBER_LANGS = new Set([
   'text',
   'plaintext',
   'txt',
+  'tfplan',
 ])
 
 /**
