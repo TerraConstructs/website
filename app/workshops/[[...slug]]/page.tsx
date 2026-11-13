@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import { ChevronRight, Pencil } from 'lucide-react'
 import {
   getAllWorkshopParams,
+  getProgressSteps,
   getWorkshopPage,
   getWorkshopTree,
   type WorkshopId,
@@ -20,6 +21,10 @@ import { PrevNext } from '@/components/workshop/prev-next'
 import { ChildrenList } from '@/components/workshop/children-list'
 import { WorkshopImage } from '@/components/workshop/workshop-image'
 import { WorkshopIndex } from '@/components/workshop/workshop-index'
+import { ProgressBar } from '@/components/workshop/progress/progress-bar'
+import { EndpointCapture } from '@/components/workshop/progress/endpoint-capture'
+import { BoardInvite } from '@/components/workshop/progress/board-invite'
+import { EndpointText } from '@/components/workshop/progress/endpoint-fill'
 import { BreadcrumbJsonLd } from '@/components/site/json-ld'
 import { ogImage } from '@/lib/site'
 
@@ -74,9 +79,10 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
   const { slug = [] } = await params
   if (slug.length === 0) return <WorkshopIndex />
 
-  const [page, tree] = await Promise.all([
+  const [page, tree, steps] = await Promise.all([
     getWorkshopPage(slug),
     getWorkshopTree(slug[0] as WorkshopId),
+    getProgressSteps(slug[0] as WorkshopId),
   ])
   if (!page || !tree) notFound()
 
@@ -85,6 +91,7 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
   const components = {
     ...mdxComponents,
     ChildrenList: () => <ChildrenList segments={slug} />,
+    Endpoint: EndpointText,
     img: WorkshopImage,
   }
 
@@ -126,6 +133,8 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
             {page.title}
           </h1>
 
+          <ProgressBar steps={steps} currentId={page.stepId} />
+
           {/* ToC inline on small screens, where the aside is hidden */}
           <div className="mt-6 border-y py-6 xl:hidden">
             <TableOfContents headings={page.headings} />
@@ -146,7 +155,11 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
             />
           </div>
 
-          <PrevNext prev={page.prev} next={page.next} />
+          {page.progress.capture ? <EndpointCapture slot={page.progress.capture} /> : null}
+
+          <PrevNext prev={page.prev} next={page.next} stepId={page.stepId} verifies={page.progress.verifies} />
+
+          <BoardInvite />
 
           <a
             href={page.editUrl}

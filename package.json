@@ -7,7 +7,8 @@
     "dev": "next dev",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "verify": "pnpm lint && pnpm typecheck && pnpm build",
+    "test": "node --import tsx --test \"lib/**/*.test.ts\"",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "start": "next start",
     "synth": "tsx infra/main.ts"
   },

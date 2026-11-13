@@ -128,6 +128,8 @@ export async function highlightToHtml(
   code: string,
   lang: string,
   highlightLines?: Set<number>,
+  /** Character ranges to wrap in a span with these attributes (e.g. the endpoint placeholder). */
+  decorations: { start: number; end: number; properties: Record<string, string> }[] = [],
 ): Promise<string> {
   const highlighter = await getHighlighter()
   const resolved = SUPPORTED_LANGS.has(lang) ? (LANG_ALIAS[lang] ?? lang) : 'text'
@@ -145,6 +147,7 @@ export async function highlightToHtml(
     themes: { light: 'github-light', dark: 'vitesse-dark' },
     defaultColor: false,
     colorReplacements: { '#ffffff': 'transparent', '#121212': 'transparent' },
+    decorations,
     transformers:
       highlightLines?.size
         ? [

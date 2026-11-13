@@ -1,11 +1,12 @@
 import { highlightToHtml, parseHighlightLines } from '@/lib/demos'
+import { expandEndpointPlaceholders } from '@/lib/progress/model'
+import { EndpointFill } from '@/components/workshop/progress/endpoint-fill'
 
 /**
- * Server-rendered Shiki code block. Shares the highlighter singleton with the
- * guided tour so posts and the tour stay visually consistent.
- *
- * `meta` is the fence's trailing meta string (e.g. `{3,5-7}`), used by workshop
- * pages to emphasise the lines a step just changed.
+ * Server-rendered Shiki code block, sharing the guided tour's highlighter.
+ * `meta` is the fence's meta string (e.g. `{3,5-7}`): lines to emphasise.
+ * `<Endpoint />` in a fence renders as the documented example endpoint, and
+ * `EndpointFill` swaps in the attendee's own once they posted it.
  */
 export async function CodeBlock({
   code,
@@ -18,7 +19,17 @@ export async function CodeBlock({
   filename?: string
   meta?: string
 }) {
-  const html = await highlightToHtml(code, lang, parseHighlightLines(meta))
+  const expanded = expandEndpointPlaceholders(code)
+  const html = await highlightToHtml(
+    expanded.code,
+    lang,
+    parseHighlightLines(meta),
+    expanded.ranges.map((r) => ({
+      start: r.start,
+      end: r.end,
+      properties: { 'data-endpoint': r.slot, class: 'tc-endpoint' },
+    })),
+  )
 
   return (
     <figure className="mt-6 overflow-hidden rounded-lg border bg-surface">
@@ -32,6 +43,7 @@ export async function CodeBlock({
         className="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-relaxed [&_pre]:bg-transparent"
         dangerouslySetInnerHTML={{ __html: html }}
       />
+      {expanded.ranges.length ? <EndpointFill /> : null}
     </figure>
   )
 }

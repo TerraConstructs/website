@@ -27,8 +27,8 @@ import { remove } from 'unist-util-remove'
 const OUT = path.resolve('out')
 const SITE_URL = 'https://terraconstructs.dev'
 
-/** Chrome that carries no content once flattened to text. */
-const DROP = 'script, style, noscript, template, svg, button, [aria-hidden="true"], [hidden]'
+/** Chrome that carries no content once flattened to text (incl. the workshop progress UI). */
+const DROP = 'script, style, noscript, template, svg, button, [aria-hidden="true"], [hidden], [data-progress-ui]'
 
 async function* pages(dir) {
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) {

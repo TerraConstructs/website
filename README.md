@@ -83,6 +83,45 @@ sidebar entries and prev/next with no code change.
 refuses to overwrite the committed content without `--force`; the MDX is the
 source of truth now.
 
+## Workshop progress
+
+The workshop pages track progress through a small Cloudflare Worker (its
+source is not in this repository). Everything dynamic is client-side; the pages still build as a static export and read fine without it.
+
+- `components/workshop/progress/`: the progress bar (one segment per page:
+  green verified, yellow moved on but not verified, blue done with nothing to
+  verify, empty not reached), the "Next" card that asks the Worker to verify the
+  page before moving on (moving on is always allowed), the endpoint card, the
+  optional "put yourself on the board" invite, and the code-block endpoint fill.
+- `lib/progress/`: `store.ts` (session token in `localStorage`, created lazily
+  on the first progress action, sent as a bearer token; never cookies),
+  `model.ts` (pure helpers, tested with `pnpm test`).
+- Frontmatter, per page: `progress.capture` (`api` or `viewer`) shows the
+  endpoint card; `progress.check` declares what the Worker verifies on "Next".
+  The site only reads whether a check exists; the Worker gets the check itself
+  from content generated out of this frontmatter (the schema is documented
+  with the Worker), so the browser sends only the page id.
+- In shell blocks, write `curl <Endpoint />hello` (or `<Endpoint name="viewer" />`)
+  instead of a hard-coded URL. It renders as the documented example
+  (`https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/`) and becomes
+  the attendee's own endpoint once they saved one.
+
+The Worker's address comes from `NEXT_PUBLIC_WORKSHOP_API`: `.env.development`
+sets `http://localhost:8787`, `.env.production` the workers.dev URL. There is
+no fallback: with the variable unset, progress tracking is off. The CloudFront CSP allows
+that origin in `connect-src` (`infra/main.ts`). With the Worker unreachable the
+progress UI stays as it was and "Next" just navigates.
+
+Local development, end to end (Worker under `wrangler dev`, a stub API Gateway
+endpoint, and this site): from the Worker's checkout run
+
+```bash
+demo/scripts/dev.sh <path-to-this-website-checkout>
+```
+
+then open http://localhost:3000/workshops/aws/ and use
+`http://127.0.0.1:8789/prod/` as your endpoint.
+
 ## History
 
 The Vite/React version of this site is on the `v2` branch, and an earlier
