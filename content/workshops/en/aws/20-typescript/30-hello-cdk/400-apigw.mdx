@@ -1,5 +1,14 @@
 ---
 title: 'API Gateway'
+progress:
+  # the page where the attendee first deploys an API Gateway endpoint: ask for it here
+  capture: api
+  check:
+    type: http
+    endpoint: api
+    path: /
+    status: 200
+    bodyIncludes: ["You've hit /"]
 ---
 
 Next step is to add an API Gateway in front of our function. API Gateway will
@@ -153,7 +162,7 @@ your favorite web browser to hit this URL.
 </Callout>
 
 ```
-curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl <Endpoint />
 ```
 
 Output should look like this:

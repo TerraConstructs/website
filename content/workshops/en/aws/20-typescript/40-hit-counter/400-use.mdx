@@ -1,5 +1,13 @@
 ---
 title: 'Use the hit counter'
+progress:
+  # this page ends on the expected failure: API Gateway answers 502 until permissions are fixed
+  check:
+    type: http
+    endpoint: api
+    path: /
+    status: 502
+    bodyIncludes: ["Internal server error"]
 ---
 
 ## Add a hit counter to our stack
@@ -88,7 +96,7 @@ Use `curl` or your web browser to hit your endpoint (we use `-i` to show HTTP
 response fields and status code):
 
 ```
-curl -i https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl -i <Endpoint />
 ```
 
 Oh no... seems like something went wrong:

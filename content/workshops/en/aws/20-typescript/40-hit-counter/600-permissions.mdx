@@ -1,5 +1,12 @@
 ---
 title: 'Granting permissions'
+progress:
+  check:
+    type: http
+    endpoint: api
+    path: /
+    status: 200
+    bodyIncludes: ["You've hit /"]
 ---
 
 ## Allow Lambda to read/write our DynamoDB table
@@ -64,7 +71,7 @@ Okay, deployment is complete. Let's run our test again (either use `curl` or
 your web browser):
 
 ```
-curl -i https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl -i <Endpoint />
 ```
 
 Again?
@@ -238,7 +245,7 @@ cdktn deploy
 Then hit your endpoint with `curl` or with your web browser:
 
 ```
-curl -i https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl -i <Endpoint />
 ```
 
 Output should look like this:

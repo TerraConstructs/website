@@ -1,5 +1,21 @@
 ---
 title: 'Deploying our app'
+progress:
+  # the table viewer is a second API Gateway endpoint: ask for it here
+  capture: viewer
+  check:
+    # read the /hit1 count from the viewer, hit /hit1 once, read again: the count must rise
+    type: rises
+    read:
+      endpoint: viewer
+      path: /
+      status: 200
+      bodyIncludes: ["Hello Hits"]
+      number: '<td>(\d+)</td>\s*<td>/hit1</td>'
+    poke:
+      endpoint: api
+      path: /hit1
+      status: 200
 ---
 
 ## cdktn diff
@@ -155,19 +171,19 @@ viewer. You should see the values update in real-time.
 Use `curl` or your web browser to produce a few hits:
 
 ```
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hoooot
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hoooot
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hoooot
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hoooot
-$ curl https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hoooot
+$ curl <Endpoint />hoooot
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hit1
+$ curl <Endpoint />hoooot
+$ curl <Endpoint />hoooot
+$ curl <Endpoint />hit1
 ```
 
 <Callout type="tip">
