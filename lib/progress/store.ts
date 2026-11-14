@@ -198,20 +198,38 @@ async function ensureSession(): Promise<boolean> {
   return creating
 }
 
+const recording = new Set<string>()
+
 /** Records `stepId` without holding the reader: "done" at once, or whatever the Worker's check says. */
 async function record(stepId: string, verifies: boolean) {
-  if (!(await ensureSession())) return
-  if (!verifies && !state.steps[stepId]) set({ steps: { ...state.steps, [stepId]: { state: 'done', reason: 'no_check' } } })
-  const r = await api('/api/session/advance', { method: 'POST', body: JSON.stringify({ step: stepId }) })
-  if (r?.status === 200 && r.body.steps) set({ steps: r.body.steps as Record<string, StepRecord> })
+  if (recording.has(stepId)) return
+  recording.add(stepId)
+  try {
+    if (!(await ensureSession())) return
+    if (!verifies && !state.steps[stepId]) set({ steps: { ...state.steps, [stepId]: { state: 'done', reason: 'no_check' } } })
+    const r = await api('/api/session/advance', { method: 'POST', body: JSON.stringify({ step: stepId }) })
+    if (r?.status === 200 && r.body.steps) set({ steps: r.body.steps as Record<string, StepRecord> })
+  } finally {
+    recording.delete(stepId)
+  }
 }
 
+// Pages whose end the reader has reached in this page session; nothing counts before that.
+const reached = new Set<string>()
 let visiting: { stepId: string; verifies: boolean } | null = null
 let advanced: string | null = null
 
+/** The end of `stepId` came into view: a page with nothing to verify is done at that moment. */
+export function reachEnd(stepId: string, verifies: boolean) {
+  hydrate()
+  if (reached.has(stepId)) return
+  reached.add(stepId)
+  if (!verifies && !state.steps[stepId]) void record(stepId, false)
+}
+
 /**
- * The reader is now on `stepId`. A page left by the sidebar, "Previous" or the browser's history
- * (anything but "Next", which records it itself) is recorded here, quietly, if it has no state yet.
+ * The reader is now on `stepId`. A page with a check that was read to its end and then left by
+ * anything but "Next" (which verifies it itself) is verified here, quietly.
  */
 export function visit(stepId: string, verifies: boolean) {
   hydrate()
@@ -220,8 +238,8 @@ export function visit(stepId: string, verifies: boolean) {
   if (!left || left.stepId === stepId) return
   const viaNext = advanced === left.stepId
   advanced = null
-  if (viaNext || state.steps[left.stepId]) return
-  void record(left.stepId, left.verifies)
+  if (viaNext || !left.verifies || !reached.has(left.stepId) || state.steps[left.stepId]) return
+  void record(left.stepId, true)
 }
 
 export type AdvanceResult = { state: StepState; reason: string } | null
@@ -235,7 +253,7 @@ export async function advance(stepId: string, verifies: boolean): Promise<Advanc
   advanced = stepId
   if (!verifies) {
     // Nothing to wait for: record in the background and let the reader move on at once.
-    void record(stepId, false)
+    if (!state.steps[stepId]) void record(stepId, false)
     return null
   }
   if (state.status === 'offline' || state.status === 'unavailable') return null

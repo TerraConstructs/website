@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import type { MouseEvent } from 'react'
+import { useEffect, useRef, type MouseEvent, type Ref } from 'react'
 import { ArrowRight, Check, CircleDashed, Flag, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { advance, useProgress } from '@/lib/progress/store'
+import { advance, reachEnd, useProgress } from '@/lib/progress/store'
 import { useReducedMotion } from '@/lib/progress/reduced-motion'
 import { verdictMessage } from '@/lib/progress/model'
 
@@ -32,6 +32,41 @@ export function ProgressNextLink({
   const busy = progress.verifying === stepId
   const flash = progress.flash?.stepId === stepId ? progress.flash : null
   const finished = !next && Boolean(progress.steps[stepId])
+
+  // The page counts once this card (its end) has been on screen and the reader has done something
+  // that is not a click on a link: so a crawler, or clicking through the pages, records nothing.
+  const card = useRef<HTMLElement | null>(null)
+  useEffect(() => {
+    const el = card.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    let seen = false
+    let input = false
+    const events = ['scroll', 'wheel', 'keydown', 'pointerdown', 'touchstart'] as const
+    const stop = () => {
+      io.disconnect()
+      for (const n of events) window.removeEventListener(n, onInput, true)
+    }
+    const settle = () => {
+      if (!seen || !input) return
+      stop()
+      reachEnd(stepId, verifies)
+    }
+    const onInput = (e: Event) => {
+      if (!e.isTrusted) return
+      const onLink = e.target instanceof Element && e.target.closest('a[href]') !== null
+      if (onLink && e.type !== 'scroll' && e.type !== 'wheel') return
+      input = true
+      settle()
+    }
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((x) => x.isIntersecting)) return
+      seen = true
+      settle()
+    })
+    io.observe(el)
+    for (const n of events) window.addEventListener(n, onInput, { capture: true, passive: true })
+    return stop
+  }, [stepId, verifies])
 
   async function onClick(e: MouseEvent<HTMLElement>) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
@@ -83,14 +118,14 @@ export function ProgressNextLink({
 
   return next ? (
     <>
-      <Link href={next.href} onClick={onClick} aria-busy={busy || undefined} className={className} data-testid="next-link">
+      <Link ref={card as Ref<HTMLAnchorElement>} href={next.href} onClick={onClick} aria-busy={busy || undefined} className={className} data-testid="next-link">
         {body}
       </Link>
       {status}
     </>
   ) : (
     <>
-      <button type="button" onClick={onClick} aria-busy={busy || undefined} className={cn(className, 'w-full')} data-testid="next-link">
+      <button ref={card as Ref<HTMLButtonElement>} type="button" onClick={onClick} aria-busy={busy || undefined} className={cn(className, 'w-full')} data-testid="next-link">
         {body}
       </button>
       {status}
