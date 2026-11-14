@@ -57,6 +57,21 @@ export function expandEndpointPlaceholders(code: string): { code: string; ranges
   return { code: out, ranges }
 }
 
+/** Expanded code with each range holding the attendee's endpoint, or the example where they have none. */
+export function fillEndpoints(
+  code: string,
+  ranges: EndpointRange[],
+  endpoints: Partial<Record<EndpointSlot, string>>,
+): string {
+  let out = ''
+  let last = 0
+  for (const r of ranges) {
+    out += code.slice(last, r.start) + (endpoints[r.slot] ?? EXAMPLE_ENDPOINTS[r.slot])
+    last = r.end
+  }
+  return out + code.slice(last)
+}
+
 /** State per page, in reading order, for the progress bar. */
 export function segmentStates(
   steps: ProgressStep[],

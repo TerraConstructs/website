@@ -1,6 +1,6 @@
 import { highlightToHtml, parseHighlightLines } from '@/lib/demos'
 import { expandEndpointPlaceholders } from '@/lib/progress/model'
-import { EndpointFill } from '@/components/workshop/progress/endpoint-fill'
+import { EndpointCopyButton, EndpointFill } from '@/components/workshop/progress/endpoint-fill'
 import { cn } from '@/lib/utils'
 import { CopyButton } from './copy-button'
 
@@ -50,6 +50,12 @@ export async function CodeBlock({
   )
   const lineCount = expanded.code.split('\n').length
   const numbered = lineNumbers && lineCount > 1 && !NO_LINE_NUMBER_LANGS.has(lang)
+  const copy = (className: string) =>
+    expanded.ranges.length ? (
+      <EndpointCopyButton code={expanded.code} ranges={expanded.ranges} className={className} />
+    ) : (
+      <CopyButton code={code} className={className} />
+    )
 
   return (
     <figure className="group relative mt-6 overflow-hidden rounded-lg border bg-surface">
@@ -57,10 +63,10 @@ export async function CodeBlock({
         <figcaption className="flex items-center gap-2 border-b bg-background/40 py-1 pl-3 pr-1">
           <span className="size-1.5 rounded-full bg-brand" aria-hidden />
           <span className="font-mono text-[0.6875rem] text-muted-foreground">{filename}</span>
-          <CopyButton code={expanded.code} className="ml-auto" />
+          {copy('ml-auto')}
         </figcaption>
       ) : (
-        <CopyButton code={expanded.code} className="absolute right-2 top-2 z-10" />
+        copy('absolute right-2 top-2 z-10')
       )}
       <div
         className={cn(

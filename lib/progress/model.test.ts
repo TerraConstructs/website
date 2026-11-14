@@ -4,6 +4,7 @@ import {
   atLeast,
   EXAMPLE_ENDPOINTS,
   expandEndpointPlaceholders,
+  fillEndpoints,
   localEndpoint,
   segmentStates,
   summarize,
@@ -30,6 +31,13 @@ test('placeholders expand to the documented example, with ranges for the client'
 test('code without placeholders is untouched', () => {
   const src = 'cdktn deploy\n<Endpointx /> <endpoint />'
   assert.deepEqual(expandEndpointPlaceholders(src), { code: src, ranges: [] })
+})
+
+test('copied code carries the endpoint the attendee sees, never the placeholder markup', () => {
+  const own = 'https://abcdefghij.execute-api.eu-west-1.amazonaws.com/prod/'
+  const { code, ranges } = expandEndpointPlaceholders('curl <Endpoint />hello\ncurl <Endpoint name="viewer" />')
+  assert.equal(fillEndpoints(code, ranges, {}), code)
+  assert.equal(fillEndpoints(code, ranges, { api: own }), `curl ${own}hello\ncurl ${EXAMPLE_ENDPOINTS.viewer}`)
 })
 
 test('segment states follow the reading order, unreached pages are empty', () => {

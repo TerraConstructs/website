@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { ensureLoaded, useProgress } from '@/lib/progress/store'
-import { EXAMPLE_ENDPOINTS, type EndpointSlot } from '@/lib/progress/model'
+import { EXAMPLE_ENDPOINTS, fillEndpoints, type EndpointRange, type EndpointSlot } from '@/lib/progress/model'
+import { CopyButton } from '@/components/blog/copy-button'
 
 /**
  * Swaps the example endpoint in its code block for the attendee's own, once
@@ -27,6 +28,20 @@ export function EndpointFill() {
     })
   }, [endpoints])
   return <span ref={ref} hidden />
+}
+
+/** Copies the block as shown: the attendee's endpoint where they posted one, else the example. */
+export function EndpointCopyButton({
+  code,
+  ranges,
+  className,
+}: {
+  code: string
+  ranges: EndpointRange[]
+  className?: string
+}) {
+  const { endpoints } = useProgress()
+  return <CopyButton code={fillEndpoints(code, ranges, endpoints)} className={className} />
 }
 
 /** `<Endpoint />` in prose: the attendee's endpoint, or the documented example. */
