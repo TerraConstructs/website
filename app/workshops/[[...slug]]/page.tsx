@@ -13,7 +13,7 @@ import {
   type WorkshopId,
 } from '@/lib/workshops'
 import { rehypeCodeMeta } from '@/lib/rehype-code-meta'
-import { mdxComponents } from '@/components/blog/mdx-components'
+import { fencedCode, mdxComponents } from '@/components/blog/mdx-components'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { WorkshopSidebar } from '@/components/workshop/workshop-sidebar'
 import { WorkshopNavDrawer } from '@/components/workshop/workshop-nav-drawer'
@@ -93,6 +93,8 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
     ChildrenList: () => <ChildrenList segments={slug} />,
     Endpoint: EndpointText,
     img: WorkshopImage,
+    // long type-along listings, where a gutter helps readers keep their place
+    pre: fencedCode({ lineNumbers: true }),
   }
 
   return (
