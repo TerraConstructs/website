@@ -4,6 +4,7 @@ import { cache } from 'react'
 import matter from 'gray-matter'
 import { extractHeadings, type Heading } from './markdown'
 import { LINKS } from './links'
+import type { EndpointSlot, PageProgress, ProgressStep } from './progress/model'
 
 /**
  * Workshop content is a directory tree of MDX under content/workshops/<locale>/<cloud>.
@@ -79,6 +80,9 @@ export type WorkshopPage = {
   breadcrumbs: { title: string; href: string }[]
   prev: { title: string; href: string } | null
   next: { title: string; href: string } | null
+  /** The page's id in the progress tracker: its URL path below /workshops. */
+  stepId: string
+  progress: PageProgress
 }
 
 const stripOrder = (name: string) => name.replace(/^\d+-/, '')
@@ -201,6 +205,18 @@ async function resolveFile(segments: string[], locale: string): Promise<string |
   return path.join(dir, 'index.mdx')
 }
 
+/**
+ * The `progress` frontmatter block, as far as the site needs it. The check
+ * itself is read by the progress Worker's content generator, never by the
+ * browser.
+ */
+function readProgress(data: Record<string, unknown>): PageProgress {
+  const p = (data.progress ?? null) as { capture?: unknown; check?: unknown } | null
+  const capture = p?.capture === 'api' || p?.capture === 'viewer' ? (p.capture as EndpointSlot) : null
+  const verifies = Boolean(p?.check) && p?.check !== 'none'
+  return { capture, verifies }
+}
+
 export const getWorkshopPage = cache(
   async (segments: string[], locale = DEFAULT_LOCALE): Promise<WorkshopPage | null> => {
     const file = await resolveFile(segments, locale)
@@ -240,8 +256,20 @@ export const getWorkshopPage = cache(
       breadcrumbs,
       prev: prev ? { title: prev.title, href: prev.href } : null,
       next: next ? { title: next.title, href: next.href } : null,
+      stepId: segments.join('/'),
+      progress: readProgress(data),
     }
   },
+)
+
+/** One progress segment per page, in reading order (the Worker's step list is generated the same way). */
+export const getProgressSteps = cache(
+  async (workshop: WorkshopId = 'aws', locale = DEFAULT_LOCALE): Promise<ProgressStep[]> =>
+    (await getWorkshopPages(workshop, locale)).map((p) => ({
+      id: p.segments.join('/'),
+      title: p.title,
+      href: p.href,
+    })),
 )
 
 /** Every route under /workshops/[...slug], for generateStaticParams. */

@@ -8,7 +8,7 @@ Okay, now let's write the Lambda handler code for our hit counter.
 
 Create the file `lambda/hitcounter.js`:
 
-```js
+```js title="lambda/hitcounter.js"
 const { DynamoDB } = require("@aws-sdk/client-dynamodb");
 const { Lambda, InvokeCommand } = require("@aws-sdk/client-lambda");
 

@@ -50,6 +50,9 @@
   --color-warning-muted: var(--warning-muted);
   --color-surface: var(--surface);
   --color-hairline: var(--hairline);
+  --color-progress-verified: var(--progress-verified);
+  --color-progress-unverified: var(--progress-unverified);
+  --color-progress-done: var(--progress-done);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -92,6 +95,11 @@
   --doc-muted: oklch(0.76 0.1 200 / 14%);
   --warning: oklch(0.79 0.15 78);
   --warning-muted: oklch(0.79 0.15 78 / 13%);
+
+  /* workshop progress segments; the Worker's dashboard uses the same values */
+  --progress-verified: oklch(0.74 0.16 152);
+  --progress-unverified: oklch(0.79 0.15 78);
+  --progress-done: oklch(0.7 0.13 250);
 
   --chart-1: oklch(0.67 0.2 295);
   --chart-2: oklch(0.76 0.1 200);
@@ -139,6 +147,10 @@
   --doc-muted: oklch(0.48 0.1 205 / 10%);
   --warning: oklch(0.58 0.13 70);
   --warning-muted: oklch(0.58 0.13 70 / 11%);
+
+  --progress-verified: oklch(0.58 0.15 152);
+  --progress-unverified: oklch(0.66 0.14 72);
+  --progress-done: oklch(0.55 0.15 255);
 
   --chart-1: oklch(0.48 0.21 295);
   --chart-2: oklch(0.48 0.1 205);
@@ -203,6 +215,51 @@
   box-shadow: inset 2px 0 0 var(--brand);
 }
 
+/*
+ * `cdktn diff` output (```tfplan): rows tinted by their Terraform action,
+ * full-bleed like `.hl`.
+ */
+.shiki .line[class*='plan-'] {
+  display: inline-block;
+  width: calc(100% + 2rem);
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  background-color: color-mix(in oklab, var(--plan) 14%, transparent) !important;
+  box-shadow: inset 2px 0 0 var(--plan);
+}
+.shiki .line.plan-add {
+  --plan: oklch(0.68 0.16 150);
+}
+.shiki .line.plan-remove {
+  --plan: var(--destructive);
+}
+.shiki .line.plan-change,
+.shiki .line.plan-replace {
+  --plan: var(--warning);
+}
+
+/*
+ * Line numbers (opt-in via CodeBlock's `lineNumbers`). A CSS counter on each
+ * `.line` keeps the numbers out of the text, so selecting or copying the code
+ * never picks them up. `.hl` lines pad back to the same content edge, so the
+ * gutter stays aligned across emphasised and plain lines. Spacing and colour
+ * match the guided tour's code pane gutter.
+ */
+.line-numbers .shiki code {
+  counter-reset: line;
+}
+.line-numbers .shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: var(--ln-width, 2ch);
+  margin-right: 1rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+  user-select: none;
+}
+
 @utility label-mono {
   @apply font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-muted-foreground;
 }
@@ -212,4 +269,91 @@
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px),
     linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+
+/*
+ * Workshop progress (components/workshop/progress). Subtle on purpose: a slow
+ * pulse while the Worker verifies, a soft green glow that fades on a pass, and
+ * a quiet settle to yellow otherwise. Unverified segments are hatched so the
+ * state does not rest on colour alone. Reduced motion: colour changes only.
+ */
+.tc-seg {
+  transition: background-color 450ms ease, height 200ms ease;
+}
+.tc-hatch-unverified {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--progress-unverified) 0 3px,
+    oklch(from var(--progress-unverified) l c h / 50%) 3px 5px
+  );
+}
+@keyframes tc-seg-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes tc-seg-glow {
+  0% {
+    box-shadow: 0 0 0 0 oklch(from var(--progress-verified) l c h / 0%);
+  }
+  25% {
+    box-shadow: 0 0 10px 2px oklch(from var(--progress-verified) l c h / 55%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(from var(--progress-verified) l c h / 0%);
+  }
+}
+@keyframes tc-card-pulse {
+  0%,
+  100% {
+    border-color: var(--border);
+  }
+  50% {
+    border-color: oklch(from var(--brand) l c h / 45%);
+  }
+}
+@keyframes tc-card-glow {
+  0% {
+    box-shadow: 0 0 0 0 oklch(from var(--progress-verified) l c h / 0%);
+  }
+  30% {
+    box-shadow: 0 0 18px 0 oklch(from var(--progress-verified) l c h / 28%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(from var(--progress-verified) l c h / 0%);
+  }
+}
+.tc-seg-pulse {
+  animation: tc-seg-pulse 1.3s ease-in-out infinite;
+}
+.tc-seg-glow {
+  animation: tc-seg-glow 1.6s ease-out 1;
+}
+.tc-verify-pulse {
+  animation: tc-card-pulse 1.3s ease-in-out infinite;
+}
+.tc-verify-glow {
+  border-color: oklch(from var(--progress-verified) l c h / 45%);
+  animation: tc-card-glow 1.6s ease-out 1;
+}
+/* the attendee's own endpoint inside a code block */
+.tc-endpoint[data-own] {
+  text-decoration: underline dotted;
+  text-decoration-color: oklch(from var(--brand) l c h / 60%);
+  text-underline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tc-seg {
+    transition: none;
+  }
+  .tc-seg-pulse,
+  .tc-seg-glow,
+  .tc-verify-pulse,
+  .tc-verify-glow {
+    animation: none;
+  }
 }

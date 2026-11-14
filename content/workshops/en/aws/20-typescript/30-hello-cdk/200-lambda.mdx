@@ -139,7 +139,7 @@ cdktn diff
 
 Output would look like this:
 
-```text
+```tfplan
 cdk-workshop  Terraform used the selected providers to generate the following execution plan.
               Resource actions are indicated with the following symbols:
                 + create
@@ -240,5 +240,13 @@ Let's go to the AWS Lambda Console and test our function.
 7. Expand __Details__ in the __Execution result__ pane and you should see our expected output:
 
     ![](/workshops/aws/typescript/hello-cdk/lambda-4.png)
+
+Alternatively, invoke the function from the terminal. First, find its generated
+name, then substitute it in the second command:
+
+```bash
+aws lambda list-functions --query "Functions[?contains(FunctionName, 'HelloHandler')].FunctionName" --output text
+aws lambda invoke --function-name <function-name> --cli-binary-format raw-in-base64-out --payload '{"path":"/"}' response.json && cat response.json
+```
 
 ## 👏

@@ -1,5 +1,12 @@
 ---
 title: 'Granting permissions'
+progress:
+  check:
+    type: http
+    endpoint: api
+    path: /
+    status: 200
+    bodyIncludes: ["You've hit /"]
 ---
 
 ## Allow Lambda to read/write our DynamoDB table
@@ -64,7 +71,7 @@ Okay, deployment is complete. Let's run our test again (either use `curl` or
 your web browser):
 
 ```
-curl -i https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl -i <Endpoint />
 ```
 
 Again?
@@ -117,6 +124,14 @@ the table items:
 We should see the count for `/` path is incrementing now:
 
 ![](/workshops/aws/typescript/hit-counter/logs6.png)
+
+You can verify the same table contents from the terminal. First, find the
+generated table name, then scan it:
+
+```bash
+aws dynamodb list-tables --query "TableNames[?contains(@, 'HelloHitCounterHits')]" --output text
+aws dynamodb scan --table-name <table-name>
+```
 
 But, we must also give our hit counter permissions to invoke the downstream lambda function.
 
@@ -180,7 +195,7 @@ cdktn diff
 The **aws_iam_role_policy** section should look something like this,
 which shows the IAM statement was added to the role:
 
-```
+```tfplan
 cdk-workshop    # aws_iam_role_policy.HelloHitCounter_HitCounterHandler_ServiceRole_DefaultPolicy_ResourceRoles0_B630511F (HelloHitCounter/HitCounterHandler/ServiceRole/DefaultPolicy/ResourceRoles0) will be updated in-place
                 ~ resource "aws_iam_role_policy" "HelloHitCounter_HitCounterHandler_ServiceRole_DefaultPolicy_ResourceRoles0_B630511F" {
                       id          = "cdk-workshop-dev-cdrHandlerServiceRole20250715042121401600000001:cdkworkshopHelloHitCounterHitCounterHandlerServiceRoleDefaultPolicy688F79E1"
@@ -238,7 +253,7 @@ cdktn deploy
 Then hit your endpoint with `curl` or with your web browser:
 
 ```
-curl -i https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/prod/
+curl -i <Endpoint />
 ```
 
 Output should look like this:

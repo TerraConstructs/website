@@ -109,6 +109,12 @@ class LandingPageStack extends AwsStack {
       .replace(
         /script-src-attr[^;]+;/,
         "script-src-attr 'unsafe-inline';"
+      )
+      // The workshop pages call the progress Worker from the browser
+      // (components/workshop/progress, NEXT_PUBLIC_WORKSHOP_API).
+      .replace(
+        /connect-src[^;]+;/,
+        "connect-src 'self' https://www.google-analytics.com https://box-poc-workshop.terraconstructs.workers.dev;"
       );
 
     const appHeaders = new ResponseHeadersPolicy(this, "LandingHeaders", {
