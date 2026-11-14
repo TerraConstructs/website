@@ -1,13 +1,13 @@
 ---
 title: 'Use the hit counter'
 progress:
-  # this page ends on the expected failure: API Gateway answers 502 until permissions are fixed
+  # this page ends on the expected failure: API Gateway answers 502 until permissions are fixed.
+  # Status only: the Worker's fetch does not get API Gateway's own 502 body.
   check:
     type: http
     endpoint: api
     path: /
     status: 502
-    bodyIncludes: ["Internal server error"]
 ---
 
 ## Add a hit counter to our stack

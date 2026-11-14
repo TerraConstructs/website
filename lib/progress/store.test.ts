@@ -35,3 +35,52 @@ test('a fast verdict is shown only after the spinner: never green while still ve
   assert.equal(settled.flash, 'verified')
   assert.ok(settled.at >= MIN_VERIFY_MS - 5, `settled at ${settled.at} ms`)
 })
+
+test('a page counts when its end is reached, never by navigating alone, and never twice', async () => {
+  const advances: string[] = []
+  globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input)
+    if (url.endsWith('/api/sessions')) return new Response(JSON.stringify({ sessionId: 's1', token: 'a'.repeat(64) }), { status: 201 })
+    const step = JSON.parse(String(init?.body)).step as string
+    advances.push(step)
+    const steps = Object.fromEntries(advances.map((s) => [s, { state: 'done', reason: 'no_check' }]))
+    return new Response(JSON.stringify({ step, state: 'done', reason: 'no_check', steps }), { status: 200 })
+  }) as typeof fetch
+  const { advance, getProgress, reachEnd, visit } = await import('./store')
+  const settle = () => new Promise((r) => setTimeout(r, 20))
+
+  visit('aws/a', false)
+  visit('aws/b', false) // a left by the sidebar, its end never reached: nothing
+  await settle()
+  assert.deepEqual(advances, [])
+  assert.equal(getProgress().steps['aws/a'], undefined)
+
+  reachEnd('aws/b', false) // the end of b comes into view: done at once, without leaving
+  reachEnd('aws/b', false)
+  await settle()
+  assert.deepEqual(advances, ['aws/b'])
+  assert.equal(getProgress().steps['aws/b']?.state, 'done')
+
+  await advance('aws/b', false) // "Next" on a page already recorded does not record it again
+  visit('aws/c', false)
+  await settle()
+  assert.deepEqual(advances, ['aws/b'])
+
+  reachEnd('aws/c', false)
+  await advance('aws/c', false) // "Next" while that record is still in flight: still one call
+  await settle()
+  assert.deepEqual(advances, ['aws/b', 'aws/c'])
+
+  visit('aws/check1', true)
+  visit('aws/d', false) // a page with a check, left unread: nothing
+  await settle()
+  assert.deepEqual(advances, ['aws/b', 'aws/c'])
+
+  visit('aws/check2', true)
+  reachEnd('aws/check2', true) // reaching the end of a page with a check records nothing yet...
+  await settle()
+  assert.deepEqual(advances, ['aws/b', 'aws/c'])
+  visit('aws/d', false) // ...leaving it by the sidebar verifies it quietly
+  await settle()
+  assert.deepEqual(advances, ['aws/b', 'aws/c', 'aws/check2'])
+})
