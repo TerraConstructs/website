@@ -11,12 +11,17 @@ Open a terminal session and run the following command:
 - POSIX: on some systems you may need to run this with `sudo`
 
 ```
-pnpm add -g cdktn-cli
+npm install -g cdktn-cli
 ```
+
+The CLI is installed globally with npm, which ships with Node.js, so this step
+does not depend on your pnpm setup. The workshop project itself uses pnpm. If
+you prefer `pnpm add -g cdktn-cli`, run `pnpm setup` once and restart your shell
+first (see the [pnpm installation guide](https://pnpm.io/installation)).
 
 You can check the toolkit version:
 
 ```
 $ cdktn --version
-0.23.3
+0.25.0
 ```

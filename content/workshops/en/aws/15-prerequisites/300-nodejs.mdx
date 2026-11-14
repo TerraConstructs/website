@@ -2,8 +2,10 @@
 title: 'Node.js'
 ---
 
-CDKTN uses Node.js (>= 20.9.0).
-A version in active long-term support (24.x at this writing) is recommended.
+## Node.js
+
+CDKTN runs on Node.js. We recommend the current Node.js 24 LTS release
+(v24.22.3 at the time of writing).
 
 * To install Node.js visit the [node.js](https://nodejs.org) website.
 
@@ -16,8 +18,37 @@ A version in active long-term support (24.x at this writing) is recommended.
     node --version
     ```
 
-    Output should be >= 20:
+    Output should be a 24.x release, for example:
 
     ```
-    v24.4.1
+    v24.22.3
     ```
+
+## pnpm
+
+This workshop uses [pnpm](https://pnpm.io) to manage the project's packages.
+`cdktn init` with the pnpm template needs pnpm 10.26 or newer.
+
+* Install pnpm with one of the methods in the
+  [pnpm installation guide](https://pnpm.io/installation), for example with npm:
+
+    ```
+    npm install -g pnpm@latest
+    ```
+
+* Verify that pnpm is on your `PATH`:
+
+    ```
+    pnpm --version
+    ```
+
+    Output should be 10.26 or newer, for example:
+
+    ```
+    11.17.0
+    ```
+
+## See Also
+
+- [Node.js downloads](https://nodejs.org/en/download)
+- [pnpm installation guide](https://pnpm.io/installation)
