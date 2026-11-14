@@ -46,7 +46,7 @@ export function EndpointCapture({ slot }: { slot: EndpointSlot }) {
     if (r.ok) {
       setEditing(false)
       setValue('')
-      setMessage({ ok: true, text: r.synced ? 'Saved. The commands on this page and the pages after it now use your endpoint.' : 'Saved in this browser (progress tracking is offline).' })
+      setMessage({ ok: true, text: r.synced ? 'Saved.' : 'Saved in this browser (progress tracking is offline).' })
     } else {
       setMessage({ ok: false, text: r.message })
     }
