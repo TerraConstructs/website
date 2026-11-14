@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { CircleCheck, CircleDashed, CircleDot } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { ensureLoaded, useProgress } from '@/lib/progress/store'
+import { ensureLoaded, useProgress, visit } from '@/lib/progress/store'
 import { STATE_LABEL, segmentStates, summarize, type ProgressStep, type SegmentState } from '@/lib/progress/model'
 
 /** Shared with the dashboard: green, yellow (hatched, so colour is not the only signal), blue, empty. */
@@ -19,11 +19,12 @@ export const SEGMENT_CLASS: Record<SegmentState, string> = {
  * size never depends on the Worker: with the Worker unreachable it simply
  * stays as this browser last knew it (or empty).
  */
-export function ProgressBar({ steps, currentId }: { steps: ProgressStep[]; currentId: string }) {
+export function ProgressBar({ steps, currentId, verifies }: { steps: ProgressStep[]; currentId: string; verifies: boolean }) {
   const progress = useProgress()
   useEffect(() => {
     void ensureLoaded()
   }, [])
+  useEffect(() => visit(currentId, verifies), [currentId, verifies])
 
   const states = segmentStates(steps, progress.steps)
   const sum = summarize(states)

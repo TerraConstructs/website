@@ -198,6 +198,32 @@ async function ensureSession(): Promise<boolean> {
   return creating
 }
 
+/** Records `stepId` without holding the reader: "done" at once, or whatever the Worker's check says. */
+async function record(stepId: string, verifies: boolean) {
+  if (!(await ensureSession())) return
+  if (!verifies && !state.steps[stepId]) set({ steps: { ...state.steps, [stepId]: { state: 'done', reason: 'no_check' } } })
+  const r = await api('/api/session/advance', { method: 'POST', body: JSON.stringify({ step: stepId }) })
+  if (r?.status === 200 && r.body.steps) set({ steps: r.body.steps as Record<string, StepRecord> })
+}
+
+let visiting: { stepId: string; verifies: boolean } | null = null
+let advanced: string | null = null
+
+/**
+ * The reader is now on `stepId`. A page left by the sidebar, "Previous" or the browser's history
+ * (anything but "Next", which records it itself) is recorded here, quietly, if it has no state yet.
+ */
+export function visit(stepId: string, verifies: boolean) {
+  hydrate()
+  const left = visiting
+  visiting = { stepId, verifies }
+  if (!left || left.stepId === stepId) return
+  const viaNext = advanced === left.stepId
+  advanced = null
+  if (viaNext || state.steps[left.stepId]) return
+  void record(left.stepId, left.verifies)
+}
+
 export type AdvanceResult = { state: StepState; reason: string } | null
 
 /**
@@ -206,14 +232,10 @@ export type AdvanceResult = { state: StepState; reason: string } | null
  * null when progress is unavailable, so the caller just navigates.
  */
 export async function advance(stepId: string, verifies: boolean): Promise<AdvanceResult> {
+  advanced = stepId
   if (!verifies) {
     // Nothing to wait for: record in the background and let the reader move on at once.
-    void (async () => {
-      if (!(await ensureSession())) return
-      if (!state.steps[stepId]) set({ steps: { ...state.steps, [stepId]: { state: 'done', reason: 'no_check' } } })
-      const r = await api('/api/session/advance', { method: 'POST', body: JSON.stringify({ step: stepId }) })
-      if (r?.status === 200 && r.body.steps) set({ steps: r.body.steps as Record<string, StepRecord> })
-    })()
+    void record(stepId, false)
     return null
   }
   if (state.status === 'offline' || state.status === 'unavailable') return null

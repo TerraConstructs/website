@@ -35,3 +35,34 @@ test('a fast verdict is shown only after the spinner: never green while still ve
   assert.equal(settled.flash, 'verified')
   assert.ok(settled.at >= MIN_VERIFY_MS - 5, `settled at ${settled.at} ms`)
 })
+
+test('a page left without "Next" is recorded once; one left by "Next" is not recorded twice', async () => {
+  const advances: string[] = []
+  globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input)
+    if (url.endsWith('/api/sessions')) return new Response(JSON.stringify({ sessionId: 's1', token: 'a'.repeat(64) }), { status: 201 })
+    const step = JSON.parse(String(init?.body)).step as string
+    advances.push(step)
+    const steps = Object.fromEntries(advances.map((s) => [s, { state: 'done', reason: 'no_check' }]))
+    return new Response(JSON.stringify({ step, state: 'done', reason: 'no_check', steps }), { status: 200 })
+  }) as typeof fetch
+  const { advance, getProgress, visit } = await import('./store')
+  const settle = () => new Promise((r) => setTimeout(r, 20))
+
+  visit('aws/a', false)
+  visit('aws/a', false) // a re-render of the same page leaves nothing
+  visit('aws/b', false) // sidebar: a is left
+  await settle()
+  assert.deepEqual(advances, ['aws/a'])
+  assert.equal(getProgress().steps['aws/a']?.state, 'done')
+
+  await advance('aws/b', false) // "Next" records b itself...
+  visit('aws/c', false) // ...so arriving on c does not record b again
+  await settle()
+  assert.deepEqual(advances, ['aws/a', 'aws/b'])
+
+  visit('aws/a', false) // back to a recorded page, then away again: nothing new for a
+  visit('aws/c', false)
+  await settle()
+  assert.deepEqual(advances, ['aws/a', 'aws/b', 'aws/c'])
+})

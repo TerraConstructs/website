@@ -135,7 +135,7 @@ export default async function WorkshopPage({ params }: { params: Promise<Params>
             {page.title}
           </h1>
 
-          <ProgressBar steps={steps} currentId={page.stepId} />
+          <ProgressBar steps={steps} currentId={page.stepId} verifies={page.progress.verifies} />
 
           {/* ToC inline on small screens, where the aside is hidden */}
           <div className="mt-6 border-y py-6 xl:hidden">
