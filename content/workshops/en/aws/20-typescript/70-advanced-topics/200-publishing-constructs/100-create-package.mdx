@@ -1,0 +1,149 @@
+---
+title: 'Create the package'
+---
+
+## A directory next to the app
+
+The package gets its own directory, next to `cdk-workshop` (on the workshop box both are in `/home/project`).
+From the `cdk-workshop` directory:
+
+```
+mkdir -p ../hitcounter/src ../hitcounter/lambda && cd ../hitcounter
+```
+
+## package.json
+
+Create `package.json`:
+
+```json
+{
+  "name": "@workshop/hitcounter",
+  "version": "0.1.0",
+  "description": "Counts hits in DynamoDB in front of any Lambda function (TerraConstructs)",
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": ["lib/**/*.js", "lib/**/*.d.ts", "lambda/"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "cdktn": "^0.25.0",
+    "constructs": "^10.7.2",
+    "terraconstructs": "^0.2.21"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "cdktn": "^0.25.0",
+    "constructs": "^10.8.1",
+    "terraconstructs": "^0.2.21",
+    "typescript": "^6.0.3"
+  }
+}
+```
+
+The interesting parts:
+
+- **`main` and `types`** point at the compiled JavaScript and type declarations in `lib/`, not at the
+  TypeScript source. The app that installs the package does not compile it again.
+- **`files`** is the list of what goes into the package: the compiled code and the Lambda handler. The
+  TypeScript source, `tsconfig.json` and `node_modules` stay out.
+- **`peerDependencies`** instead of `dependencies` for `cdktn`, `constructs` and `terraconstructs`. The
+  `HitCounter` is added to the app's construct tree and is given the app's `LambdaFunction`, so it must use
+  the *app's* copy of these packages, not a copy of its own: constructs and tokens from two copies of
+  these packages, possibly in different versions, are not guaranteed to work together. A peer dependency
+  says "the app provides this, in a version within this range".
+- **`devDependencies`** lists the same packages again, so that you can build the library on its own.
+
+## tsconfig.json
+
+Create `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2022", "module": "commonjs", "lib": ["es2022"],
+    "declaration": true, "strict": true, "outDir": "lib", "rootDir": "src",
+    "skipLibCheck": true, "types": ["node"]
+  },
+  "include": ["src"]
+}
+```
+
+`declaration: true` makes `tsc` write the `.d.ts` files next to the JavaScript, so the app keeps type
+checking and autocompletion for `HitCounterProps`.
+
+## Move the construct
+
+Copy the handler and the construct from the app:
+
+```
+cp ../cdk-workshop/lambda/hitcounter.js lambda/
+cp ../cdk-workshop/lib/hitcounter.ts src/
+```
+
+Open `src/hitcounter.ts`. The Lambda code location has to change.
+
+`Code.fromAsset("lambda")` is resolved against the current directory, which is the app's directory when
+`cdktn` runs. That worked while the construct lived in the app. Once it is installed under
+`node_modules`, the handler is in the package's own `lambda/` directory, so the path has to be relative to
+the construct's file instead. Compiled, the file is `lib/hitcounter.js`, so the handler is one level up.
+Import `path` and change the `code` line. With that, the file looks like this (yours may differ in small
+ways, such as `const table` and comments; that is fine):
+
+```ts {1,25-26}
+import * as path from "path";
+import { Construct } from "constructs";
+import { Code, IFunction, LambdaFunction, Runtime } from "terraconstructs/lib/aws/compute";
+import { AttributeType, Table } from "terraconstructs/lib/aws/storage";
+
+export interface HitCounterProps {
+  /** the function for which we want to count url hits **/
+  readonly downstream: IFunction;
+}
+
+export class HitCounter extends Construct {
+  /** allows accessing the counter function */
+  public readonly handler: LambdaFunction;
+  /** the hit counter table */
+  public readonly table: Table;
+
+  constructor(scope: Construct, id: string, props: HitCounterProps) {
+    super(scope, id);
+    this.table = new Table(this, "Hits", {
+      partitionKey: { name: "path", type: AttributeType.STRING },
+    });
+    this.handler = new LambdaFunction(this, "HitCounterHandler", {
+      runtime: Runtime.NODEJS_24_X,
+      handler: "hitcounter.handler",
+      // relative to this file (lib/hitcounter.js in the installed package), not to the app's cwd
+      code: Code.fromAsset(path.join(__dirname, "..", "lambda")),
+      environment: {
+        DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
+        HITS_TABLE_NAME: this.table.tableName,
+      },
+    });
+    this.table.grantReadWriteData(this.handler);
+    props.downstream.grantInvoke(this.handler);
+  }
+}
+```
+
+The `@tcons/cdk-dynamo-table-viewer` package does the same for its own handler.
+
+<Callout type="warning">
+Keep the rest of the construct exactly as it is in your app. If you added encryption or `readCapacity` in
+[Testing Constructs](/workshops/aws/typescript/advanced-topics/construct-testing), keep those lines (the
+listing above is the version from the end of the table viewer chapter). Otherwise switching the app to the
+package also changes the table, and the next page's diff is no longer just the asset.
+</Callout>
+
+Marking props `readonly`, as above, is a good habit for a library: the construct reads its props once, in
+the constructor, so nobody should expect that changing them later has an effect.
+
+Finally, create `src/index.ts`, the package's entry point:
+
+```ts
+export * from "./hitcounter";
+```

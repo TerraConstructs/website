@@ -1,0 +1,22 @@
+---
+title: 'Publish your construct'
+---
+
+## Publish your construct (Extra credit)
+
+In [Using construct libraries](/workshops/aws/typescript/table-viewer) you installed somebody else's
+construct, `@tcons/cdk-dynamo-table-viewer`, with `pnpm add`. In this chapter you do the same for your own
+`HitCounter`: move it out of the app into a package of its own, `@workshop/hitcounter`, build it, and
+install it back into the app like any other dependency.
+
+We will not use a registry. `pnpm pack` produces the same `.tgz` file that `pnpm publish` would upload,
+and pnpm can install that file directly. Everything works offline, on the workshop box or on your own
+machine.
+
+<Callout type="info">
+This chapter assumes you finished [Using construct libraries](/workshops/aws/typescript/table-viewer), so
+that `HitCounter` exposes its `table`. If you already ran `cdktn destroy`, the deploy at the end of the
+chapter creates the stack again.
+</Callout>
+
+<ChildrenList />

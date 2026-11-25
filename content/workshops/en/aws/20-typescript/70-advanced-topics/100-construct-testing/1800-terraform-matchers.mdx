@@ -1,0 +1,93 @@
+---
+title: 'Terraform Matchers'
+---
+
+## Let Terraform check the stack
+
+Every test so far looked at the JSON that `Testing.synth` returns. None of them asked Terraform whether
+it can actually use that JSON. A typo in a reference, a wrong attribute name or a provider that does not
+know a resource type all pass a JSON assertion and fail at `cdktn deploy`.
+
+The CDKTN Jest matchers include two that hand the synthesized stack to Terraform:
+
+- `toBeValidTerraform()` runs `terraform init -backend=false` and `terraform validate`.
+- `toPlanSuccessfully()` runs `terraform init` and `terraform plan`.
+
+Both need a directory on disk, not a JSON string. `Testing.fullSynth(stack)` synthesizes the stack into a
+new temporary directory (the stack's Terraform JSON, its assets and a manifest) and returns its path.
+
+## Add the tests
+
+Add this block inside the `describe` block of `__tests__/hitcounter.test.ts`:
+
+```ts
+  describe("with Terraform", () => {
+    let outdir: string;
+
+    beforeEach(() => {
+      new HitCounter(stack, "MyTestConstruct", {
+        downstream: new LambdaFunction(stack, "TestFunction", {
+          runtime: Runtime.NODEJS_24_X,
+          handler: "hello.handler",
+          code: Code.fromAsset("lambda"),
+        }),
+      });
+      stack.prepareStack(); // required by terraconstructs
+      outdir = Testing.fullSynth(stack);
+    });
+
+    test("is valid Terraform", () => {
+      expect(outdir).toBeValidTerraform();
+    });
+
+    test("plans successfully", () => {
+      expect(outdir).toPlanSuccessfully({ backend: false });
+    });
+  });
+```
+
+## Why `backend: false`?
+
+The test stack is created with `gridBackendConfig: { address: "http://localhost:3000" }`, an HTTP state
+backend that does not exist in the test environment. By default `toPlanSuccessfully` initializes the
+stack's real backend, and `terraform init` fails trying to reach it. With `backend: false` the matcher
+writes an override file that swaps in a local backend, so `init` and `plan` run against an empty local
+state. That is what we want here: the test checks that a fresh deployment of the construct plans, not what
+would change in an existing one.
+
+`toBeValidTerraform` never needs this option, since `validate` runs after `init -backend=false`.
+
+## Run the tests
+
+```bash
+$ pnpm run test
+```
+
+```bash
+    with Terraform
+      ✓ is valid Terraform
+      ✓ plans successfully
+```
+
+These two tests are much slower than the rest, because they start real processes: each one runs
+`terraform init` in its own directory, and `plan` also calls the AWS API (read-only) for the data sources
+in the stack, such as the caller identity.
+
+On the workshop box:
+
+- `terraform init` takes the AWS provider from the provider mirror baked into the box (configured in
+  `/etc/terraformrc`), so nothing is downloaded. Expect about 2 to 3 seconds per test.
+- `plan` talks to the box's AWS Emulator, the same one you deploy to. It only reads; nothing is created.
+
+<Callout type="info" title="On your own machine">
+Without a provider mirror or plugin cache, `terraform init` downloads the AWS provider, which can take
+30 seconds or more per test. `toPlanSuccessfully` also needs AWS credentials: without them the plan fails
+with `No valid credential sources found`. `toBeValidTerraform` works without credentials.
+</Callout>
+
+<Callout type="info" title="Many stacks, many test files">
+Each matcher call runs its own `terraform init`. If you use these matchers across many test files, which
+Jest runs in parallel workers, `cdktn/lib/testing/matchers` also exports `warmUpProviderLockFileCache`. It
+resolves the providers once, up front, and is meant to be called from a Jest `globalSetup`. We have not
+tried it in this workshop.
+</Callout>

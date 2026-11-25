@@ -1,0 +1,85 @@
+---
+title: 'Use the package'
+---
+
+## Install it in the app
+
+Go back to the app and install the package file:
+
+```
+cd ../cdk-workshop
+pnpm add ../hitcounter/workshop-hitcounter-0.1.0.tgz
+```
+
+```
+dependencies:
++ @workshop/hitcounter 0.1.0
+```
+
+`package.json` now has the dependency, pointing at the file:
+
+```json
+  "dependencies": {
+    "@workshop/hitcounter": "file:../hitcounter/workshop-hitcounter-0.1.0.tgz",
+    // ...
+  }
+```
+
+pnpm unpacked the file into `node_modules/@workshop/hitcounter`, the same way it installs a package from a
+registry. The peer dependencies (`cdktn`, `constructs`, `terraconstructs`) are the app's own.
+
+## Switch the import
+
+In `main.ts`, import `HitCounter` from the package instead of `./lib/hitcounter`:
+
+```ts {11}
+import { TableViewer } from "@tcons/cdk-dynamo-table-viewer";
+import { App } from "cdktn";
+import { Construct } from "constructs";
+import { AwsStack, AwsStackProps } from "terraconstructs/lib/aws";
+import {
+  Code,
+  LambdaFunction,
+  Runtime,
+  LambdaRestApi,
+} from "terraconstructs/lib/aws/compute";
+import { HitCounter } from "@workshop/hitcounter";
+```
+
+Nothing else in `main.ts` changes: the construct has the same name, the same props and the same `handler`
+and `table` properties. Leave `lib/hitcounter.ts` where it is for now; the tests in `__tests__` still
+import it.
+
+## cdktn diff
+
+The construct IDs are unchanged, so Terraform should see the same resources. Check:
+
+```
+cdktn diff
+```
+
+The plan does not touch the table, the roles or the APIs. What changes is the Lambda code asset:
+
+- The package's `lambda/` directory is a new asset. Until now both the hello function and the hit counter
+  used the app's `lambda/` directory, one asset; now the hit counter has its own.
+- The hit counter function is updated in place, to point at the new asset's S3 object.
+- Assets are numbered in the order they are created, so the table viewer's asset object gets a new
+  logical name. Its content is the same, but Terraform replaces the object.
+
+With the table viewer in the stack, that is `Plan: 2 to add, 1 to change, 1 to destroy.` Nothing in that
+list holds data.
+
+## Deploy and test
+
+```
+cdktn deploy
+```
+
+Then call the API:
+
+```
+curl <Endpoint />from-lib
+```
+
+The answer comes from the hello function as before, ending in `You've hit /from-lib`. The hit counter from
+the package counted the request: refresh the table viewer and look for `/from-lib`.
