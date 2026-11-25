@@ -1,0 +1,63 @@
+---
+title: 'Build and pack'
+---
+
+## Install and build
+
+In the `hitcounter` directory, install the dev dependencies and compile:
+
+```
+pnpm install
+pnpm build
+```
+
+On the workshop box `pnpm install` is served from the box's package store, so it takes about a second.
+`pnpm build` runs `tsc`, which writes `lib/`:
+
+```
+$ ls lib
+hitcounter.d.ts  hitcounter.js  index.d.ts  index.js
+```
+
+## Pack
+
+`pnpm pack` builds the package file that `pnpm publish` would upload to a registry, and leaves it in the
+current directory:
+
+```
+$ pnpm pack
+package: @workshop/hitcounter@0.1.0
+Tarball Contents
+lambda/hitcounter.js
+lib/hitcounter.d.ts
+lib/hitcounter.js
+lib/index.d.ts
+lib/index.js
+package.json
+Tarball Details
+workshop-hitcounter-0.1.0.tgz
+```
+
+The file name is the package name without the `@` and with `/` replaced by `-`, followed by the version.
+
+## Look inside
+
+A package is a gzipped tar file. List its contents with `tar`:
+
+```
+$ tar tzf workshop-hitcounter-0.1.0.tgz
+package/lambda/hitcounter.js
+package/lib/hitcounter.js
+package/lib/index.js
+package/package.json
+package/lib/hitcounter.d.ts
+package/lib/index.d.ts
+```
+
+Check two things before you hand a package to anyone:
+
+- **Everything the construct needs at run time is there.** Here that is `lambda/hitcounter.js`: without
+  it, `Code.fromAsset` fails in the app with a missing-path error. This is what the `files` list in
+  `package.json` is for.
+- **Nothing else is.** No `src/`, no `node_modules/`, no `.tgz` files from earlier runs, and nothing
+  private, such as a `.env` file.

@@ -1,0 +1,92 @@
+---
+title: 'Release a new version'
+---
+
+## Change the library
+
+Libraries change, and the apps that use them pick up the change by installing a new version. Make a change
+in the `hitcounter` package: in `lambda/hitcounter.js`, change the first log line:
+
+```js
+  console.log("hitcounter request:", JSON.stringify(event, undefined, 2));
+```
+
+Then bump the version in its `package.json`. The change does not affect anyone's infrastructure
+beyond new handler code, so it is a patch release:
+
+```json
+  "version": "0.1.1",
+```
+
+Build and pack again:
+
+```
+cd ../hitcounter
+pnpm build
+pnpm pack
+```
+
+This writes `workshop-hitcounter-0.1.1.tgz` next to the 0.1.0 file. Delete the old file if you like; the
+app keeps its own copy of what it installed.
+
+## Upgrade the app
+
+```
+cd ../cdk-workshop
+pnpm add ../hitcounter/workshop-hitcounter-0.1.1.tgz
+cdktn diff
+```
+
+This time the plan only touches the hit counter's code: the package's `lambda/` directory has a new content
+hash (as you saw in [Snapshot Tests](/workshops/aws/typescript/advanced-topics/construct-testing/snapshot-tests)),
+so it gets a new asset object, and the hit counter function is updated to use it. Deploy it:
+
+```
+cdktn deploy
+```
+
+Call the API again (`curl <Endpoint />from-lib`). To see the new log line, tail the hit counter
+function's logs as in [CloudWatch Logs](/workshops/aws/typescript/hit-counter/logs).
+
+<Callout type="info">
+A version number is only a promise. Bumping it does not change anything by itself, and changing the code
+without bumping it would give two different packages the same name and version. Registries refuse to
+publish a version that already exists for this reason.
+</Callout>
+
+## Further reading
+
+This chapter stopped short of a registry and kept the tooling to `tsc`. Neither is how most construct
+libraries are published, but both are what you need to know to read one.
+
+### Registries
+
+`pnpm publish` uploads the same file that `pnpm pack` wrote to a registry: the public npm registry, or a
+private one such as GitHub Packages, GitLab, AWS CodeArtifact or a self-hosted Verdaccio. Scoped packages
+like `@workshop/hitcounter` can be routed to a registry of their own in `.npmrc`
+(`@workshop:registry=https://...`), while everything else still comes from npm. The app then installs
+`@workshop/hitcounter@^0.1.0` by name and version range instead of a file path, and `pnpm update` picks up
+new releases within that range.
+
+### jsii and projen
+
+The table viewer you installed earlier,
+[`@tcons/cdk-dynamo-table-viewer`](https://github.com/TerraConstructs/cdk-dynamo-table-viewer), is built
+the way most CDK and TerraConstructs libraries are:
+
+- **[projen](https://projen.io)** generates and maintains the project files (`package.json`, `tsconfig.json`,
+  the Jest config, the release workflows) from a single `.projenrc.ts`. In the table viewer that file is a
+  `cdk.JsiiProject` that declares the same peer dependencies as your package (`cdktn`, `constructs`,
+  `terraconstructs`, plus `@cdktn/provider-aws`), the `change-case` Jest transform from
+  [Assertion Tests](/workshops/aws/typescript/advanced-topics/construct-testing/assertion-test), and a
+  release workflow that publishes to npm with trusted publishing (OIDC) instead of a stored token.
+- **[jsii](https://aws.github.io/jsii/)** compiles the TypeScript instead of `tsc`. It can also generate
+  packages for Python, Java, .NET and Go from the same source, which is how one construct library serves
+  every CDK language. In exchange, jsii restricts the TypeScript you can write; for example, every
+  property of a props interface must be `readonly`, as in your `HitCounterProps`. The table viewer only
+  publishes the JavaScript package.
+
+The table viewer also shows the Lambda asset pattern from this chapter: its handler is in the package's
+`lambda/` directory, found with `path.join(__dirname, "..", "lambda")`. A handler with npm dependencies of
+its own would be bundled (for example with esbuild) when the library is built, so the app does not have to
+install them.

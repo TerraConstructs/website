@@ -6,34 +6,43 @@ title: 'Testing Constructs'
 
 The [CDKTN Developer Guide](https://cdktn.io/docs/test/unit-tests) has a good guide on testing constructs.
 
-#### CDKTN assert Library
+## CDKTN assert Library
 
 We will be using the CDKTN Jest Matchers throughout this section.
 The library contains several helper functions for writing unit and integration tests.
 
 <Callout type="info">
-More advanced [assertion helpers](https://github.com/TerraConstructs/base/blob/v0.1.0/test/assertions.ts) are available in TerraConstructs and may be published for easier set up in the future.
+TerraConstructs tests itself with more advanced [assertion helpers](https://github.com/terraconstructs/base/blob/main/test/assertions.ts),
+such as a `Template` class that calls `stack.prepareStack()` for you. They are test-only code in the TerraConstructs
+repository, not part of the published `terraconstructs` package, so you cannot import them in your project.
 </Callout>
 
 For this workshop we will mostly be using the `toHaveResource` and `toHaveResourceWithProperties` Jest matchers. This helper is used when you
 only care that a resource of a particular type exists (regardless of its logical identfier), and that _some_
 properties are set to specific values.
 
-Example:
+Example, for a test `stack` that contains a `HitCounter`:
 
 ```ts
+import { LambdaFunction as LambdaFunctionL1 } from "@cdktn/provider-aws/lib/lambda-function";
+
 // NOTE: terraconstructs requires stack.prepareStack()
 // due to many of its late binding features.
 stack.prepareStack();
-const template = Testing.synth(stack, runValidations)
-expect(template).toHaveResourceWithProperties(instance.Instance, {
-    ami: "ami-xxxxx",
-    // Note: some properties omitted here
+const template = Testing.synth(stack);
+expect(template).toHaveResourceWithProperties(LambdaFunctionL1, {
+  handler: "hitcounter.handler",
+  runtime: "nodejs24.x",
+  // Note: some properties omitted here
 });
 
-expect(template).not.toHaveResourceWithProperties(instance.Instance, {
-    availability_zone: expect.anything(), // should not have this property set
+expect(template).not.toHaveResourceWithProperties(LambdaFunctionL1, {
+  kms_key_arn: expect.anything(), // should not have this property set
 });
 ```
 
 To see the rest of the documentation, please read the docs [here](https://cdktn.io/docs/test/unit-tests#write-assertions).
+
+## In this section
+
+<ChildrenList />

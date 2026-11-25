@@ -1,0 +1,464 @@
+---
+title: 'Snapshot Tests'
+---
+
+The assertion tests check the properties we care about, and they stay the main tests of the construct. A
+snapshot test adds something they cannot: it records the whole synthesized stack once, and fails on the next
+run if *anything* in it changed. That catches changes you did not think of writing an assertion for, such as
+a dependency upgrade that changes a default.
+
+A snapshot is only useful if it fails for real changes. On this page you add one, see it fail for a change
+that is not a real one, and then clean up the snapshot so that it only changes when the infrastructure does.
+
+## Add a snapshot test
+
+Add this test inside the `describe` block of `__tests__/hitcounter.test.ts`:
+
+```ts
+  test("matches the snapshot", () => {
+    new HitCounter(stack, "MyTestConstruct", {
+      downstream: new LambdaFunction(stack, "TestFunction", {
+        runtime: Runtime.NODEJS_24_X,
+        handler: "hello.handler",
+        code: Code.fromAsset("lambda"),
+      }),
+    });
+
+    stack.prepareStack(); // required by terraconstructs
+    expect(JSON.parse(Testing.synth(stack))).toMatchSnapshot();
+  });
+```
+
+`Testing.synth` returns the Terraform JSON as a string. `JSON.parse` turns it into an object, so that Jest
+stores it as readable, indented JSON and you can use the techniques further down this page.
+
+Run the tests.
+
+```bash
+$ pnpm run test
+```
+
+The first run has nothing to compare against, so Jest writes the snapshot and the test passes:
+
+```bash
+    ✓ matches the snapshot (22 ms)
+
+ › 1 snapshot written.
+Snapshot Summary
+ › 1 snapshot written from 1 test suite.
+```
+
+Open `__tests__/__snapshots__/hitcounter.test.ts.snap`. It is the Terraform JSON of the test stack: the
+table, both functions, their roles and policies, and the asset that holds the Lambda code. Near the end you
+find that asset:
+
+```js
+    "aws_s3_object": {
+      "FileAsset_S3": {
+        "bucket": "\${aws_s3_bucket.AssetBucket.bucket}",
+        "key": "c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6.zip",
+        "source": "assets/FileAsset/c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6/archive.zip",
+        "source_hash": "c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6",
+      },
+    },
+```
+
+Snapshot files are meant to be committed next to the test, so that a change to them shows up in code review.
+
+Run `pnpm run test` again: the stack has not changed, so the snapshot matches.
+
+<Callout type="warning" title="Synthesize the stack once per test">
+Do not call `Testing.synth(stack)` twice on the same stack in one test, for example once for an assertion
+and once for the snapshot. Every call runs the aspects again, and the second result has duplicate
+`depends_on` entries on both functions:
+
+```bash
+    - Snapshot  - 0
+    + Received  + 8
+
+    @@ -222,10 +222,14 @@
+                "aws_iam_role_policy.MyTestConstruct_HitCounterHandler_ServiceRole_DefaultPolicy_ResourceRoles0_EFC423D0",
+    +           "data.aws_iam_policy_document.MyTestConstruct_HitCounterHandler_ServiceRole_AssumeRolePolicy_703B8F2A",
+    +           "aws_iam_role.MyTestConstruct_HitCounterHandler_ServiceRole_D0F1215D",
+```
+
+Synthesize once, keep the result in a variable, and run all your checks on it.
+</Callout>
+
+## Change the Lambda code
+
+Now change something that is not infrastructure at all. In `lambda/hitcounter.js`, change the first log line:
+
+```js
+  console.log("hitcounter request:", JSON.stringify(event, undefined, 2));
+```
+
+Run the tests again. The snapshot test fails:
+
+```bash
+  ● HitCounter › matches the snapshot
+
+    expect(received).toMatchSnapshot()
+
+    Snapshot name: `HitCounter matches the snapshot 1`
+
+    - Snapshot  - 3
+    + Received  + 3
+
+    @@ -286,13 +286,13 @@
+            },
+          },
+          "aws_s3_object": {
+            "FileAsset_S3": {
+              "bucket": "${aws_s3_bucket.AssetBucket.bucket}",
+    -         "key": "c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6.zip",
+    -         "source": "assets/FileAsset/c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6/archive.zip",
+    -         "source_hash": "c78a587bb3ef9e5cd6300e256665041627009d9ca6171839502c092e256a19e6",
+    +         "key": "ab9e65d51fa6e9c38c11dba220eab56306de9fd36a421fe2b62517373497522b.zip",
+    +         "source": "assets/FileAsset/ab9e65d51fa6e9c38c11dba220eab56306de9fd36a421fe2b62517373497522b/archive.zip",
+    +         "source_hash": "ab9e65d51fa6e9c38c11dba220eab56306de9fd36a421fe2b62517373497522b",
+            },
+          },
+        },
+
+ › 1 snapshot failed.
+```
+
+Your hashes may be different. The point is *where* the change shows up: `Code.fromAsset("lambda")` zips the
+`lambda` directory, and the hash of its content is part of the S3 object's key, its source path and its
+`source_hash`. Both functions use the same directory, so they share one asset, and any edit in `lambda/`
+changes it. The hash depends only on the content of the files: touching a file or copying the project
+somewhere else does not change it.
+
+The snapshot is right that something changed: `cdktn diff` would show a new object in the asset bucket. But
+this snapshot is meant to watch the infrastructure, and the handler code is already reviewed in the diff of
+`lambda/`. If every edit to a handler breaks the snapshot, people learn to run `-u` without reading the
+diff, and then the snapshot no longer tests anything. So let's keep values like this out of the snapshot.
+
+## Fix one field: property matchers
+
+When you know exactly which fields change, you can tell `toMatchSnapshot` to check only their type. Pass it
+an object with the same shape as the received value, with asymmetric matchers where the changing values are:
+
+```ts
+    expect(JSON.parse(Testing.synth(stack))).toMatchSnapshot({
+      resource: {
+        aws_s3_object: {
+          FileAsset_S3: {
+            key: expect.any(String),
+            source: expect.any(String),
+            source_hash: expect.any(String),
+          },
+        },
+      },
+    });
+```
+
+Jest first checks that the received value matches these matchers, and then compares the rest with the
+snapshot. In the snapshot itself, the matchers take the place of the values. The stored snapshot still has
+the old hashes, so run the tests once with `-u` to rewrite it:
+
+```bash
+$ pnpm test -u
+```
+
+The asset in the snapshot file now reads:
+
+```js
+    "aws_s3_object": {
+      "FileAsset_S3": {
+        "bucket": "\${aws_s3_bucket.AssetBucket.bucket}",
+        "key": Any<String>,
+        "source": Any<String>,
+        "source_hash": Any<String>,
+      },
+    },
+```
+
+From now on, an edit in `lambda/` no longer breaks the snapshot.
+
+Property matchers are the right tool for a few known fields of one object, such as an ID or a timestamp
+in an API response. Here they have two weaknesses: the path to the field includes the logical ID
+`FileAsset_S3`, and you need one entry for every place the value appears. The next example shows where that
+stops working.
+
+## A value that changes on every run
+
+Nothing in our stack depends on the time yet. But suppose your team wants to see in the AWS console when a
+resource was last deployed, and decides to stamp every hit counter with a `DeployedAt` tag. Add it to
+`lib/hitcounter.ts`, right after `super(scope, id);`:
+
+```ts {3,10-11}
+import { Token } from "cdktn";
+import { Construct } from "constructs";
+import { Tags } from "terraconstructs/lib/aws";
+// ...
+
+  constructor(scope: Construct, id: string, props: HitCounterProps) {
+    // ...
+    super(scope, id);
+
+    // record when the hit counter was last deployed
+    Tags.of(this).add("DeployedAt", new Date().toISOString());
+```
+
+`Tags.of(this)` tags every taggable resource inside the hit counter. Run `pnpm test -u` to record the new
+tags, and then run `pnpm run test` again. It fails, and it will fail on every run from now on, because the
+time is different every time:
+
+```bash
+  ● HitCounter › matches the snapshot
+
+    expect(received).toMatchSnapshot(properties)
+
+    Snapshot name: `HitCounter matches the snapshot 1`
+
+    - Snapshot  - 4
+    + Received  + 4
+
+    @@ -131,11 +131,11 @@
+          "aws_cloudwatch_log_group": {
+            "MyTestConstruct_HitCounterHandler_LogGroup_98B6F59D": {
+              "name": "/aws/lambda/test-uuid-testMyTesctHitCounterHandler",
+              "retention_in_days": 7,
+              "tags": {
+    -           "DeployedAt": "2026-11-20T17:07:11.405Z",
+    +           "DeployedAt": "2026-11-20T17:07:13.815Z",
+                "Name": "test-HitCounterHandler",
+                "grid:EnvironmentName": "test",
+                "grid:UUID": "test-uuid",
+              },
+            },
+    @@ -163,11 +163,11 @@
+    ...
+```
+
+The tag is on four resources: the log group, the table, the role and the function. With property matchers
+you would need four more entries, each with a logical ID in its path, and one more for every taggable
+resource someone adds to the construct later. What you actually want to say is "wherever a timestamp
+appears, I don't care about its value". That is what a snapshot serializer does.
+
+## Sanitize the snapshot with a serializer
+
+Jest turns the received value into the text of the snapshot with a *serializer*. You can add your own: for
+every value it is about to print, Jest asks your serializer whether it wants to print it (`test`), and if so,
+lets it do the printing (`serialize`). A serializer that replaces timestamps and asset hashes with fixed
+placeholders makes the snapshot stable wherever those values appear.
+
+Create `test-utils/snapshot-serializer.ts` in the project root:
+
+```ts
+// Jest snapshot serializer: replaces values that change on every run (or on every code edit)
+// with fixed placeholders, so the snapshot only changes when the infrastructure does.
+
+// [pattern, placeholder]. Every match in every string of the snapshot is replaced.
+const RULES: Array<[RegExp, string]> = [
+  // an ISO 8601 timestamp, e.g. 2026-11-20T17:07:11.405Z
+  [/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z/g, "[DATETIME]"],
+  // a SHA-256 hex digest: the content hash of an asset, e.g. the Lambda code zip
+  [/\b[0-9a-f]{64}\b/g, "[ASSET_HASH]"],
+];
+
+const sanitize = (value: string) =>
+  RULES.reduce((result, [pattern, placeholder]) => result.replace(pattern, placeholder), value);
+
+// The type behind expect.addSnapshotSerializer (pretty-format's "new" plugin API).
+type Serializer = Extract<jest.SnapshotSerializerPlugin, { serialize: unknown }>;
+
+// Jest asks every serializer, for every value in the snapshot, whether it wants to print it.
+export const test: Serializer["test"] = (value) => typeof value === "string" && sanitize(value) !== value;
+
+// Print the sanitized string the way Jest prints any other string. The result no longer
+// matches a rule, so `test` is false for it and Jest does not call us again.
+export const serialize: Serializer["serialize"] = (value, config, indentation, depth, refs, printer) =>
+  printer(sanitize(value), config, indentation, depth, refs);
+```
+
+A few things to note:
+
+- The file is outside `__tests__`. The `testMatch` patterns in `jest.config.js` collect every `.ts` file
+  in `__tests__`, and Jest would try to run this one as a test suite and fail with "Your test suite must
+  contain at least one test".
+- `test` only says yes to strings that contain something to replace. Everything else, including numbers
+  such as `memory_size`, is printed as usual.
+- `serialize` hands the cleaned string back to Jest's own `printer`, so quoting and escaping stay the same
+  as in the rest of the snapshot.
+
+Register the serializer at the top of `__tests__/hitcounter.test.ts`, below the imports:
+
+```ts
+import * as snapshotSerializer from "../test-utils/snapshot-serializer";
+
+expect.addSnapshotSerializer(snapshotSerializer);
+```
+
+The serializer now takes care of the asset hash too, so remove the property matchers again:
+
+```ts
+    expect(JSON.parse(Testing.synth(stack))).toMatchSnapshot();
+```
+
+The snapshot file still holds a timestamp and `Any<String>`, so rewrite it once:
+
+```bash
+$ pnpm test -u
+```
+
+```bash
+ › 1 snapshot updated.
+Snapshot Summary
+ › 1 snapshot updated from 1 test suite.
+```
+
+Open the snapshot file. The changing values are gone:
+
+```js
+        "tags": {
+          "DeployedAt": "[DATETIME]",
+          "Name": "test-Hits",
+          "grid:EnvironmentName": "test",
+          "grid:UUID": "test-uuid",
+        },
+```
+
+```js
+    "aws_s3_object": {
+      "FileAsset_S3": {
+        "bucket": "\${aws_s3_bucket.AssetBucket.bucket}",
+        "key": "[ASSET_HASH].zip",
+        "source": "assets/FileAsset/[ASSET_HASH]/archive.zip",
+        "source_hash": "[ASSET_HASH]",
+      },
+    },
+```
+
+Run `pnpm run test` a few times: it passes every time. Then change the log line in `lambda/hitcounter.js`
+back to `"request:"` and run it again. It still passes.
+
+## A real change still fails
+
+The point of all this is that the snapshot still catches the changes that matter. Suppose the hit counter is
+too slow on a cold start, and you give its function more memory. In `lib/hitcounter.ts`, add `memorySize`:
+
+```ts {4}
+    this.handler = new LambdaFunction(this, "HitCounterHandler", {
+      runtime: Runtime.NODEJS_24_X,
+      handler: "hitcounter.handler",
+      memorySize: 256,
+      code: Code.fromAsset("lambda"),
+```
+
+Run the tests. The snapshot test fails, and the diff shows exactly one line:
+
+```bash
+  ● HitCounter › matches the snapshot
+
+    expect(received).toMatchSnapshot()
+
+    Snapshot name: `HitCounter matches the snapshot 1`
+
+    - Snapshot  - 1
+    + Received  + 1
+
+    @@ -234,11 +234,11 @@
+                  "HITS_TABLE_NAME": "${aws_dynamodb_table.MyTestConstruct_Hits_24A357F0.name}",
+                },
+              },
+              "function_name": "test-uuid-testMyTesctHitCounterHandler",
+              "handler": "hitcounter.handler",
+    -         "memory_size": 128,
+    +         "memory_size": 256,
+              "role": "${aws_iam_role.MyTestConstruct_HitCounterHandler_ServiceRole_D0F1215D.arn}",
+              "runtime": "nodejs24.x",
+              "s3_bucket": "${aws_s3_bucket.AssetBucket.bucket}",
+              "s3_key": "${aws_s3_object.FileAsset_S3.key}",
+              "tags": {
+
+ › 1 snapshot failed.
+```
+
+A snapshot test cannot tell an intended change from an accident; you decide. This one is intended, so accept
+it:
+
+```bash
+$ pnpm test -u
+```
+
+```bash
+ › 1 snapshot updated.
+Snapshot Summary
+ › 1 snapshot updated from 1 test suite.
+```
+
+The updated `.snap` file goes into the same commit as the change to `lib/hitcounter.ts`, and the reviewer
+sees the same one-line diff.
+
+## What to replace, and what not
+
+Every placeholder makes the snapshot blind to one kind of change. A serializer that replaces too much
+produces a snapshot that always passes, which is worse than no snapshot, because it looks like a test. For
+each value, ask: if this changes, do I want someone to look at it? These are the candidates in this
+project's synthesized stack:
+
+| Placeholder | Matches | In this stack | Use it? |
+| --- | --- | --- | --- |
+| `[DATETIME]` | ISO 8601 timestamps | the `DeployedAt` tag | Yes. The value is different on every run and never tells you anything. |
+| `[ASSET_HASH]` | 64 hex characters | the key, source and `source_hash` of the Lambda code asset | Yes, for a snapshot of the infrastructure. The cost: the snapshot no longer tells you that the deployed code changed. Review that in the diff of `lambda/`. A new or removed asset still shows up, because it is a new `aws_s3_object`. |
+| `[VERSION]` | `1.2.3` | `"version": "6.71.0"` of the `aws` provider under `terraform.required_providers` | No. It only changes when you upgrade `terraconstructs` or `@cdktn/provider-aws`, and a new provider version is exactly the kind of change a reviewer should see. |
+| `[ABS_PATH]` | your home or temp directory | nothing: asset paths are relative to the stack (`assets/FileAsset/...`), and the test stack sets `gridBackendConfig`, so its backend is `http` | Not needed here. Without a backend in the test stack props, `prepareStack()` adds `"backend": { "local": { "path": "/home/project/cdk-workshop/terraform.test.tfstate" } }`, with your project's absolute path. Fix that by keeping the backend in the test stack, not with a placeholder. |
+| `[ID]` | the 8-character suffix of logical IDs and names, such as `_24A357F0` | every resource | Never. The suffix is derived from the construct's path, so it only changes when you rename or move a construct, and then Terraform destroys the resource and creates a new one. For the table, that means a new, empty table. |
+
+The last two rows are worth remembering: values that look random are not always noise. The logical ID
+suffixes look like hashes, but they are stable and they matter.
+
+<Callout type="warning" title="Make the rules narrow">
+Write each pattern to match the noise and nothing else. A rule like `/\d+/g` "to get rid of the timestamps"
+would also turn `"runtime": "nodejs24.x"` into `"nodejs[N].x"`, and a runtime upgrade would no longer show
+up. The `[DATETIME]` rule above only matches complete ISO timestamps, and the `[ASSET_HASH]` rule only
+matches 64 hex characters on their own.
+</Callout>
+
+## Use the serializer in every test file
+
+`expect.addSnapshotSerializer` only applies to the test file that calls it. That is the right choice when
+the sanitizing is specific to one file. When every snapshot in the project should be sanitized the same way,
+register the serializer in `jest.config.js` instead. The generated file has the option commented out; set
+it to:
+
+```js
+  snapshotSerializers: ["<rootDir>/test-utils/snapshot-serializer.ts"],
+```
+
+and remove the `import * as snapshotSerializer ...` and `expect.addSnapshotSerializer(...)` lines from
+`__tests__/hitcounter.test.ts`. Jest compiles the serializer with ts-jest like any other file, and the tests
+still pass.
+
+To sum up when to use what:
+
+- **Assertions** (`toHaveResourceWithProperties`) for everything you know must be true. They are the main
+  tests.
+- **A snapshot** on top, to notice that something changed at all.
+- **Property matchers** for a few known fields of one object.
+- **A serializer** for a kind of value that can appear anywhere, such as timestamps or asset hashes:
+  `expect.addSnapshotSerializer` in one file, `snapshotSerializers` in `jest.config.js` for all of them.
+
+## Clean up
+
+The `DeployedAt` tag was there to give us a timestamp to remove, and it has a cost outside the tests: its
+value changes on every synthesis, so every `cdktn diff` and `cdktn deploy` would update the tags on all the
+hit counter's resources. Remove the `Tags.of(this)` line and its import from `lib/hitcounter.ts`, and update
+the snapshot one more time:
+
+```bash
+$ pnpm test -u
+```
+
+Keep the serializer: it costs nothing when there is nothing to replace, and it keeps the asset hash out of
+the snapshot.
+
+<Callout type="info">
+If developers get used to running `-u` without reading the diff, the snapshot no longer tests anything.
+Two habits help: review `.snap` changes like code, and run Jest with `--ci` in your pipeline
+(`pnpm test --ci`). With `--ci`, Jest does not write missing snapshots; the test fails with "New snapshot
+was not written" instead, so a snapshot can only be created or changed on purpose.
+</Callout>

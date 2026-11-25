@@ -1,0 +1,266 @@
+---
+title: 'Integration Tests'
+---
+
+<Callout type="warning" title="Workshop box only">
+This page uses `with-emulator`, a helper that is installed on the workshop box. It starts a second,
+throwaway AWS Emulator for the duration of one command. On your own machine you can read along; the test
+below refuses to run outside `with-emulator`, so it cannot deploy anywhere by accident.
+</Callout>
+
+All the tests so far ran in milliseconds or seconds and never deployed anything. They cannot tell you
+whether the hit counter actually *counts*: whether the handler has permission to write to the table, finds
+it through `HITS_TABLE_NAME`, and calls the downstream function correctly. For that we have to deploy it,
+send it requests, and look at the table.
+
+The integration test on this page does exactly that, against an AWS Emulator of its own:
+
+1. Synthesize a small stack with the hello function, a `HitCounter` and an API.
+2. Deploy it with `terraform init` and `terraform apply`.
+3. Call the API and check the response.
+4. Call it three more times and check that DynamoDB counted three hits.
+5. Destroy the stack.
+
+## A stack of its own
+
+Your workshop deployment is the stack `cdk-workshop`. As `cdktn init` told you at the start, its state lives
+in `terraform.cdk-workshop.tfstate` in the project root. A test that deployed a stack with the same name and
+the default backend would write to that same state file, and the next `cdktn deploy` would no longer know
+what is deployed.
+
+So the test uses:
+
+- its own stack name, `hitcounter-integ`, and its own `environmentName` and `gridUUID`;
+- a `LocalBackend` whose state file is in the throwaway directory that `with-emulator` creates;
+- its own `outdir`, also in that directory, so it does not touch your `cdktf.out`.
+
+It runs `terraform` directly in the synthesized stack directory, rather than `cdktn deploy`, which works on
+the project's own app and would put state in the project root.
+
+## Helpers for the test
+
+An integration test drives command-line tools: `terraform` to deploy and destroy, and the AWS CLI to look at
+what was deployed. Rather than spell out `execFileSync` calls in every test, put three small helpers in a
+module of their own. Create `integ/helpers.ts` (a new `integ` directory next to `__tests__`, not inside it):
+
+```ts
+// Helpers for the integration tests in integ/. Not a test file itself: jest.integ.config.js only
+// collects *.integ.ts, and the testMatch patterns of jest.config.js do not match it either.
+import { execFileSync } from "child_process";
+
+/**
+ * The throwaway emulator that `with-emulator` started for this run: its temporary directory and
+ * its endpoint. Throws if the tests were started without `with-emulator`.
+ */
+export function throwawayEmulator(): { workDir: string; endpoint: string } {
+  const workDir = process.env.WITH_EMULATOR_DIR;
+  const endpoint = process.env.AWS_ENDPOINT_URL;
+  // :9297 is the box's own emulator, the one that holds your workshop deployment.
+  if (!workDir || !endpoint || endpoint.endsWith(":9297")) {
+    throw new Error("run integration tests through `with-emulator`, e.g. `with-emulator pnpm test:integ`");
+  }
+  return { workDir, endpoint };
+}
+
+/**
+ * Returns a function that runs `terraform <args>` in `dir` and returns what it prints.
+ * If terraform fails, it throws, and the error message includes terraform's stderr.
+ */
+export function terraformIn(dir: string) {
+  return (...args: string[]): string =>
+    execFileSync("terraform", args, { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+}
+
+/** Runs `aws <args> --output json` and returns the parsed JSON. */
+export function aws(...args: string[]): any {
+  return JSON.parse(
+    execFileSync("aws", [...args, "--output", "json"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }),
+  );
+}
+```
+
+- `throwawayEmulator()` is the safety check. It throws unless `with-emulator` has set the environment, and it
+  never accepts `:9297`, the emulator that holds your workshop deployment. Every integration test file calls
+  it first.
+- `terraformIn(dir)` returns a `tf` function bound to one directory, so the test can call
+  `tf("apply", ...)` without repeating where. When terraform fails, the error message includes its stderr,
+  so a failed `apply` shows up in the Jest output with the reason.
+- `aws(...)` adds `--output json` and parses the result, so the test can use the response as an object.
+
+The file name does not end in `.integ.ts` or `.test.ts`, so Jest never collects it as a test, neither with
+`pnpm test` nor with the integration config below. The helpers only need `terraform` and the `aws` CLI on
+your `PATH`; nothing in them is specific to the workshop box. What is box-specific is `with-emulator`, which
+provides the environment `throwawayEmulator()` checks for.
+
+## Write the test
+
+Create `integ/hitcounter.integ.ts`:
+
+```ts
+// Integration test: deploy the HitCounter behind an API to a throwaway AWS Emulator, call it,
+// and check the hit count in DynamoDB. Run with:  with-emulator pnpm test:integ
+import * as path from "path";
+import { App, LocalBackend, TerraformOutput } from "cdktn";
+import { AwsStack } from "terraconstructs/lib/aws/aws-stack";
+import { Code, LambdaFunction, LambdaRestApi, Runtime } from "terraconstructs/lib/aws/compute";
+import { HitCounter } from "../lib/hitcounter";
+import { aws, terraformIn, throwawayEmulator } from "./helpers";
+
+const { workDir, endpoint } = throwawayEmulator();
+
+const STACK = "hitcounter-integ";
+const tf = terraformIn(path.join(workDir, "cdktf.out", "stacks", STACK));
+
+let apiUrl: string;
+let tableName: string;
+
+beforeAll(() => {
+  // GIVEN a stack of its own (own name, own state file in the throwaway directory)
+  const app = new App({ outdir: path.join(workDir, "cdktf.out") });
+  const stack = new AwsStack(app, STACK, {
+    environmentName: "integ",
+    gridUUID: "hitcounter-integ",
+    providerConfig: { region: "us-east-1" },
+  });
+  new LocalBackend(stack, { path: path.join(workDir, "terraform.tfstate") });
+  const hello = new LambdaFunction(stack, "HelloHandler", {
+    runtime: Runtime.NODEJS_24_X,
+    code: Code.fromAsset(path.join(__dirname, "..", "lambda")),
+    handler: "hello.handler",
+  });
+  const counter = new HitCounter(stack, "HelloHitCounter", { downstream: hello });
+  const api = new LambdaRestApi(stack, "Endpoint", { cloudWatchRole: false, handler: counter.handler });
+  new TerraformOutput(stack, "rest_api_id", { value: api.restApiId });
+  new TerraformOutput(stack, "table_name", { value: counter.table.tableName });
+  app.synth();
+
+  // WHEN it is deployed (the terraform shim adds the emulator override for $EMULATOR_PORT)
+  tf("init", "-input=false", "-no-color");
+  tf("apply", "-auto-approve", "-input=false", "-no-color");
+  const out = JSON.parse(tf("output", "-json"));
+  apiUrl = `${endpoint}/_aws/execute-api/${out.rest_api_id.value}/prod`;
+  tableName = out.table_name.value;
+}, 300_000);
+
+afterAll(() => {
+  // Not strictly needed (with-emulator throws the whole instance away), but a real-AWS run would.
+  if (process.env.INTEG_SKIP_DESTROY !== "1") tf("destroy", "-auto-approve", "-input=false", "-no-color");
+}, 300_000);
+
+test("the API answers through the hit counter", async () => {
+  const res = await fetch(`${apiUrl}/hello`);
+  expect(res.status).toBe(200);
+  expect(await res.text()).toContain("You've hit /hello");
+});
+
+test("every request is counted in DynamoDB", async () => {
+  for (let i = 0; i < 3; i++) await fetch(`${apiUrl}/integ`);
+  const item = aws("dynamodb", "get-item", "--table-name", tableName, "--key", '{"path":{"S":"/integ"}}');
+  expect(item.Item.hits.N).toBe("3");
+});
+```
+
+Some details:
+
+- `throwawayEmulator()` runs when Jest loads the file, before any test, so a run without `with-emulator`
+  stops before anything is synthesized or deployed.
+- `counter.table` is the property you added in
+  [Exposing our hit counter table](/workshops/aws/typescript/table-viewer/expose-table).
+- The emulator serves API Gateway under its own path: `<endpoint>/_aws/execute-api/<rest-api-id>/<stage>/...`.
+  The test builds that URL from the `rest_api_id` output.
+- The hit count is read back with the `aws` helper. `with-emulator` has pointed the AWS CLI at the throwaway
+  emulator, so the helper does not need to know about endpoints.
+- `beforeAll` and `afterAll` get five minutes each: a deploy is slow compared to a unit test.
+
+## Keep it out of `pnpm test`
+
+The file is named `*.integ.ts`, so the `testMatch` patterns in `jest.config.js` do not pick it up, and
+`pnpm test` stays fast. Give the integration tests their own Jest config, `jest.integ.config.js`, in the
+project root:
+
+```js
+// Integration tests only (integ/*.integ.ts). `pnpm test` keeps running the fast synth tests.
+const base = require("./jest.config");
+module.exports = {
+  ...base,
+  testMatch: ["<rootDir>/integ/**/*.integ.ts"],
+  testTimeout: 300000,
+};
+```
+
+and a script in `package.json`:
+
+```json
+  "scripts": {
+    // ...
+    "test:integ": "jest -c jest.integ.config.js --runInBand"
+  },
+```
+
+`--runInBand` runs the integration test files one after the other in a single process. With one file it
+makes no difference; with several, they would otherwise deploy at the same time into the same emulator.
+
+## Run it
+
+```bash
+$ with-emulator pnpm test:integ
+```
+
+`with-emulator` starts a new emulator on a free port, with its own certificate authority, credentials and
+state in a new temporary directory. For the duration of the command it points `AWS_ENDPOINT_URL`,
+`AWS_CA_BUNDLE`, `NODE_EXTRA_CA_CERTS`, `AWS_SHARED_CREDENTIALS_FILE`, `AWS_CONFIG_FILE` and `EMULATOR_PORT` at
+that instance, and sets `WITH_EMULATOR_DIR` to the temporary directory. When the command exits, even on
+Ctrl-C, it stops the emulator and deletes the directory.
+
+```bash
+with-emulator: throwaway emulator on https://localhost:<port> (ready in <n> ms)
+ PASS  integ/hitcounter.integ.ts
+  ✓ the API answers through the hit counter
+  ✓ every request is counted in DynamoDB
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+```
+
+Expect it to take about 40 seconds, most of it in `terraform apply`.
+
+<Callout type="info" title="Debugging a failing run">
+`with-emulator --keep pnpm test:integ` keeps the temporary directory (synthesized stack, state file and
+the emulator's log) and prints its path. Add `INTEG_SKIP_DESTROY=1` to skip the `terraform destroy` step.
+</Callout>
+
+## Your deployment was not touched
+
+In a normal terminal, the AWS CLI still points at the box's own emulator. List its tables:
+
+```bash
+$ aws dynamodb list-tables
+```
+
+You see the table of your workshop deployment (its name starts with `cdkworkshopHelloHitCounterHits`), and
+nothing from `hitcounter-integ`: that table only ever existed in the throwaway emulator. If you already
+ran `cdktn destroy` in [Clean up](/workshops/aws/typescript/cleanups), the list is empty.
+
+## Further reading: `terraform test` in CDKTN
+
+Terraform (1.6 and later) and OpenTofu have a built-in test framework, `terraform test` / `tofu test`:
+`run` blocks plan or apply a configuration and check `assert` conditions, and `mock_provider` blocks let
+an apply run offline, without credentials. CDKTN does not support it today.
+
+[RFC-09 "synth and test"](https://github.com/open-constructs/cdktn-planning/pull/7) is an open
+proposal to add it. It is a design, not a feature; none of it exists in cdktn 0.25. In short:
+
+- Test suites would be written in TypeScript, as constructs next to the stack (`TerraformTest`, `run`,
+  `MockProvider`), and synthesized to `<suite>.tftest.json`. Hand-written `.tftest.hcl` files are
+  deliberately not part of the design, because they would make generated logical IDs such as
+  `HelloHitCounter_Hits_7AAEBF80` part of your test code.
+- By default a suite would `apply` against mocked providers: offline, no credentials, and the same on
+  Terraform and OpenTofu. A `cdktn test` command and a `toPassTerraformTests()` matcher would run them.
+- A later phase covers deploying with real providers, and a follow-up `@cdktn/integ` package is sketched
+  for what `terraform test` cannot do: run your own code between apply and destroy, like the `fetch` calls
+  and the DynamoDB read in the test above.
+
+The RFC also explains why plain mocks are not enough for AWS. A mocked `aws` provider returns placeholder
+values, and stacks like ours need well-formed ARNs, account IDs and policy JSON, so it proposes ready-made
+AWS mock presets. Until something like that ships, Jest plus a real (or emulated) deployment, as on this
+page, is the way to test behaviour.

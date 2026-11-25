@@ -2,9 +2,9 @@
 title: 'Assertion Tests'
 ---
 
-### Fine-Grained Assertion Tests
+## Fine-Grained Assertion Tests
 
-#### Create a test for the DynamoDB table
+## Create a test for the DynamoDB table
 
 <Callout type="info">
 This section assumes that you have [created the hit counter construct](/workshops/aws/typescript/hit-counter)
@@ -79,6 +79,27 @@ Constructs are differentiated by levels, L1 indicating the lowest level at the "
 TerraConstructs, combines multiple L1 Constructs into L2 Constructs exposing a more intuitive UX.
 </Callout>
 
+<Callout type="warning" title="Jest and ES modules">
+On the workshop box, the `jest.config.js` that `cdktn init` writes is already patched, so you can skip this.
+
+On your own machine, the test fails with `Must use import to load ES Module ... change-case/dist/index.js`.
+terraconstructs 0.2.21 bundles `change-case` 5, which is ESM-only, and Jest runs the tests as CommonJS.
+Let ts-jest compile `change-case` too by setting these two options in `jest.config.js`
+(both are commented out in the generated file):
+
+```js
+  transformIgnorePatterns: ["/node_modules/(?!.*change-case/)"],
+  transform: {
+    "^.+\\.ts$": "ts-jest",
+    "^.+\\.js$": ["ts-jest", { tsconfig: { allowJs: true, rootDir: "/" }, useESM: false }],
+  },
+```
+
+`rootDir: "/"` is needed, otherwise TypeScript 6 stops with error TS5011.
+The same change is available as a patch on the workshop box at `/opt/workshop/patches/jest-config-esm.patch`;
+apply it from your project directory with `patch -p1 < jest-config-esm.patch`.
+</Callout>
+
 Run the test.
 
 ```bash
@@ -103,7 +124,55 @@ Snapshots:   0 total
 Time:        5.467 s, estimated 6 s
 ```
 
-#### Create a test for the Lambda function
+## Why `stack.prepareStack()`?
+
+Some TerraConstructs resources are not created in the constructor, but later, while the stack is prepared for
+synthesis. The IAM role policy behind `table.grantReadWriteData(this.handler)` in the `HitCounter` is one of
+them. `cdktn synth` prepares every stack for you; `Testing.synth` does not, so a test has to call
+`stack.prepareStack()` itself. Without it, those resources are missing from the output and your assertions
+check a stack that is not the one you deploy.
+
+You can see this for yourself. Add the AWS provider's `IamRolePolicy` L1 to the imports:
+
+```typescript
+import { IamRolePolicy } from "@cdktn/provider-aws/lib/iam-role-policy";
+```
+
+and add one more line at the end of the `DynamoDB Table Created` test:
+
+```ts {4}
+    stack.prepareStack(); // required by terraconstructs
+    const template = Testing.synth(stack);
+    expect(template).toHaveResource(DynamodbTableL1);
+    expect(template).toHaveResource(IamRolePolicy);
+```
+
+Run `pnpm run test`: it passes. Now comment out the `stack.prepareStack();` line and run it again. The policy is gone:
+
+```bash
+  ● HitCounter › DynamoDB Table Created
+
+    Expected aws_iam_role_policy with properties {} to be present in synthesized stack.
+    Found no aws_iam_role_policy resources instead
+
+      41 |     const template = Testing.synth(stack);
+      42 |     expect(template).toHaveResource(DynamodbTableL1);
+    > 43 |     expect(template).toHaveResource(IamRolePolicy);
+         |                      ^
+```
+
+The table assertion still passes, because the table is created in the constructor. That is why a missing
+`prepareStack()` is easy to overlook. Put the `stack.prepareStack();` line back, and remove the
+`IamRolePolicy` line and its import again before you continue.
+
+<Callout type="info" title="Keep the backend in the test stack">
+`prepareStack()` also makes sure the stack has a backend. The test stack sets `gridBackendConfig`, so it keeps
+that one. Without it, `prepareStack()` adds a local backend with the absolute path of your project, for example
+`"path": "/home/project/cdk-workshop/terraform.test.tfstate"`, and the synthesized output would differ from one
+machine to the next.
+</Callout>
+
+## Create a test for the Lambda function
 
 Now lets add another test, this time for the Lambda function that the `HitCounter` construct creates.
 This time in addition to testing that the Lambda function is created, we also want to test that
@@ -290,7 +359,7 @@ First we'll update the test to reflect this new requirement.
     // THEN
     stack.prepareStack(); // required by terraconstructs
     const template = Testing.synth(stack);
-    expect(template).toHaveResourceWithProperties(DynamodbTable, {
+    expect(template).toHaveResourceWithProperties(DynamodbTableL1, {
       "server_side_encryption": {
         "enabled": true
       },
@@ -337,7 +406,7 @@ $ pnpm run test
 
       40 |     stack.prepareStack(); // required by terraconstructs
       41 |     const template = Testing.synth(stack);
-    > 42 |     expect(template).toHaveResourceWithProperties(DynamodbTable, {
+    > 42 |     expect(template).toHaveResourceWithProperties(DynamodbTableL1, {
          |                      ^
       43 |       "server_side_encryption": {
       44 |         "enabled": true

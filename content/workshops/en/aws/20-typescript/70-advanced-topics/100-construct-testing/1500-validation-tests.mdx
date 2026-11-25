@@ -1,0 +1,258 @@
+---
+title: 'Validation Tests'
+---
+
+Sometimes we want the inputs to be configurable, but we also want to put constraints on those inputs or validate
+that the input is valid.
+
+TerraConstructs' `Table` uses the `PROVISIONED` billing mode unless told otherwise, with a `read_capacity`
+of 5 (you saw `"read_capacity": 5` in the failing test output on the previous page). Suppose we want users of
+`HitCounter` to be able to raise the read capacity, but only within a range we are willing to pay for. We can
+write tests to make sure that the validation logic works: pass in invalid values and see what happens.
+
+## Add a `readCapacity` property
+
+Update `lib/hitcounter.ts`: add `readCapacity` to `HitCounterProps`, check it before anything is created,
+and pass it to the table.
+
+```ts {1,15-22,33-36,43}
+import { Token } from "cdktn";
+import { Construct } from "constructs";
+import {
+  Code,
+  LambdaFunction,
+  IFunction,
+  Runtime,
+} from "terraconstructs/lib/aws/compute";
+import { AttributeType, Table, TableEncryption } from "terraconstructs/lib/aws/storage";
+
+export interface HitCounterProps {
+  /** the function for which we want to count url hits **/
+  downstream: IFunction;
+
+  /**
+   * The read capacity units for the table (the table is PROVISIONED)
+   *
+   * Must be between 5 and 20 (inclusive)
+   *
+   * @default 5
+   */
+  readCapacity?: number;
+}
+
+export class HitCounter extends Construct {
+  /** allows accessing the counter function */
+  public readonly handler: LambdaFunction;
+
+  /** the hit counter table */
+  public readonly table: Table;
+
+  constructor(scope: Construct, id: string, props: HitCounterProps) {
+    const rc = props.readCapacity;
+    if (rc !== undefined && !Token.isUnresolved(rc) && (rc < 5 || rc > 20)) {
+      throw new Error("readCapacity must be between 5 and 20 (inclusive)");
+    }
+
+    super(scope, id);
+
+    const table = new Table(this, "Hits", {
+      partitionKey: { name: "path", type: AttributeType.STRING },
+      encryption: TableEncryption.AWS_MANAGED,
+      readCapacity: rc ?? 5,
+    });
+    this.table = table;
+
+    this.handler = new LambdaFunction(this, "HitCounterHandler", {
+      runtime: Runtime.NODEJS_24_X,
+      handler: "hitcounter.handler",
+      code: Code.fromAsset("lambda"),
+      environment: {
+        DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
+        HITS_TABLE_NAME: table.tableName,
+      },
+    });
+
+    // grant the lambda role read/write permissions to our table
+    table.grantReadWriteData(this.handler);
+
+    // grant the lambda role invoke permissions to the downstream function
+    props.downstream.grantInvoke(this.handler);
+  }
+}
+```
+
+A few things to note:
+
+- The check runs before `super()`, so a rejected `HitCounter` is never added to the construct tree.
+- `Token.isUnresolved(rc)` skips the range check when the value is a token, for example a number that
+  comes from a `TerraformVariable`. Its real value is only known when Terraform runs, and the placeholder
+  number that stands for it during synthesis would fail the comparison for no reason.
+- The `table` property was added in [Exposing our hit counter table](/workshops/aws/typescript/table-viewer/expose-table)
+  and the encryption on the previous page. Keep them if your file already has them.
+
+## Test the validation
+
+Add `BillingMode` and `Table` to the imports at the top of `__tests__/hitcounter.test.ts`:
+
+```ts
+import { AttributeType, BillingMode, Table } from "terraconstructs/lib/aws/storage";
+```
+
+Then add these tests inside the `describe` block:
+
+```ts
+  test.each([3, 21])("readCapacity %d is rejected", (readCapacity) => {
+    expect(() => {
+      new HitCounter(stack, "MyTestConstruct", {
+        downstream: new LambdaFunction(stack, "TestFunction", {
+          runtime: Runtime.NODEJS_24_X,
+          handler: "hello.handler",
+          code: Code.fromAsset("lambda"),
+        }),
+        readCapacity,
+      });
+    }).toThrow(/readCapacity must be between 5 and 20/);
+  });
+
+  test("readCapacity reaches the table", () => {
+    new HitCounter(stack, "MyTestConstruct", {
+      downstream: new LambdaFunction(stack, "TestFunction", {
+        runtime: Runtime.NODEJS_24_X,
+        handler: "hello.handler",
+        code: Code.fromAsset("lambda"),
+      }),
+      readCapacity: 10,
+    });
+
+    stack.prepareStack(); // required by terraconstructs
+    const template = Testing.synth(stack);
+    expect(template).toHaveResourceWithProperties(DynamodbTableL1, {
+      read_capacity: 10,
+    });
+  });
+```
+
+`test.each` runs the same test once per value: 3 is below the range and 21 above it. The third test checks
+the other half of the contract: a valid value is not only accepted, it also ends up as `read_capacity` on the
+`aws_dynamodb_table` resource.
+
+Run the tests.
+
+```bash
+$ pnpm run test
+```
+
+```bash
+ PASS  __tests__/hitcounter.test.ts
+  HitCounter
+    ✓ DynamoDB Table Created
+    ✓ Lambda Has Environment Variables
+    ✓ readCapacity 3 is rejected
+    ✓ readCapacity 21 is rejected
+    ✓ readCapacity reaches the table
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+```
+
+## Bonus: TerraConstructs validates too
+
+TerraConstructs' own constructs check their props the same way. A table that is billed per request has no
+provisioned capacity, so `Table` refuses a `readCapacity` when `billingMode` is `PAY_PER_REQUEST`.
+You can test that a construct you depend on behaves the way you expect:
+
+```ts
+  test("TerraConstructs rejects capacity on an on-demand table", () => {
+    expect(() => {
+      new Table(stack, "OnDemand", {
+        partitionKey: { name: "path", type: AttributeType.STRING },
+        billingMode: BillingMode.PAY_PER_REQUEST,
+        readCapacity: 5,
+      });
+    }).toThrow(/You cannot provision read and write capacity for a table with PAY_PER_REQUEST billing mode/);
+  });
+```
+
+This is also a reminder for `HitCounter`: if you ever add a `billingMode` prop, the `readCapacity: rc ?? 5`
+default has to go, or every on-demand hit counter will fail with this error.
+
+## Deferred validation with `addValidation`
+
+The range check above runs in the constructor, so a bad `readCapacity` fails the moment someone writes
+`new HitCounter(...)`. A construct can also register a check that runs later, when the stack is
+synthesized: `this.node.addValidation(...)`. Try it with the same rule. In `lib/hitcounter.ts`, replace the
+`if (...) { throw ... }` block before `super()` with a validation after it:
+
+```ts {5-10}
+    const rc = props.readCapacity;
+
+    super(scope, id);
+
+    this.node.addValidation({
+      validate: () =>
+        rc !== undefined && !Token.isUnresolved(rc) && (rc < 5 || rc > 20)
+          ? ["readCapacity must be between 5 and 20 (inclusive)"]
+          : [],
+    });
+```
+
+`validate` returns a list of error messages; an empty list means the construct is valid. Run the tests. The
+two `is rejected` tests now fail, because creating the `HitCounter` no longer throws:
+
+```bash
+    ✕ readCapacity 3 is rejected (15 ms)
+    ✕ readCapacity 21 is rejected (17 ms)
+
+  ● HitCounter › readCapacity 3 is rejected
+
+    expect(received).toThrow(expected)
+
+    Expected pattern: /readCapacity must be between 5 and 20/
+
+    Received function did not throw
+```
+
+Validations run when the app is synthesized: `app.synth()`, which `cdktn synth` runs, stops with the error.
+`Testing.synth` only runs them when you pass `true` as its second argument. Add this test:
+
+```ts
+  test("readCapacity 21 fails validation", () => {
+    new HitCounter(stack, "MyTestConstruct", {
+      downstream: new LambdaFunction(stack, "TestFunction", {
+        runtime: Runtime.NODEJS_24_X,
+        handler: "hello.handler",
+        code: Code.fromAsset("lambda"),
+      }),
+      readCapacity: 21,
+    });
+
+    stack.prepareStack(); // required by terraconstructs
+    expect(() => Testing.synth(stack, true)).toThrow(/readCapacity must be between 5 and 20/);
+  });
+```
+
+```bash
+    ✓ readCapacity 21 fails validation (16 ms)
+```
+
+The error it catches reads:
+
+```bash
+Validation failed with the following errors:
+  [test/MyTestConstruct] readCapacity must be between 5 and 20 (inclusive)
+```
+
+With `Testing.synth(stack)` instead, the same test fails with "Received function did not throw": the
+validation is never run.
+
+So which one should you use?
+
+- **A check in the constructor** when everything it needs is in the props. It fails right away, with a
+  stack trace that points at the line that created the construct. `readCapacity` is such a prop.
+- **`addValidation`** when the condition depends on what is added to the construct after it was created,
+  for example a construct with an `addSomething()` method that needs at least one call. In the
+  constructor, that is not known yet.
+
+For `readCapacity`, the constructor check is the better choice. Put the `if (...) { throw ... }` block back
+in front of `super()`, remove the `addValidation` call, and delete the `readCapacity 21 fails validation`
+test. All six tests pass again.

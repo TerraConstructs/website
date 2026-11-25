@@ -1,0 +1,436 @@
+---
+title: 'Debugging constructs'
+---
+
+Your infrastructure is a program. `cdktn synth` runs `main.ts`, builds a tree of construct objects and only
+then writes Terraform JSON. That makes things possible that a document cannot do, such as an Aspect that
+visits every resource in the tree and checks or changes it. It also means that when something goes wrong,
+the cause is in code that ran during synth, often code you did not write.
+
+So you can debug it like any other Node.js program: pause on a line, but only for the one construct you
+care about; see the call stack that led there; evaluate expressions in any frame of that stack. In HCL,
+`for_each`, `locals` and modules are evaluated inside Terraform; `terraform console` can evaluate an
+expression, but there is nothing to pause, no stack and no way to see which code produced a value.
+
+In this chapter you write an Aspect that does not do what you expect, find out why with the debugger in
+your IDE, and then let a coding agent do the same from the command line.
+
+<Callout type="info">
+This chapter assumes you finished [Writing constructs](/workshops/aws/typescript/hit-counter). It runs
+`cdktn synth` only; nothing is deployed.
+</Callout>
+
+## An aspect that checks tags
+
+Every TerraConstruct tags the resources it creates with `grid:UUID` and `grid:EnvironmentName`. Suppose your
+team wants synth to fail if a taggable resource is missing `grid:UUID`. An Aspect is the tool for that: it
+is called for every construct in the tree.
+
+Create `lib/require-tags.ts`:
+
+```ts
+import { Annotations, IAspect, TerraformResource } from "cdktn";
+import { IConstruct } from "constructs";
+
+/** Flags every taggable resource that is missing one of the required tags. */
+export class RequireTags implements IAspect {
+  constructor(private readonly keys: string[]) {}
+
+  visit(node: IConstruct) {
+    if (!TerraformResource.isTerraformResource(node) || !("tagsInput" in node)) {
+      return;
+    }
+    const tags = (node as any).tagsInput ?? {};
+    const missing = this.keys.filter((key) => !(key in tags));
+    if (missing.length > 0) {
+      Annotations.of(node).addError(`missing tags: ${missing.join(", ")}`);
+    }
+  }
+}
+```
+
+Add it to the stack in `main.ts`: import `Aspects` and `RequireTags`, and add the aspect at the end of the
+`MyStack` constructor.
+
+```ts {1,4,11}
+import { App, Aspects } from "cdktn";
+// ...
+import { HitCounter } from "./lib/hitcounter";
+import { RequireTags } from "./lib/require-tags";
+
+class MyStack extends AwsStack {
+  constructor(scope: Construct, id: string, props: AwsStackProps) {
+    super(scope, id, props);
+    // ... HelloHandler, HelloHitCounter, Endpoint as before
+
+    Aspects.of(this).add(new RequireTags(["grid:UUID"]));
+  }
+}
+```
+
+Run `cdktn synth`:
+
+```bash
+cdktn synth
+```
+
+It fails, and it reports every taggable resource (output trimmed, each error is followed by a stack trace):
+
+```
+ERROR [cdk-workshop/HelloHandler/ServiceRole/Resource]: missing tags: grid:UUID
+ERROR [cdk-workshop/HelloHandler/LogGroup]: missing tags: grid:UUID
+ERROR [cdk-workshop/HelloHandler/Resource]: missing tags: grid:UUID
+ERROR [cdk-workshop/AssetBucket]: missing tags: grid:UUID
+ERROR [cdk-workshop/FileAsset_S3]: missing tags: grid:UUID
+ERROR [cdk-workshop/HelloHitCounter/Hits/Resource]: missing tags: grid:UUID
+...
+ERROR [cdk-workshop/Endpoint/DeploymentStage.prod/Resource]: missing tags: grid:UUID
+```
+
+That is odd. Look at `cdktf.out/stacks/cdk-workshop/cdk.tf.json` from your last successful synth: the
+DynamoDB table `HelloHitCounter_Hits_...` has `"grid:UUID": "cdk-workshop-dev"` in its `tags`. So where do
+the tags go while the aspect looks at them? Time for the debugger.
+
+## How cdktn runs your app
+
+`cdktn synth` does not run `main.ts` itself. It runs the `app` command from `cdktf.json`:
+
+```json
+"app": "pnpm exec tsx main.ts",
+```
+
+That is a chain of processes: `cdktn` starts `pnpm`, which starts `tsx`, which starts `node` with your
+code. Node's usual debugger switch does not get through that chain:
+
+```bash
+NODE_OPTIONS=--inspect cdktn synth
+```
+
+```
+Debugger listening on ws://127.0.0.1:9229/...
+...
+[ERROR] default - Starting inspector on 127.0.0.1:9229 failed: address already in use
+[ERROR] default - Starting inspector on 127.0.0.1:9229 failed: address already in use
+[ERROR] default - Starting inspector on 127.0.0.1:9229 failed: address already in use
+```
+
+The `cdktn` CLI itself took the debugger port, and the three processes below it, including your app, run
+without a debugger. (`--inspect-brk` is worse: it pauses the `cdktn` CLI before it starts.)
+
+The simplest way around it is to skip the chain. `tsx` can also be loaded into a plain `node` process,
+which then runs `main.ts` directly:
+
+```bash
+node --import tsx main.ts
+```
+
+That is the same synth, in one process. This is what the launch configuration below runs.
+
+## Add a launch configuration
+
+Create `.vscode/launch.json` in the project (File > New File, or from the terminal: `mkdir .vscode`):
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug synth (main.ts)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeArgs": ["--import", "tsx"],
+      "program": "${workspaceFolder}/main.ts",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug tests (jest)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+      "args": ["--runInBand", "${relativeFile}"],
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+- **`runtimeArgs`** loads `tsx`, so Node runs TypeScript. `tsx` adds source maps, so breakpoints go on the
+  lines of your `.ts` files.
+- **`console`** runs the program in a terminal tab. Without it the IDE's Debug Console does not show the
+  program's output or your logpoints.
+- The second configuration runs Jest in one process (`--runInBand`) on the file in the active editor. You
+  use it at the end of this chapter.
+
+The same file works in VS Code on your own machine.
+
+## Pause on one construct
+
+The aspect is called for every construct in the tree, a few dozen times. You only want to stop for the
+DynamoDB table.
+
+1. Open `lib/require-tags.ts` and put the cursor on line 13 (`const missing = ...`).
+2. Open the command palette (F1), type **Add Conditional Breakpoint** and press Enter. Enter the condition
+   and press Enter:
+
+   ```
+   node.node.path.endsWith("Hits/Resource")
+   ```
+
+3. F1, **Start Debugging**, and pick **Debug synth (main.ts)** from the list. (The list also offers
+   **JavaScript Debug Terminal**: a terminal in which every `node` process is debugged, so `cdktn synth`
+   typed there stops at your breakpoints too, through the whole process chain.)
+
+After a few seconds the debugger stops on line 13 for `cdk-workshop/HelloHitCounter/Hits/Resource`.
+The **Variables** view shows `node`, and `tags` is `{}`.
+
+## Read the call stack
+
+The **Call Stack** view shows how synth got here:
+
+```
+RequireTags.visit            require-tags.ts      13
+recurse                      synthesizer.js      169
+recurse                      synthesizer.js      180
+recurse                      synthesizer.js      180
+recurse                      synthesizer.js      180
+invokeAspects                synthesizer.js      149
+StackSynthesizer.synthesize  synthesizer.js       76
+<root>.synth                 main.ts              33
+```
+
+Read it from the bottom: `app.synth()` in your `main.ts` synthesizes the stack, which calls `invokeAspects`,
+which walks the tree with `recurse` (once per level: stack, `HelloHitCounter`, `Hits`, `Resource`) and calls
+`visit` on your aspect.
+
+Click the first `recurse` frame. The editor opens cdktn's `synthesizer.js` at the line that called `visit`:
+
+```js
+for (const aspect of allAspectsHere) {
+    // ...
+    aspect.visit(construct);
+```
+
+`allAspectsHere` is a local variable of that frame, and the Debug Console evaluates in the selected frame.
+Open the **Debug Console** and enter:
+
+```js
+allAspectsHere.map(a => a.constructor.name)
+```
+
+```
+(3) ['TerraformDependencyAspect', 'RequireTags', 'GridTags']
+```
+
+There is the answer. `GridTags` is the aspect that adds `grid:UUID`, and it runs *after* `RequireTags`.
+cdktn first runs the aspects inherited from the parents, then the construct's own; `RequireTags` was added
+on the stack, `GridTags` on each TerraConstruct (here the `Hits` table), so for every resource inside a
+TerraConstruct your check runs before the tags exist.
+
+A few more things to try while you are paused:
+
+- Click the top frame again and enter `node.node.path` and `node.tagsInput` in the Debug Console:
+  `'cdk-workshop/HelloHitCounter/Hits/Resource'` and `undefined`.
+- A logpoint (F1, **Add Logpoint**) on line 13 with the message `{node.node.path}` prints one line per
+  resource in the terminal tab without stopping.
+
+Stop the debugger.
+
+## Fix the aspect
+
+An aspect should not check something another aspect may still change. Validations run after all aspects,
+so register a validation from the aspect and check the tags then. Replace `lib/require-tags.ts`:
+
+```ts {12-19}
+import { IAspect, TerraformResource } from "cdktn";
+import { IConstruct } from "constructs";
+
+/** Flags every taggable resource that is missing one of the required tags. */
+export class RequireTags implements IAspect {
+  constructor(private readonly keys: string[]) {}
+
+  visit(node: IConstruct) {
+    if (!TerraformResource.isTerraformResource(node) || !("tagsInput" in node)) {
+      return;
+    }
+    // Other aspects (TerraConstructs' GridTags) may still add tags after this visit.
+    // Validations run once every aspect has visited, so check the tags then.
+    node.node.addValidation({
+      validate: () => {
+        const tags = (node as any).tagsInput ?? {};
+        return this.keys.filter((key) => !(key in tags)).map((key) => `missing tag ${key}`);
+      },
+    });
+  }
+}
+```
+
+```bash
+cdktn synth
+```
+
+```
+Error: Validation failed with the following errors:
+  [cdk-workshop/AssetBucket] missing tag grid:UUID
+  [cdk-workshop/FileAsset_S3] missing tag grid:UUID
+```
+
+These two are real: they are not inside any TerraConstruct, so `GridTags` never visits them. You did not
+create them either. In the next section a coding agent finds out who did.
+
+## Let your coding agent do it
+
+A coding agent in a terminal cannot click in a gutter, but it can do the same through the protocol the IDE
+uses: the Chrome DevTools Protocol, which Node exposes with `--inspect`. The box has a small driver script
+that needs no packages: it starts your program with `--inspect-brk`, sets breakpoints (mapped through the
+source maps, so you give it `.ts` lines), and prints the call stack, the local variables and any
+expressions you ask for. Copy it into the project:
+
+```bash
+cp /opt/workshop/tools/cdp-debug.mjs .
+```
+
+First, the question from the previous section, put to the script:
+
+```bash
+node cdp-debug.mjs \
+  --cond 'node.node.path.endsWith("Hits/Resource")' --break lib/require-tags.ts:13 \
+  --watch node.tagsInput \
+  --up 1 'allAspectsHere.map(a => a.constructor.name)' \
+  -- node --import tsx main.ts
+```
+
+(This needs the first version of `lib/require-tags.ts`, which has `const missing` on line 13.) The output,
+trimmed:
+
+```
+=== paused (other, breakpoint) #1 at lib/require-tags.ts:13 in visit
+call stack:
+  #0 visit                        lib/require-tags.ts:13
+  #1 recurse                      cdktn/src/synthesize/synthesizer.ts:172  [cdktn/lib/synthesize/synthesizer.js:169]
+  ...
+  #5 invokeAspects                cdktn/src/synthesize/synthesizer.ts:149  [cdktn/lib/synthesize/synthesizer.js:149]
+  #9 <anonymous>                  main.ts:33
+locals:
+  tags = Object {}
+watch:
+  node.tagsInput = undefined
+frame #1 (recurse):
+  allAspectsHere.map(a => a.constructor.name) = ["TerraformDependencyAspect","RequireTags","GridTags"]
+```
+
+Now the new question, with the fixed aspect: who creates `AssetBucket`? Every construct goes through the
+`Construct` constructor in the `constructs` package, so stop there when the `id` is `AssetBucket`:
+
+```bash
+node cdp-debug.mjs \
+  --cond 'id === "AssetBucket"' --break constructs/lib/construct.js:516 \
+  --watch scope.node.path \
+  -- node --import tsx main.ts
+```
+
+```
+=== paused (other, breakpoint) #1 at constructs/src/construct.ts:582  [constructs/lib/construct.js:516] in Construct
+call stack:
+  #0 Construct                    constructs/src/construct.ts:582
+  #1 TerraformElement             cdktn/src/terraform-element.ts:107
+  #2 TerraformResource            cdktn/src/terraform-resource.ts:165
+  #3 S3Bucket                     @cdktn/provider-aws/src/s3-bucket/index.ts:4187
+  #4 ensureBucket                 terraconstructs/src/aws/aws-asset-manager.ts:299
+  #5 addFileAsset                 terraconstructs/src/aws/aws-asset-manager.ts:120
+  #6 addFileAsset                 terraconstructs/src/aws/aws-stack.ts:562
+  #7 Asset                        terraconstructs/src/aws/storage/assets/s3.ts:174
+  #8 bind                         terraconstructs/src/aws/compute/code.ts:509
+  #9 LambdaFunction               terraconstructs/src/aws/compute/function.ts:832
+  #10 MyStack                     main.ts:11
+watch:
+  scope.node.path = "cdk-workshop"
+```
+
+Read from the bottom: line 11 of `main.ts` creates the `HelloHandler` function; its `Code.fromAsset("lambda")`
+is uploaded through the stack's asset manager, which creates one S3 bucket for all assets, directly in the
+stack (`scope.node.path` is `cdk-workshop`). The stack is not a TerraConstruct, so nothing tags it.
+
+The fix is to tag what the stack itself creates. Add `Tags` to the `terraconstructs/lib/aws` import in
+`main.ts` and one line before the aspect:
+
+```ts {1,3-4}
+import { AwsStack, AwsStackProps, Tags } from "terraconstructs/lib/aws";
+// ...
+    // The stack's own resources (the asset bucket) are not inside a TerraConstruct: tag them here.
+    Tags.of(this).add("grid:UUID", this.gridUUID);
+    Aspects.of(this).add(new RequireTags(["grid:UUID"]));
+```
+
+```bash
+cdktn synth
+```
+
+```
+Generated Terraform code for the stacks: cdk-workshop
+```
+
+To hand this to an agent, tell it what you want to know and point it at the script, for example: *"The
+usage of cdp-debug.mjs is at the top of the file. Use it to find out which code creates the construct
+`cdk-workshop/AssetBucket`."* The report is plain text, so the agent can read it and decide on the next
+breakpoint. Other options: `--exceptions all --match "Validation failed"` stops where an error is thrown,
+`--attach 9229` attaches to a process you started yourself, for example with
+`cdktn synth --app "node --inspect-brk=9229 --import tsx main.ts"`.
+
+<Callout type="info" title="Without the script">
+Node has a command-line debugger built in, `node inspect`. It does not read source maps, and `tsx` compiles
+each file to one long line, so `sb('lib/require-tags.ts', 13)` does not stop where you expect. Put a
+`debugger;` statement in the code instead (for example
+`if (node.node.path.endsWith("Hits/Resource")) debugger;`), then run `node inspect --import tsx main.ts` and
+type `cont`, `bt` (call stack), `exec node.tagsInput`, `watch("node.node.path")`. It only evaluates in the
+top frame.
+</Callout>
+
+## Debug a test
+
+Aspects are often easier to debug from a test than from the whole app. Create
+`__tests__/require-tags.test.ts`:
+
+```ts
+import { Aspects, Testing } from "cdktn";
+import { AwsStack } from "terraconstructs/lib/aws";
+import { Code, LambdaFunction, Runtime } from "terraconstructs/lib/aws/compute";
+import { HitCounter } from "../lib/hitcounter";
+import { RequireTags } from "../lib/require-tags";
+
+describe("RequireTags", () => {
+  test("accepts a stack where every resource is tagged", () => {
+    const stack = new AwsStack(Testing.app(), "test", {
+      environmentName: "test",
+      gridUUID: "test-uuid",
+      providerConfig: { region: "us-east-1" },
+    });
+    new HitCounter(stack, "MyTestConstruct", {
+      downstream: new LambdaFunction(stack, "TestFunction", {
+        runtime: Runtime.NODEJS_24_X,
+        handler: "hello.handler",
+        code: Code.fromAsset("lambda"),
+      }),
+    });
+    Aspects.of(stack).add(new RequireTags(["grid:UUID"]));
+
+    stack.prepareStack(); // required by terraconstructs
+    // `true` runs the validations, where RequireTags reports missing tags.
+    expect(() => Testing.synth(stack, true)).not.toThrow();
+  });
+});
+```
+
+`pnpm test -- __tests__/require-tags.test.ts` fails with `[test/AssetBucket] missing tag grid:UUID`: the
+test stack has no `Tags.of(...)` line.
+
+To debug it, set a conditional breakpoint on line 17 of `lib/require-tags.ts` (`return this.keys...`) with
+the condition `node.node.path.endsWith("AssetBucket")`, open the test file so it is the active editor, and
+start **Debug tests (jest)**. The call stack now starts in your test, goes through `Testing.synth` and
+`runAllValidations`, and ends in your `validate` function, where `tags` is `{}`.
+
+A logpoint in a test prints through Jest's console, so its lines show up in the terminal tab with a
+`console.log` header and a short stack under each.
